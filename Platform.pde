@@ -1,14 +1,15 @@
 class Platform extends GameObject
 {
+  int id;
   color c;
-  float l; //length
+  float w; //width
   float h; //height
   
-  Platform (float x, float y, float l, float h, color c)
+  Platform (float x, float y, float w, float h, color c)
   {
     pos = new PVector(x, y);
     forward = new PVector(0, -1);
-    this.l = l;
+    this.w = w;
     this.h = h;
     this.c = c;
   }
@@ -19,9 +20,12 @@ class Platform extends GameObject
   
   void render()
   {
-    rectMode(CENTER);
     noStroke();
     fill(c);
-    rect(pos.x, pos.y, l, h);
+    
+    pushMatrix();
+    translate(pos.x, pos.y);
+    rect(0, 0, w, h);
+    popMatrix();
   }
 }
