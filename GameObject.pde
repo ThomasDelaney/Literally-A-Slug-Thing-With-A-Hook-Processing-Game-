@@ -1,8 +1,8 @@
 abstract class GameObject
 {
-  PVector pos;
-  PVector forward;
   float size;
+  Vec2 pos;
+  Vec2 forward;
   
   GameObject()
   {

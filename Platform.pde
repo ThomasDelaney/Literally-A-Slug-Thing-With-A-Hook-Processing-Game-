@@ -1,17 +1,32 @@
 class Platform extends GameObject
 {
-  int id;
+  Body body;
   color c;
   float w; //width
   float h; //height
   
   Platform (float x, float y, float w, float h, color c)
   {
-    pos = new PVector(x, y);
-    forward = new PVector(0, -1);
     this.w = w;
     this.h = h;
     this.c = c;
+    
+    PolygonShape sd = new PolygonShape();
+  
+    float box2dW = box2d.scalarPixelsToWorld(w/2);
+    float box2dH = box2d.scalarPixelsToWorld(h/2);
+
+    sd.setAsBox(box2dW, box2dH);
+
+    BodyDef bd = new BodyDef();
+    bd.type = BodyType.STATIC;
+    bd.angle = 0;
+    bd.position.set(box2d.coordPixelsToWorld(x,y));
+    body = box2d.createBody(bd);
+    
+    body.createFixture(sd,1);
+    
+    body.setUserData(this);
   }
   
   void update()
@@ -20,12 +35,26 @@ class Platform extends GameObject
   
   void render()
   {
+    pos = box2d.getBodyPixelCoord(body);
+    
     noStroke();
     fill(c);
     
     pushMatrix();
     translate(pos.x, pos.y);
+    rectMode(CENTER);
     rect(0, 0, w, h);
+    
+    if (mouseX > pos.x && mouseY > pos.y-h && mouseY < pos.y+h)
+    {
+      fill(255, 0, 0);
+      ellipse(w/2-10, 0, 10, 10);
+    }
+    else if (mouseX < pos.x && mouseY > pos.y-h && mouseY < pos.y+h) 
+    {
+      fill(255, 0, 0);
+      ellipse(-w/2+10, 0, 10, 10);
+    }
     popMatrix();
   }
 }
