@@ -44,17 +44,6 @@ class Platform extends GameObject
     translate(pos.x, pos.y);
     rectMode(CENTER);
     rect(0, 0, w, h);
-    
-    if (mouseX > pos.x && mouseY > pos.y-h && mouseY < pos.y+h)
-    {
-      fill(255, 0, 0);
-      ellipse(w/2-10, 0, 10, 10);
-    }
-    else if (mouseX < pos.x && mouseY > pos.y-h && mouseY < pos.y+h) 
-    {
-      fill(255, 0, 0);
-      ellipse(-w/2+10, 0, 10, 10);
-    }
     popMatrix();
   }
 }

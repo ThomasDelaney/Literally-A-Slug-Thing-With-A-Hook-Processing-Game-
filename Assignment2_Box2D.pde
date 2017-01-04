@@ -21,15 +21,17 @@ void setup()
 
   box2d.listenForCollisions();
   
+  overPlat = false;
+  
   player = new Player(500, 350, 0, 100, 'a', 'd', 'f', color(0, 255, 0));
   p1 = new Platform (width/2,height-300, 300, 10, color(255));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
-  gameObjects.add(p1);
-  gameObjects.add(ground);
-  gameObjects.add(p2);
+  platforms.add(p1);
+  platforms.add(ground);
+  platforms.add(p2);
   gameObjects.add(player);
 }
 
@@ -53,10 +55,11 @@ void draw()
   
   //println("x: " + mouseX);
   //println("y: " + mouseY);
+  
+  platCheck(player);
 }
 
 Platform tempPlat;
-//Platform p1 = new Platform (500, 200, 200, 15, color(255));
 Platform p1;
 Platform p2;
 Platform ground;
@@ -67,7 +70,14 @@ boolean[] keys = new boolean[1000];
 
 ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
+ArrayList<Platform> platforms = new ArrayList<Platform>();
+
 float timeDelta = 1.0f / 60.0f;
+
+float platPosX;
+float platPosY;
+
+boolean overPlat;
 
 void keyPressed()
 { 
@@ -110,4 +120,40 @@ void beginContact(Contact cp)
 
 void endContact(Contact cp) 
 {
+}
+
+void platCheck(Player curPlayer)
+{
+  if (!curPlayer.hooking)
+  {
+    for (Platform p: platforms) 
+    {
+      if (mouseX > p.pos.x && mouseX < p.pos.x+p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h)
+      {
+        fill(255, 0, 0);
+        ellipse(p.pos.x+p.w/2-10, p.pos.y, 10, 10);
+      
+        platPosX = p.pos.x+p.w/2-10;
+        platPosY = p.pos.y;
+        
+        overPlat = true;
+        break;
+      }
+      else if (mouseX < p.pos.x && mouseX > p.pos.x-p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h) 
+      { 
+        fill(255, 0, 0);
+        ellipse(p.pos.x-p.w/2+10, p.pos.y, 10, 10);
+      
+        platPosX = p.pos.x-p.w/2+10;
+        platPosY = p.pos.y;
+        
+        overPlat = true;
+        break;
+      }
+      else
+      {
+        overPlat = false;
+      }
+    }
+  }
 }

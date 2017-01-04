@@ -7,11 +7,14 @@ class Player extends GameObject
   float radius;
   float power = 300;
   float mass = 1;
+  float hookTime = 0;
   color c;
   boolean reset = false;
   boolean onTemp = false;
   boolean goalSet = false;
   boolean returned = true;
+  boolean hooking = false;
+  boolean hookCooling = false;
   float ygoal;
   
   Player(float x, float y, float theta, float size, char left, char right, char hook, color c)
@@ -42,11 +45,20 @@ class Player extends GameObject
       vel.x = -10;
       body.setLinearVelocity(vel);
     }
+    
     if (checkKey(right))
     {
       Vec2 vel = body.getLinearVelocity();
       vel.x = 10;
       body.setLinearVelocity(vel);
+    }
+    
+    if (checkKey(hook))
+    {    
+      if (!hooking && overPlat && !hookCooling)
+      {
+        hooking = true;
+      }
     }
     
     if (checkKey(' ') && returned)
@@ -56,12 +68,44 @@ class Player extends GameObject
       body.setLinearVelocity(vel);
       returned = false;
     }
+    
+    if (hooking)
+    {
+      stroke(255, 0, 0);
+      strokeWeight(3);
+      fill(255, 0, 0);
+     
+      line(pos.x, pos.y, platPosX, platPosY);
+    
+      hookTime += timeDelta;
+      
+      if (hookTime > 2)
+      {
+        hookCooling = true;
+        hooking = false;
+        hookTime = 0;
+      }
+    }
+    else if (!hooking)
+    {
+      if (hookCooling)
+      {
+        hookTime += timeDelta;
+      
+        if (hookTime > 2)
+        {
+          hookCooling = false;
+          hookTime = 0;
+        }
+      }
+    }
   }  
   
   void render()
   {
     pos = box2d.getBodyPixelCoord(body);
   
+    noStroke();
     fill(c);
     pushMatrix();
     translate(pos.x, pos.y);
