@@ -58,6 +58,31 @@ class Player extends GameObject
       if (!hooking && overPlat && !hookCooling)
       {
         hooking = true;
+        
+        Vec2 vel = body.getLinearVelocity();
+        
+        if (pos.y >= platPosY && pos.x >= platPosX)
+        {
+          vel.y = 30;
+          vel.x = -30;
+        }
+        else if (pos.y >= platPosY && pos.x <= platPosX)
+        {
+          vel.y = 30;
+          vel.x = 30;
+        }
+        else if (pos.y <= platPosY && pos.x >= platPosX)
+        {
+          vel.y = -30;
+          vel.x = -30;
+        }
+        else if (pos.y <= platPosY && pos.x <= platPosX)
+        {
+          vel.y = -30;
+          vel.x = 30;
+        }
+        
+        body.setLinearVelocity(vel);
       }
     }
     
@@ -74,7 +99,7 @@ class Player extends GameObject
       stroke(255, 0, 0);
       strokeWeight(3);
       fill(255, 0, 0);
-     
+      
       line(pos.x, pos.y, platPosX, platPosY);
     
       hookTime += timeDelta;
@@ -84,6 +109,11 @@ class Player extends GameObject
         hookCooling = true;
         hooking = false;
         hookTime = 0;
+        
+        Vec2 vel = body.getLinearVelocity();
+        vel.x = vel.x/2;
+        vel.y = vel.y/2;
+        body.setLinearVelocity(vel);
       }
     }
     else if (!hooking)

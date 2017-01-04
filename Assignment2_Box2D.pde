@@ -131,7 +131,7 @@ void platCheck(Player curPlayer)
       if (mouseX > p.pos.x && mouseX < p.pos.x+p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h)
       {
         fill(255, 0, 0);
-        ellipse(p.pos.x+p.w/2-10, p.pos.y, 10, 10);
+        rect(p.pos.x+p.w/4, p.pos.y, p.w/2, 10);
       
         platPosX = p.pos.x+p.w/2-10;
         platPosY = p.pos.y;
@@ -142,7 +142,7 @@ void platCheck(Player curPlayer)
       else if (mouseX < p.pos.x && mouseX > p.pos.x-p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h) 
       { 
         fill(255, 0, 0);
-        ellipse(p.pos.x-p.w/2+10, p.pos.y, 10, 10);
+        rect(p.pos.x-p.w/4, p.pos.y, p.w/2, 10);
       
         platPosX = p.pos.x-p.w/2+10;
         platPosY = p.pos.y;
