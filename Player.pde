@@ -10,12 +10,19 @@ class Player extends GameObject
   float hookTime = 0;
   color c;
   boolean reset = false;
-  boolean onTemp = false;
-  boolean goalSet = false;
   boolean returned = true;
   boolean hooking = false;
   boolean hookCooling = false;
-  float ygoal;
+  boolean hookConnect = false;
+  boolean notMoving = true;
+  float hookX;
+  float hookY;
+  float tempX;
+  float tempY;
+  float xR;
+  float yR;
+  float scale;
+  int hookDir;
   
   Player(float x, float y, float theta, float size, char left, char right, char hook, color c)
   {
@@ -39,14 +46,14 @@ class Player extends GameObject
     pos = box2d.getBodyPixelCoord(body);
     theta = body.getAngle();
     
-    if (checkKey(left))
+    if (checkKey(left) && notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
       vel.x = -10;
       body.setLinearVelocity(vel);
     }
     
-    if (checkKey(right))
+    if (checkKey(right) && notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
       vel.x = 10;
@@ -55,38 +62,18 @@ class Player extends GameObject
     
     if (checkKey(hook))
     {    
-      if (!hooking && overPlat && !hookCooling)
+      if (!hooking && overPlat && !hookCooling && !hookConnect)
       {
         hooking = true;
         
-        Vec2 vel = body.getLinearVelocity();
+        hookX = pos.x;
+        hookY = pos.y;
         
-        if (pos.y >= platPosY && pos.x >= platPosX)
-        {
-          vel.y = 30;
-          vel.x = -30;
-        }
-        else if (pos.y >= platPosY && pos.x <= platPosX)
-        {
-          vel.y = 30;
-          vel.x = 30;
-        }
-        else if (pos.y <= platPosY && pos.x >= platPosX)
-        {
-          vel.y = -30;
-          vel.x = -30;
-        }
-        else if (pos.y <= platPosY && pos.x <= platPosX)
-        {
-          vel.y = -30;
-          vel.x = 30;
-        }
-        
-        body.setLinearVelocity(vel);
+        scale = 1;
       }
     }
     
-    if (checkKey(' ') && returned)
+    if (checkKey(' ') && returned && !hookConnect)
     {
       Vec2 vel = body.getLinearVelocity();
       vel.y = 15;
@@ -100,23 +87,146 @@ class Player extends GameObject
       strokeWeight(3);
       fill(255, 0, 0);
       
-      line(pos.x, pos.y, platPosX, platPosY);
-    
-      hookTime += timeDelta;
+      line(pos.x, pos.y, hookX, hookY);
       
-      if (hookTime > 2)
+      if (!hookConnect)
       {
-        hookCooling = true;
-        hooking = false;
-        hookTime = 0;
+        if (hookX < platPosX && hookY < platPosY)
+        {
+          tempX = platPosX - hookX;
+          tempY = platPosY - hookY;
+          
+          xR = (tempX/platPosX)*scale;
+          yR = (tempY/platPosY)*scale;
+          
+          hookX+=xR;
+          hookY+=yR;
+          
+          hookDir = 1;
+        }
+        else if (hookX < platPosX && hookY > platPosY)
+        {
+          tempX = platPosX - hookX;
+          tempY = hookY - platPosY;
+          
+          xR = (tempX/platPosX)*scale;
+          yR = (tempY/platPosY)*scale;
+          
+          hookX+=xR;
+          hookY-=yR;
+          
+          hookDir = 2;
+        }
+        else if (hookX > platPosX && hookY > platPosY)
+        {
+          tempX = hookX - platPosX;
+          tempY = hookY -  platPosY;
+          
+          xR = (tempX/platPosX)*scale;
+          yR = (tempY/platPosY)*scale;
+          
+          hookX-=xR;
+          hookY-=yR;
+          
+          hookDir = 3;
+        }
+        else if (hookX > platPosX && hookY < platPosY)
+        {
+          tempX = hookX - platPosX;
+          tempY = platPosY - hookY;
+          
+          xR = (tempX/platPosX)*scale;
+          yR = (tempY/platPosY)*scale;
+          
+          hookX-=xR;
+          hookY+=yR;
+          
+          hookDir = 4;
+        }
         
+        scale += 1.5;
+        
+        if (hookDir == 1)
+        {
+          if (hookX+1 >= platPosX && hookY+1 >= platPosY)
+          {
+            hookConnect = true;
+          }
+        }
+        else if (hookDir == 2)
+        {
+          if (hookX+1 >= platPosX && hookY <= platPosY+1)
+          {
+            hookConnect = true;
+          }
+        }
+        else if (hookDir == 3)
+        {
+          if (hookX <= platPosX+1 && hookY <= platPosY+1)
+          {
+            hookConnect = true;
+          }
+        }
+        else if (hookDir == 4)
+        {
+          if (hookX <= platPosX+1 && hookY+1 >= platPosY)
+          {
+            hookConnect = true;
+          }
+        }
+      }
+       
+      if (hookConnect)
+      {
         Vec2 vel = body.getLinearVelocity();
-        vel.x = vel.x/2;
-        vel.y = vel.y/2;
-        body.setLinearVelocity(vel);
+        
+        if (notMoving)
+        {
+          if (pos.y >= platPosY && pos.x >= platPosX)
+          {
+            vel.y = 40;
+            vel.x = -40;
+          }
+          else if (pos.y >= platPosY && pos.x <= platPosX)
+          {
+            vel.y = 40;
+            vel.x = 40;
+          }
+          else if (pos.y <= platPosY && pos.x >= platPosX)
+          {
+            vel.y = -40;
+            vel.x = -40;
+          }
+          else if (pos.y <= platPosY && pos.x <= platPosX)
+          {
+            vel.y = -40;
+            vel.x = 40;
+          }
+        
+          body.setLinearVelocity(vel);
+          
+          notMoving = false;
+        }
+        
+        if (hookTime > 1)
+        {
+          hookCooling = true;
+          hooking = false;
+          hookConnect = false;
+          notMoving = true;
+          hookTime = 0;
+          
+          Vec2 vel2 = body.getLinearVelocity();
+          vel2.x = vel2.x/2;
+          vel2.y = vel2.y/2;
+          body.setLinearVelocity(vel2);
+        }
+        
+        hookTime += timeDelta;
       }
     }
-    else if (!hooking)
+    
+    if (!hooking)
     {
       if (hookCooling)
       {
