@@ -24,7 +24,7 @@ void setup()
   overPlat = false;
   
   player = new Player(500, 350, 0, 100, 'a', 'd', 'f', color(0, 255, 0));
-  p1 = new Platform (width/2,height-300, 300, 10, color(255));
+  p1 = new Platform (width/2,height-300, 300, 10, color(0));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
@@ -37,7 +37,7 @@ void setup()
 
 void draw()
 {
-  background(0);
+  background(255);
   
   box2d.step();
   

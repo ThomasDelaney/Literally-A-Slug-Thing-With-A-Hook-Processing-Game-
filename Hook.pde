@@ -1,5 +1,6 @@
 class Hook extends GameObject
 { 
+  PImage[] pic;
   boolean hooking = false;
   boolean hookCooling = false;
   boolean hookConnect = false;
@@ -14,7 +15,18 @@ class Hook extends GameObject
   
   Hook(float x, float y)
   {
+    pic = new PImage[4];
     pos = new Vec2 (x, y);
+    
+    pic[0] = loadImage("hook.png");
+    pic[1] = loadImage("hook2.png");
+    pic[2] = loadImage("hook3.png");
+    pic[3] = loadImage("hook4.png");
+    
+    pic[0].resize(35, 25);
+    pic[1].resize(35, 25);
+    pic[2].resize(35, 25);
+    pic[3].resize(35, 25);
   }
   
   void render()
@@ -22,9 +34,16 @@ class Hook extends GameObject
   
   void update(Player p)
   {
-    stroke(255, 0, 0);
+    stroke(0);
     strokeWeight(3);
-    fill(255, 0, 0);
+    
+    float cX = (p.pos.x+pos.x)/2;
+    float cY = (p.pos.y+pos.y)/2;
+    
+    float dX = pos.x - cX;
+    float dY = pos.y - cY;
+    
+    float theta = atan(dY/dX);
     
     line(p.pos.x, p.pos.y, pos.x, pos.y);
       
@@ -58,7 +77,6 @@ class Hook extends GameObject
       }
       else if (pos.x >= platPosX && pos.y >= platPosY)
       {
-          
         tempX = pos.x - platPosX;
         tempY = pos.y -  platPosY;
          
@@ -88,6 +106,12 @@ class Hook extends GameObject
         
       if (hookDir == 1)
       {
+        pushMatrix();
+        translate(pos.x, pos.y);
+        rotate(theta);
+        image(pic[3], -15, -13.5);
+        popMatrix();
+        
         if (pos.x+1 >= platPosX && pos.y+1 >= platPosY)
         {
           hookConnect = true;
@@ -95,6 +119,12 @@ class Hook extends GameObject
       }
       else if (hookDir == 2)
       {
+        pushMatrix();
+        translate(pos.x, pos.y);
+        rotate(theta);
+        image(pic[3], -15, -13.5);
+        popMatrix();
+        
         if (pos.x+1 >= platPosX && pos.y <= platPosY+1)
         {
           hookConnect = true;
@@ -102,6 +132,12 @@ class Hook extends GameObject
       }
       else if (hookDir == 3)
       {
+        pushMatrix();
+        translate(pos.x, pos.y);
+        rotate(theta);
+        image(pic[1], -28.5, -13.5);
+        popMatrix();
+        
         if (pos.x <= platPosX+1 && pos.y <= platPosY+1)
         {
           hookConnect = true;
@@ -109,6 +145,12 @@ class Hook extends GameObject
       }
       else if (hookDir == 4)
       {
+        pushMatrix();
+        translate(pos.x, pos.y);
+        rotate(theta);
+        image(pic[1], -28.5, -13.5);
+        popMatrix();
+        
         if (pos.x <= platPosX+1 && pos.y+1 >= platPosY)
         {
           hookConnect = true;
