@@ -124,7 +124,7 @@ void endContact(Contact cp)
 
 void platCheck(Player curPlayer)
 {
-  if (!curPlayer.hooking)
+  if (!curPlayer.h.hooking)
   {
     for (Platform p: platforms) 
     {

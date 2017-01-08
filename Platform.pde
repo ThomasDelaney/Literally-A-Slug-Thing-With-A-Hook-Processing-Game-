@@ -1,6 +1,5 @@
 class Platform extends GameObject
 {
-  Body body;
   color c;
   float w; //width
   float h; //height
