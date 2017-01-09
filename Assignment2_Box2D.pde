@@ -35,6 +35,8 @@ void setup()
   gameObjects.add(player);
 }
 
+PImage h;
+
 void draw()
 {
   background(255);

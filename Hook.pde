@@ -1,6 +1,5 @@
 class Hook extends GameObject
 { 
-  PImage[] pic;
   boolean hooking = false;
   boolean hookCooling = false;
   boolean hookConnect = false;
@@ -15,22 +14,61 @@ class Hook extends GameObject
   
   Hook(float x, float y)
   {
-    pic = new PImage[4];
     pos = new Vec2 (x, y);
-    
-    pic[0] = loadImage("hook.png");
-    pic[1] = loadImage("hook2.png");
-    pic[2] = loadImage("hook3.png");
-    pic[3] = loadImage("hook4.png");
-    
-    pic[0].resize(35, 25);
-    pic[1].resize(35, 25);
-    pic[2].resize(35, 25);
-    pic[3].resize(35, 25);
   }
   
-  void render()
-  {}
+  void render(float theta)
+  {
+    if (hookDir == 1 || hookDir == 2)
+    {
+      pushMatrix();
+      
+      translate(pos.x, pos.y);
+      rotate(theta);
+          
+      beginShape();
+      stroke(0);
+      strokeWeight(20);
+      strokeCap(SQUARE);
+      vertex(-15, -1);
+      vertex(-8, -1);
+      endShape();
+      
+      beginShape();
+      noFill();
+      strokeWeight(5);
+      strokeCap(ROUND);
+      bezier(-8, -1, 39.7, -11.2, 29.7, 24.8, 9.4, 8.8);
+      endShape();
+      
+      popMatrix();
+    }
+    else if (hookDir == 3 || hookDir == 4)
+    {
+      pushMatrix();
+      
+      translate(pos.x, pos.y);
+      rotate(theta);
+       
+      beginShape();
+      stroke(0);
+      strokeWeight(20);
+      strokeCap(SQUARE);
+      vertex(0, 0);
+      vertex(7, 0);
+      endShape();
+  
+    
+      beginShape();
+      noFill();
+      strokeWeight(5);
+      strokeCap(ROUND);
+      bezier(5.2, 1.4, -49.4, -11.7, -46.2, 20, -19.8, 12.3);
+      endShape();
+      
+      popMatrix();
+    }
+  }
   
   void update(Player p)
   {
@@ -106,11 +144,7 @@ class Hook extends GameObject
         
       if (hookDir == 1)
       {
-        pushMatrix();
-        translate(pos.x, pos.y);
-        rotate(theta);
-        image(pic[3], -15, -13.5);
-        popMatrix();
+        render(theta);
         
         if (pos.x+1 >= platPosX && pos.y+1 >= platPosY)
         {
@@ -119,11 +153,7 @@ class Hook extends GameObject
       }
       else if (hookDir == 2)
       {
-        pushMatrix();
-        translate(pos.x, pos.y);
-        rotate(theta);
-        image(pic[3], -15, -13.5);
-        popMatrix();
+        render(theta);
         
         if (pos.x+1 >= platPosX && pos.y <= platPosY+1)
         {
@@ -132,11 +162,7 @@ class Hook extends GameObject
       }
       else if (hookDir == 3)
       {
-        pushMatrix();
-        translate(pos.x, pos.y);
-        rotate(theta);
-        image(pic[1], -28.5, -13.5);
-        popMatrix();
+        render(theta);
         
         if (pos.x <= platPosX+1 && pos.y <= platPosY+1)
         {
@@ -145,11 +171,7 @@ class Hook extends GameObject
       }
       else if (hookDir == 4)
       {
-        pushMatrix();
-        translate(pos.x, pos.y);
-        rotate(theta);
-        image(pic[1], -28.5, -13.5);
-        popMatrix();
+        render(theta);
         
         if (pos.x <= platPosX+1 && pos.y+1 >= platPosY)
         {
