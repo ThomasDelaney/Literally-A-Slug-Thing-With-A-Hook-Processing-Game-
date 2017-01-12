@@ -1,5 +1,6 @@
 class Hook extends GameObject
 { 
+  Player p;
   boolean hooking = false;
   boolean hookCooling = false;
   boolean hookConnect = false;
@@ -28,17 +29,17 @@ class Hook extends GameObject
           
       beginShape();
       stroke(0);
-      strokeWeight(20);
+      strokeWeight(p.size/2.5);
       strokeCap(SQUARE);
-      vertex(-15, -1);
-      vertex(-8, -1);
+      vertex(convertSize(-15), convertSize(-1));
+      vertex(convertSize(-8), convertSize(-1));
       endShape();
       
       beginShape();
       noFill();
-      strokeWeight(5);
+      strokeWeight(p.size/10);
       strokeCap(ROUND);
-      bezier(-8, -1, 39.7, -11.2, 29.7, 24.8, 9.4, 8.8);
+      bezier(convertSize(-8), convertSize(-1), convertSize(39.7), convertSize(-11.2), convertSize(29.7), convertSize(24.8), convertSize(9.4), convertSize(8.8));
       endShape();
       
       popMatrix();
@@ -52,28 +53,33 @@ class Hook extends GameObject
        
       beginShape();
       stroke(0);
-      strokeWeight(20);
+      strokeWeight(p.size/2.5);
       strokeCap(SQUARE);
-      vertex(0, 0);
-      vertex(7, 0);
+      vertex(convertSize(0), convertSize(0));
+      vertex(convertSize(7), convertSize(0));
       endShape();
   
     
       beginShape();
       noFill();
-      strokeWeight(5);
+      strokeWeight(p.size/10);
       strokeCap(ROUND);
-      bezier(5.2, 1.4, -49.4, -11.7, -46.2, 20, -19.8, 12.3);
+      bezier(convertSize(5.2), convertSize(1.4), convertSize(-49.4), convertSize(-11.7), convertSize(-46.2), convertSize(20), convertSize(-19.8), convertSize(12.3));
       endShape();
       
       popMatrix();
     }
   }
   
-  void update(Player p)
+  void setPlayer(Player t)
+  {
+    p = t;
+  }
+  
+  void update()
   {
     stroke(0);
-    strokeWeight(3);
+    strokeWeight(p.size/(50/3));
     
     float cX = (p.pos.x+pos.x)/2;
     float cY = (p.pos.y+pos.y)/2;
@@ -228,5 +234,12 @@ class Hook extends GameObject
         
       hookTime += timeDelta;
     }
+  }
+  
+  float convertSize(float constant)
+  {
+    float num = 50/constant;
+    constant = p.size/num;
+    return constant;
   }
 }

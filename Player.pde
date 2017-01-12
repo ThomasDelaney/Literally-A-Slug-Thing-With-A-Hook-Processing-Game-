@@ -5,12 +5,11 @@ class Player extends GameObject
   float theta;
   char left, right, hook;
   float radius;
-  float power = 300;
+  float power = 10000;
   float mass = 1;
   color c;
   boolean reset = false;
   boolean returned = true;
-
   
   Player(float x, float y, float theta, float size, char left, char right, char hook, color c)
   {
@@ -29,10 +28,12 @@ class Player extends GameObject
     makeBody(new Vec2(x, y), size, size);
     
     h = new Hook(x, y);
+    h.setPlayer(this);
   }
   
   void update()
   { 
+    applyForce();
     pos = box2d.getBodyPixelCoord(body);
     theta = body.getAngle();
     
@@ -64,14 +65,14 @@ class Player extends GameObject
     if (checkKey(' ') && returned && !h.hookConnect)
     {
       Vec2 vel = body.getLinearVelocity();
-      vel.y = 15;
+      vel.y = 25;
       body.setLinearVelocity(vel);
       returned = false;
     }
-    
+  
     if (h.hooking)
     {
-      h.update(this);
+      h.update();
     }
     
     if (!h.hooking)
@@ -93,6 +94,9 @@ class Player extends GameObject
   
   void render()
   {
+    forward.x = sin(theta);
+    forward.y  = -cos(theta);
+    
     pos = box2d.getBodyPixelCoord(body);
   
     noStroke();
@@ -116,7 +120,7 @@ class Player extends GameObject
     fd.shape = sd;
 
     fd.density = 1;
-    fd.friction = 2;
+    fd.friction = 5;
     fd.restitution = 0;
 
     BodyDef bd = new BodyDef();
@@ -129,5 +133,13 @@ class Player extends GameObject
     body.setUserData(this);
 
     body.setLinearVelocity(new Vec2(0,0));
+  }
+  
+  void applyForce()
+  {
+    Vec2 pos2 = body.getWorldCenter();
+    force.x = 0;
+    force.y = -150;
+    body.applyForce(force, pos2);
   }
 }
