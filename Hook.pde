@@ -20,6 +20,8 @@ class Hook extends GameObject
   
   void render(float theta)
   {
+    float pw = p.w_/2;
+    float ph = p.h_/2;
     if (hookDir == 1 || hookDir == 2)
     {
       pushMatrix();
@@ -29,7 +31,7 @@ class Hook extends GameObject
           
       beginShape();
       stroke(0);
-      strokeWeight(p.size/2.5);
+      strokeWeight(((pw+ph/2)/2)/2.5);
       strokeCap(SQUARE);
       vertex(convertSize(-15), convertSize(-1));
       vertex(convertSize(-8), convertSize(-1));
@@ -37,7 +39,8 @@ class Hook extends GameObject
       
       beginShape();
       noFill();
-      strokeWeight(p.size/10);
+      stroke(0);
+      strokeWeight(((pw+ph)/2)/10);
       strokeCap(ROUND);
       bezier(convertSize(-8), convertSize(-1), convertSize(39.7), convertSize(-11.2), convertSize(29.7), convertSize(24.8), convertSize(9.4), convertSize(8.8));
       endShape();
@@ -52,9 +55,9 @@ class Hook extends GameObject
       rotate(theta);
        
       beginShape();
-      stroke(0);
-      strokeWeight(p.size/2.5);
+      strokeWeight(((pw+ph)/2)/2.5);
       strokeCap(SQUARE);
+      stroke(0);
       vertex(convertSize(0), convertSize(0));
       vertex(convertSize(7), convertSize(0));
       endShape();
@@ -62,8 +65,9 @@ class Hook extends GameObject
     
       beginShape();
       noFill();
-      strokeWeight(p.size/10);
+      strokeWeight(((pw+ph)/2)/10);
       strokeCap(ROUND);
+      stroke(0);
       bezier(convertSize(5.2), convertSize(1.4), convertSize(-49.4), convertSize(-11.7), convertSize(-46.2), convertSize(20), convertSize(-19.8), convertSize(12.3));
       endShape();
       
@@ -78,19 +82,23 @@ class Hook extends GameObject
   
   void update()
   {
-    stroke(0);
-    strokeWeight(p.size/(50/3));
+    float pX = p.pos.x+27;
+    float pY = p.pos.y+15;
     
-    float cX = (p.pos.x+pos.x)/2;
-    float cY = (p.pos.y+pos.y)/2;
+    float cX = (pX+pos.x)/2;
+    float cY = (pY+pos.y)/2;
     
     float dX = pos.x - cX;
     float dY = pos.y - cY;
     
     float theta = atan(dY/dX);
     
-    line(p.pos.x, p.pos.y, pos.x, pos.y);
-      
+    beginShape();
+    strokeWeight(((p.w_/2+p.h_/2)/2)/(50/3));
+    stroke(0);
+    line(pX, pY, pos.x, pos.y);
+    endShape();
+    
     if (!hookConnect)
     {
       if (pos.x <= platPosX && pos.y <= platPosY)
@@ -239,7 +247,7 @@ class Hook extends GameObject
   float convertSize(float constant)
   {
     float num = 50/constant;
-    constant = p.size/num;
+    constant = ((p.w_/2+p.h_/2)/2)/num;
     return constant;
   }
 }

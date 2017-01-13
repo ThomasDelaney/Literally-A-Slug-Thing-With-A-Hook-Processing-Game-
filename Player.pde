@@ -11,21 +11,22 @@ class Player extends GameObject
   boolean reset = false;
   boolean returned = true;
   
-  Player(float x, float y, float theta, float size, char left, char right, char hook, color c)
+  Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c)
   {
     
     forward = new Vec2(0, -1);
     force = new Vec2(0, 0);
      
     this.theta = theta;
-    this.size = size;
+    this.w_ = w_;
+    this.h_ = h_;
     
     this.left = left;
     this.right = right;
     this.hook = hook;
     this.c = c;
     
-    makeBody(new Vec2(x, y), size, size);
+    makeBody(new Vec2(x, y), w_, h_);
     
     h = new Hook(x, y);
     h.setPlayer(this);
@@ -93,39 +94,132 @@ class Player extends GameObject
   }  
   
   void render()
-  {
-    forward.x = sin(theta);
-    forward.y  = -cos(theta);
-    
+  { 
     pos = box2d.getBodyPixelCoord(body);
   
-    noStroke();
-    fill(c);
     pushMatrix();
-    translate(pos.x, pos.y);
-    rectMode(CENTER);
-    rect(0, 0, size, size);
+    
+    translate(pos.x-32, pos.y+23);
+   
+    beginShape();
+    noStroke();
+    fill(101, 242, 139);
+    vertex(0,0);
+    vertex(44, -32);
+    vertex(50, 0);
+    endShape();
+       
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(101, 242, 139);
+    bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
+    bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
+    bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
+    bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
+    bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    vertex(0, 0);
+    vertex(50, 0);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(29, -25);
+    vertex(19, -40);
+    vertex(34, -30);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(34, -30);
+    vertex(33, -48);
+    vertex(40, -33);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(40, -33);
+    vertex(45, -50);
+    vertex(49, -30);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(49, -30);
+    vertex(58, -48);
+    vertex(54, -26);
+    endShape();
+    
+    beginShape();
+    fill(0);
+    ellipse(46, -23, 2.5, 2.5);
+    
+    noFill();
+    bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(255);
+    vertex(56, -18);
+    vertex(42, -17);
+    vertex(56, -12);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(47, -7);
+    vertex(59, -11);
+    vertex(60, -5);
+    vertex(48, -3);
+    endShape();
+    
     popMatrix();
   }
   
-  void makeBody(Vec2 center, float w_, float h_)
+  void makeBody(Vec2 center, float wid, float hei)
   {
 
     PolygonShape sd = new PolygonShape();
-    float box2dW = box2d.scalarPixelsToWorld(w_/2);
-    float box2dH = box2d.scalarPixelsToWorld(h_/2);
+    float box2dW = box2d.scalarPixelsToWorld(wid/2);
+    float box2dH = box2d.scalarPixelsToWorld(hei/2);
     sd.setAsBox(box2dW, box2dH);
 
     FixtureDef fd = new FixtureDef();
     fd.shape = sd;
 
     fd.density = 1;
-    fd.friction = 5;
+    fd.friction = 1;
     fd.restitution = 0;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
     bd.angle = 0;
+    
     bd.position.set(box2d.coordPixelsToWorld(center));
 
     body = box2d.createBody(bd);

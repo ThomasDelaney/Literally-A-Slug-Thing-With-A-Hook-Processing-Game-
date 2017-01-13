@@ -36,12 +36,11 @@ class Platform extends GameObject
   {
     pos = box2d.getBodyPixelCoord(body);
     
-    noStroke();
-    fill(c);
-    
     pushMatrix();
     translate(pos.x, pos.y);
     rectMode(CENTER);
+    noStroke();
+    fill(c);
     rect(0, 0, w, h);
     popMatrix();
   }

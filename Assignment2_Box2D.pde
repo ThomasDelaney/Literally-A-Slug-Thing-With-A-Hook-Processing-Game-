@@ -23,7 +23,7 @@ void setup()
   
   overPlat = false;
   
-  player = new Player(500, 350, 0, 25, 'a', 'd', 'f', color(0, 255, 0));
+  player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0));
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
@@ -40,8 +40,10 @@ PImage h;
 void draw()
 {
   background(255);
-  
   box2d.step();
+  
+  //println("x: "+mouseX);
+  //println("y: "+mouseY);
   
   player.update();
   player.render();
@@ -54,9 +56,6 @@ void draw()
   
   p2.update();
   p2.render();
-  
-  //println("x: " + mouseX);
-  //println("y: " + mouseY);
   
   platCheck(player);
 }
