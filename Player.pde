@@ -42,15 +42,14 @@ class Player extends GameObject
     if (checkKey(left) && h.notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
-      vel.x = -10;
+      vel.x = -15;
       body.setLinearVelocity(vel);
       dir = 2;
     }
-    
-    if (checkKey(right) && h.notMoving)
+    else if (checkKey(right) && h.notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
-      vel.x = 10;
+      vel.x = 15;
       body.setLinearVelocity(vel);
       dir = 1;
     }
@@ -209,7 +208,7 @@ class Player extends GameObject
     {
       pushMatrix();
       
-      translate(pos.x, pos.y+23);
+      translate(pos.x+32, pos.y+23);
      
       beginShape();
       noStroke();
@@ -324,7 +323,7 @@ class Player extends GameObject
     fd.shape = sd;
 
     fd.density = 1;
-    fd.friction = 1;
+    fd.friction = 5;
     fd.restitution = 0;
 
     BodyDef bd = new BodyDef();

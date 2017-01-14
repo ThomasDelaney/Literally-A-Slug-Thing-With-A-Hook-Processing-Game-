@@ -22,6 +22,7 @@ class Hook extends GameObject
   {
     float pw = p.w_/2;
     float ph = p.h_/2;
+    
     if (hookDir == 1 || hookDir == 2)
     {
       pushMatrix();
@@ -47,7 +48,7 @@ class Hook extends GameObject
       
       popMatrix();
     }
-    else if (hookDir == 3 || hookDir == 4)
+    else
     {
       pushMatrix();
       
@@ -82,8 +83,19 @@ class Hook extends GameObject
   
   void update()
   {
-    float pX = p.pos.x+27;
-    float pY = p.pos.y+15;
+    float pX;
+    float pY;
+    
+    if (hookDir == 1 || hookDir == 2)
+    {
+      pX = p.pos.x+27;
+      pY = p.pos.y+15;
+    }
+    else
+    {
+      pX = p.pos.x-27;
+      pY = p.pos.y+15;
+    }
     
     float cX = (pX+pos.x)/2;
     float cY = (pY+pos.y)/2;
@@ -96,6 +108,7 @@ class Hook extends GameObject
     beginShape();
     strokeWeight(((p.w_/2+p.h_/2)/2)/(50/3));
     stroke(0);
+    
     line(pX, pY, pos.x, pos.y);
     endShape();
     
@@ -113,6 +126,7 @@ class Hook extends GameObject
         pos.y+=yR;
           
         hookDir = 1;
+        p.dir = 1;
       }
       else if (pos.x <= platPosX && pos.y >= platPosY)
       {
@@ -126,6 +140,7 @@ class Hook extends GameObject
         pos.y-=yR;
           
         hookDir = 2;
+        p.dir = 1;
       }
       else if (pos.x >= platPosX && pos.y >= platPosY)
       {
@@ -139,6 +154,7 @@ class Hook extends GameObject
         pos.y-=yR;
           
         hookDir = 3;
+        p.dir = 2;
       }
       else if (pos.x >= platPosX && pos.y <= platPosY)
       {
@@ -152,6 +168,7 @@ class Hook extends GameObject
         pos.y+=yR;
          
         hookDir = 4;
+        p.dir = 2;
       }
         
       scale += 1.5;

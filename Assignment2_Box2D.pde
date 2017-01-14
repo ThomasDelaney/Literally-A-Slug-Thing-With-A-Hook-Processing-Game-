@@ -13,7 +13,6 @@ Box2DProcessing box2d;
 void setup()
 {
   size(1280, 720);
-  smooth();
   
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
