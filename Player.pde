@@ -7,6 +7,7 @@ class Player extends GameObject
   float radius;
   float power = 10000;
   float mass = 1;
+  int dir = 1;
   color c;
   boolean reset = false;
   boolean returned = true;
@@ -43,6 +44,7 @@ class Player extends GameObject
       Vec2 vel = body.getLinearVelocity();
       vel.x = -10;
       body.setLinearVelocity(vel);
+      dir = 2;
     }
     
     if (checkKey(right) && h.notMoving)
@@ -50,6 +52,7 @@ class Player extends GameObject
       Vec2 vel = body.getLinearVelocity();
       vel.x = 10;
       body.setLinearVelocity(vel);
+      dir = 1;
     }
     
     if (checkKey(hook))
@@ -96,109 +99,217 @@ class Player extends GameObject
   void render()
   { 
     pos = box2d.getBodyPixelCoord(body);
-  
-    pushMatrix();
     
-    translate(pos.x-32, pos.y+23);
-   
-    beginShape();
-    noStroke();
-    fill(101, 242, 139);
-    vertex(0,0);
-    vertex(44, -32);
-    vertex(50, 0);
-    endShape();
-       
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(101, 242, 139);
-    bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
-    bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
-    bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
-    bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
-    bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    vertex(0, 0);
-    vertex(50, 0);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(237, 71, 109);
-    vertex(29, -25);
-    vertex(19, -40);
-    vertex(34, -30);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(237, 71, 109);
-    vertex(34, -30);
-    vertex(33, -48);
-    vertex(40, -33);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(237, 71, 109);
-    vertex(40, -33);
-    vertex(45, -50);
-    vertex(49, -30);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(237, 71, 109);
-    vertex(49, -30);
-    vertex(58, -48);
-    vertex(54, -26);
-    endShape();
-    
-    beginShape();
-    fill(0);
-    ellipse(46, -23, 2.5, 2.5);
-    
-    noFill();
-    bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(255);
-    vertex(56, -18);
-    vertex(42, -17);
-    vertex(56, -12);
-    endShape();
-    
-    beginShape();
-    strokeWeight(1);
-    strokeCap(ROUND);
-    stroke(0);
-    fill(237, 71, 109);
-    vertex(47, -7);
-    vertex(59, -11);
-    vertex(60, -5);
-    vertex(48, -3);
-    endShape();
-    
-    popMatrix();
+    if (dir == 1)
+    {
+      pushMatrix();
+      
+      translate(pos.x-32, pos.y+23);
+     
+      beginShape();
+      noStroke();
+      fill(101, 242, 139);
+      vertex(0,0);
+      vertex(44, -32);
+      vertex(50, 0);
+      endShape();
+         
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(101, 242, 139);
+      bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
+      bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
+      bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
+      bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
+      bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      vertex(0, 0);
+      vertex(50, 0);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(29, -25);
+      vertex(19, -40);
+      vertex(34, -30);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(34, -30);
+      vertex(33, -48);
+      vertex(40, -33);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(40, -33);
+      vertex(45, -50);
+      vertex(49, -30);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(49, -30);
+      vertex(58, -48);
+      vertex(54, -26);
+      endShape();
+      
+      beginShape();
+      fill(0);
+      ellipse(46, -23, 2.5, 2.5);
+      
+      noFill();
+      bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(255);
+      vertex(56, -18);
+      vertex(42, -17);
+      vertex(56, -12);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(47, -7);
+      vertex(59, -11);
+      vertex(60, -5);
+      vertex(48, -3);
+      endShape();
+      
+      popMatrix();
+    }
+    else if (dir == 2)
+    {
+      pushMatrix();
+      
+      translate(pos.x, pos.y+23);
+     
+      beginShape();
+      noStroke();
+      fill(101, 242, 139);
+      vertex(0,0);
+      vertex(-44, -32);
+      vertex(-50, 0);
+      endShape();
+         
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(101, 242, 139);
+      bezier(0, 0, -0.45, -6.83, -5.7, -9.58, -9.03, -6.76);
+      bezier(-9.03, -6.76, -8.8, -12.9, -12.7, -14.86, -18.3, -13.03);
+      bezier(-18.3, -13.03, -18.34, -18.53, -22.5, -21.63, -28.86, -18.9); 
+      bezier(-28.86, -18.9, -28.84, -29.3, -36.9, -32.25, -43.32, -32.3); 
+      bezier(-43.32, -32.3, -55.44, -29.13, -61.4, -15.2, -50, 0);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      vertex(0, 0);
+      vertex(-50, 0);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(-29, -25);
+      vertex(-19, -40);
+      vertex(-34, -30);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(-34, -30);
+      vertex(-33, -48);
+      vertex(-40, -33);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(-40, -33);
+      vertex(-45, -50);
+      vertex(-49, -30);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(-49, -30);
+      vertex(-58, -48);
+      vertex(-54, -26);
+      endShape();
+      
+      beginShape();
+      fill(0);
+      ellipse(-46, -23, -2.5, 2.5);
+      
+      noFill();
+      bezier(-40, -25, -40.99, -27.73, -42.77, -29.33, -47.49, -28.58);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(255);
+      vertex(-56, -18);
+      vertex(-42, -17);
+      vertex(-56, -12);
+      endShape();
+      
+      beginShape();
+      strokeWeight(1);
+      strokeCap(ROUND);
+      stroke(0);
+      fill(237, 71, 109);
+      vertex(-47, -7);
+      vertex(-59, -11);
+      vertex(-60, -5);
+      vertex(-48, -3);
+      endShape();
+      
+      popMatrix();
+    }
   }
   
   void makeBody(Vec2 center, float wid, float hei)
@@ -233,7 +344,7 @@ class Player extends GameObject
   {
     Vec2 pos2 = body.getWorldCenter();
     force.x = 0;
-    force.y = -150;
+    force.y = -400;
     body.applyForce(force, pos2);
   }
 }
