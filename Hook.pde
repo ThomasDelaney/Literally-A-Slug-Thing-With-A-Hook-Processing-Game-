@@ -213,32 +213,34 @@ class Hook extends GameObject
        
     if (hookConnect)
     {
-      Vec2 vel = p.body.getLinearVelocity();
-        
+      Vec2 target = box2d.coordPixelsToWorld(platPosX,platPosY);
+
+      Vec2 v = target.add(pos);  
+      
       if (notMoving)
       {
         if (pos.y >= platPosY && pos.x >= platPosX)
         {
-          vel.y = 40;
-          vel.x = -40;
+          v.x = -v.x/20;
+          v.y = v.y/20;
         }
         else if (pos.y >= platPosY && pos.x <= platPosX)
         {
-          vel.y = 40;
-          vel.x = 40;
+          v.x = v.x/20;
+          v.y = v.y/20;
         }
         else if (pos.y <= platPosY && pos.x >= platPosX)
         {
-          vel.y = -40;
-          vel.x = -40;
+          v.x = -v.x/20;
+          v.y = -v.y/20;
         }
         else if (pos.y <= platPosY && pos.x <= platPosX)
         {
-          vel.y = -40;
-          vel.x = 40;
+          v.x = v.x/20;
+          v.y = -v.y/20;
         }
         
-        p.body.setLinearVelocity(vel);
+        p.body.setLinearVelocity(v);
           
         notMoving = false;
       }

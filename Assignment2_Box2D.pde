@@ -12,8 +12,8 @@ Box2DProcessing box2d;
 
 void setup()
 {
-  size(1280, 720);
-  
+  //size(1280, 720);
+  fullScreen();
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   box2d.setGravity(0, -10);
@@ -29,7 +29,7 @@ void setup()
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
   platforms.add(p1);
-  platforms.add(ground);
+  //platforms.add(ground);
   platforms.add(p2);
   gameObjects.add(player);
 }

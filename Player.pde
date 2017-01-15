@@ -93,6 +93,21 @@ class Player extends GameObject
       }
     }
     
+    if (pos.x+25 >= width || pos.x-25 <= 0)
+    {
+      Vec2 stop = body.getLinearVelocity();
+      
+      if (pos.x+20 >= width)
+      {
+        stop.x = -10;
+      }
+      else if (pos.x-25 <= 0)
+      {
+        stop.x = 10;
+      }
+      body.setLinearVelocity(stop);
+    }
+    
   }  
   
   void render()
