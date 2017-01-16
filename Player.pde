@@ -12,7 +12,7 @@ class Player extends GameObject
   boolean reset = false;
   boolean returned = true;
   
-  Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c)
+  Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size)
   {
     
     forward = new Vec2(0, -1);
@@ -27,9 +27,11 @@ class Player extends GameObject
     this.hook = hook;
     this.c = c;
     
+    this.size = size;
+    
     makeBody(new Vec2(x, y), w_, h_);
     
-    h = new Hook(x, y);
+    h = new Hook(x, y, size-0.2);
     h.setPlayer(this);
   }
   
@@ -119,7 +121,8 @@ class Player extends GameObject
       pushMatrix();
       
       translate(pos.x-32, pos.y+23);
-     
+      scale(size);
+      
       beginShape();
       noStroke();
       fill(101, 242, 139);
@@ -224,7 +227,8 @@ class Player extends GameObject
       pushMatrix();
       
       translate(pos.x+32, pos.y+23);
-     
+      scale(size);
+      
       beginShape();
       noStroke();
       fill(101, 242, 139);

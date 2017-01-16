@@ -22,7 +22,8 @@ void setup()
   
   overPlat = false;
   
-  player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0));
+  s1 = new Shooter (500, 500, 87, 54);
+  player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
@@ -47,6 +48,9 @@ void draw()
   player.update();
   player.render();
   
+  s1.update();
+  s1.render();
+  
   ground.update();
   ground.render();
    
@@ -65,6 +69,8 @@ Platform p2;
 Platform ground;
 
 Player player;
+
+Shooter s1;
 
 boolean[] keys = new boolean[1000];
 
@@ -128,23 +134,23 @@ void platCheck(Player curPlayer)
   {
     for (Platform p: platforms) 
     {
-      if (mouseX > p.pos.x && mouseX < p.pos.x+p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h)
+      if (mouseX > p.pos.x && mouseX < p.pos.x+p.w_/2 && mouseY > p.pos.y-p.h_ && mouseY < p.pos.y+p.h_)
       {
         fill(255, 0, 0);
-        rect(p.pos.x+p.w/4, p.pos.y, p.w/2, 10);
+        rect(p.pos.x+p.w_/4, p.pos.y, p.w_/2, 10);
       
-        platPosX = p.pos.x+p.w/2-10;
+        platPosX = p.pos.x+p.w_/2-10;
         platPosY = p.pos.y;
         
         overPlat = true;
         break;
       }
-      else if (mouseX < p.pos.x && mouseX > p.pos.x-p.w/2 && mouseY > p.pos.y-p.h && mouseY < p.pos.y+p.h) 
+      else if (mouseX < p.pos.x && mouseX > p.pos.x-p.w_/2 && mouseY > p.pos.y-p.h_ && mouseY < p.pos.y+p.h_) 
       { 
         fill(255, 0, 0);
-        rect(p.pos.x-p.w/4, p.pos.y, p.w/2, 10);
+        rect(p.pos.x-p.w_/4, p.pos.y, p.w_/2, 10);
       
-        platPosX = p.pos.x-p.w/2+10;
+        platPosX = p.pos.x-p.w_/2+10;
         platPosY = p.pos.y;
         
         overPlat = true;

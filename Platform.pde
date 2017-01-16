@@ -1,13 +1,11 @@
 class Platform extends GameObject
 {
   color c;
-  float w; //width
-  float h; //height
   
   Platform (float x, float y, float w, float h, color c)
   {
-    this.w = w;
-    this.h = h;
+    this.w_ = w;
+    this.h_ = h;
     this.c = c;
     
     PolygonShape sd = new PolygonShape();
@@ -41,7 +39,7 @@ class Platform extends GameObject
     rectMode(CENTER);
     noStroke();
     fill(c);
-    rect(0, 0, w, h);
+    rect(0, 0, w_, h_);
     popMatrix();
   }
 }

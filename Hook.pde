@@ -13,9 +13,13 @@ class Hook extends GameObject
   int hookDir;
   float hookTime = 0;
   
-  Hook(float x, float y)
+  float xS;
+  float yS;
+  
+  Hook(float x, float y, float size)
   {
     pos = new Vec2 (x, y);
+    this.size = size;
   }
   
   void render(float theta)
@@ -29,21 +33,24 @@ class Hook extends GameObject
       
       translate(pos.x, pos.y);
       rotate(theta);
-          
+      scale(size);   
+      
       beginShape();
-      stroke(0);
-      strokeWeight(((pw+ph/2)/2)/2.5);
+      strokeWeight(((pw+ph/2)/2)/1.25);
       strokeCap(SQUARE);
-      vertex(convertSize(-15), convertSize(-1));
-      vertex(convertSize(-8), convertSize(-1));
+      stroke(0);
+         
+      vertex(-15, -1);
+      vertex(-8, -1);
       endShape();
       
       beginShape();
       noFill();
-      stroke(0);
-      strokeWeight(((pw+ph)/2)/10);
+      strokeWeight(((pw+ph)/2)/5);
       strokeCap(ROUND);
-      bezier(convertSize(-8), convertSize(-1), convertSize(39.7), convertSize(-11.2), convertSize(29.7), convertSize(24.8), convertSize(9.4), convertSize(8.8));
+      stroke(0);
+      
+      bezier(-8, -1, 39.7, -11.2, 29.7, 24.8, 9.4, 8.8);
       endShape();
       
       popMatrix();
@@ -53,23 +60,26 @@ class Hook extends GameObject
       pushMatrix();
       
       translate(pos.x, pos.y);
-      rotate(theta);
-       
+      rotate(theta);  
+      scale(size);
+      
       beginShape();
-      strokeWeight(((pw+ph)/2)/2.5);
+      strokeWeight(((pw+ph)/2)/1.25);
       strokeCap(SQUARE);
       stroke(0);
-      vertex(convertSize(0), convertSize(0));
-      vertex(convertSize(7), convertSize(0));
+      
+      vertex(0, 0);
+      vertex(7, 0);
       endShape();
   
     
       beginShape();
       noFill();
-      strokeWeight(((pw+ph)/2)/10);
+      strokeWeight(((pw+ph)/2)/5);
       strokeCap(ROUND);
       stroke(0);
-      bezier(convertSize(5.2), convertSize(1.4), convertSize(-49.4), convertSize(-11.7), convertSize(-46.2), convertSize(20), convertSize(-19.8), convertSize(12.3));
+      
+      bezier(5.2, 1.4, -49.4, -11.7, -46.2, 20, -19.8, 12.3);
       endShape();
       
       popMatrix();
@@ -79,6 +89,8 @@ class Hook extends GameObject
   void setPlayer(Player t)
   {
     p = t;
+    xS = 27*p.size;
+    yS = 15*p.size;
   }
   
   void update()
@@ -88,13 +100,13 @@ class Hook extends GameObject
     
     if (hookDir == 1 || hookDir == 2)
     {
-      pX = p.pos.x+27;
-      pY = p.pos.y+15;
+      pX = p.pos.x+xS;
+      pY = p.pos.y+yS;
     }
     else
     {
-      pX = p.pos.x-27;
-      pY = p.pos.y+15;
+      pX = p.pos.x-xS;
+      pY = p.pos.y+yS;
     }
     
     float cX = (pX+pos.x)/2;
