@@ -12,8 +12,8 @@ Box2DProcessing box2d;
 
 void setup()
 {
-  //size(1280, 720);
-  fullScreen();
+  size(1280, 720);
+  //fullScreen();
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   box2d.setGravity(0, -10);
@@ -23,6 +23,8 @@ void setup()
   overPlat = false;
   
   s1 = new Shooter (500, 500, 87, 54);
+  b1 = new Bomber (650, 500, 87, 54);
+  
   player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
@@ -42,14 +44,17 @@ void draw()
   background(255);
   box2d.step();
   
-  //println("x: "+mouseX);
-  //println("y: "+mouseY);
+  println("x: "+mouseX);
+  println("y: "+mouseY);
   
   player.update();
   player.render();
   
   s1.update();
   s1.render();
+  
+  b1.update();
+  b1.render();
   
   ground.update();
   ground.render();
@@ -71,6 +76,7 @@ Platform ground;
 Player player;
 
 Shooter s1;
+Bomber b1;
 
 boolean[] keys = new boolean[1000];
 

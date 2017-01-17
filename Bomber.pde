@@ -1,11 +1,6 @@
-class Shooter extends GameObject implements Enemy
+class Bomber extends GameObject implements Enemy
 {
-  float theta1 = PI;
-  float lastAngle1 = 0;
-  
-  float theta2 = 2*PI;
-  
-  Shooter (float x, float y, float w_, float h_)
+  Bomber (float x, float y, float w_, float h_)
   {
     this.w_ = w_;
     this.h_ = h_;
@@ -16,40 +11,34 @@ class Shooter extends GameObject implements Enemy
   {
     pos = box2d.getBodyPixelCoord(body);
     
-    pushMatrix(); 
-    
-    translate(pos.x+16.75, pos.y-5.75);
-    scale(1);
+    pushMatrix();
+    translate(pos.x-50, pos.y+18);
+    rotate(0.07);
+    scale(0.6);
     
     beginShape();
-    stroke(255, 0, 0);
+    noFill();
+    stroke(0);
+    bezier(0, 0, 23.7, 33, 49.4, -9, 66.8, 8.3);
+    bezier(0, 0, 75, 4, 37.7, -52.5, 63.7, -67.8);
+    bezier(100.5, -17.3, 126.2, -14.8, 141, -19.6, 151, -44.2);
+    bezier(66.8, 8.3, 122.5, 11.3, 149, -1, 151, -44.2);
+    bezier(63.7, -67.8, 81.5, -66.4, 91.7, -50.5, 89.2, -17.3);
+    bezier(89.2, -17.3, 94.7, -24.8, 94.5, -25.6, 100.5, -17.3);
+    endShape();
+    
+    beginShape();
+    fill(255);
+    ellipse(77, -49, 7.5, 7.5);
+    
     fill(0);
-    rectMode(CENTER);
+    ellipse(78, -49, 3, 3);
+    endShape();
     
-    rect(0, 0, 50, 40);
-    rect(-37.5, 0, 25, 20);
-    rect(-55, 0, 10, 10);
-    
-    noStroke();
-    ellipse(-20, 26, 10, 10);
-    ellipse(-7, 26, 10, 10);
-    ellipse(6.75, 26, 10, 10);
-    ellipse(20.5, 26, 10, 10);
-    
-    strokeWeight(2);
-    stroke(255, 0 , 0);
-    arc(-20, 26, 10, 10, lastAngle1+theta1, lastAngle1+theta2);
-    arc(-7, 26, 10, 10, lastAngle1+theta1, lastAngle1+theta2);
-    arc(6.75, 26, 10, 10, lastAngle1+theta1, lastAngle1+theta2);
-    arc(20.5, 26, 10, 10, lastAngle1+theta1, lastAngle1+theta2);
-    
-    strokeWeight(2);
-    stroke(0, 242, 255);
-    arc(-20, 26, 10, 10, lastAngle1, lastAngle1+theta1);
-    arc(-7, 26, 10, 10, lastAngle1, lastAngle1+theta1);
-    arc(6.75, 26, 10, 10, lastAngle1, lastAngle1+theta1);
-    arc(20.5, 26, 10, 10, lastAngle1, lastAngle1+theta1);
-    
+    beginShape();
+    vertex(87, -46);
+    vertex(78, -40);
+    vertex(89, -38);
     endShape();
     
     popMatrix();
@@ -72,17 +61,6 @@ class Shooter extends GameObject implements Enemy
         stop.x = 10;
       }
       body.setLinearVelocity(stop);
-    }
-    
-    Vec2 vel =  body.getLinearVelocity();
-    
-    if (vel.x > 0)
-    {
-      lastAngle1+=theta1/50;
-    }
-    else if (vel.x < 0)
-    {
-      lastAngle1-=theta1/50;
     }
   }
   
