@@ -3,11 +3,11 @@ class Player extends GameObject
   Vec2 force;
   Hook h;
   float theta;
+  int health = 5;
   char left, right, hook;
   float radius;
   float power = 10000;
   float mass = 1;
-  int dir = 1;
   color c;
   boolean reset = false;
   boolean returned = true;

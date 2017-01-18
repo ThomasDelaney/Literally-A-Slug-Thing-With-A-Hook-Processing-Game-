@@ -11,37 +11,74 @@ class Bomber extends GameObject implements Enemy
   {
     pos = box2d.getBodyPixelCoord(body);
     
-    pushMatrix();
-    translate(pos.x-50, pos.y+18);
-    rotate(0.07);
-    scale(0.6);
-    
-    beginShape();
-    noFill();
-    stroke(0);
-    bezier(0, 0, 23.7, 33, 49.4, -9, 66.8, 8.3);
-    bezier(0, 0, 75, 4, 37.7, -52.5, 63.7, -67.8);
-    bezier(100.5, -17.3, 126.2, -14.8, 141, -19.6, 151, -44.2);
-    bezier(66.8, 8.3, 122.5, 11.3, 149, -1, 151, -44.2);
-    bezier(63.7, -67.8, 81.5, -66.4, 91.7, -50.5, 89.2, -17.3);
-    bezier(89.2, -17.3, 94.7, -24.8, 94.5, -25.6, 100.5, -17.3);
-    endShape();
-    
-    beginShape();
-    fill(255);
-    ellipse(77, -49, 7.5, 7.5);
-    
-    fill(0);
-    ellipse(78, -49, 3, 3);
-    endShape();
-    
-    beginShape();
-    vertex(87, -46);
-    vertex(78, -40);
-    vertex(89, -38);
-    endShape();
-    
-    popMatrix();
+    if (dir == 1)
+    {
+      pushMatrix();
+      translate(pos.x-50, pos.y+18);
+      rotate(0.07);
+      scale(0.6);
+      
+      beginShape();
+      noFill();
+      stroke(0);
+      bezier(0, 0, 23.7, 33, 49.4, -9, 66.8, 8.3);
+      bezier(0, 0, 75, 4, 37.7, -52.5, 63.7, -67.8);
+      bezier(100.5, -17.3, 126.2, -14.8, 141, -19.6, 151, -44.2);
+      bezier(66.8, 8.3, 122.5, 11.3, 149, -1, 151, -44.2);
+      bezier(63.7, -67.8, 81.5, -66.4, 91.7, -50.5, 89.2, -17.3);
+      bezier(89.2, -17.3, 94.7, -24.8, 94.5, -25.6, 100.5, -17.3);
+      endShape();
+      
+      beginShape();
+      fill(255);
+      ellipse(77, -49, 7.5, 7.5);
+      
+      fill(0);
+      ellipse(78, -49, 3, 3);
+      endShape();
+      
+      beginShape();
+      vertex(87, -46);
+      vertex(78, -40);
+      vertex(89, -38);
+      endShape();
+      
+      popMatrix();
+    }
+    else if (dir == 2)
+    {
+      pushMatrix();
+      translate(pos.x+50, pos.y+18);
+      rotate(-0.07);
+      scale(0.6);
+      
+      beginShape();
+      noFill();
+      stroke(0);
+      bezier(0, 0, -23.7, 33, -49.4, -9, -66.8, 8.3);
+      bezier(0, 0, -75, 4, -37.7, -52.5, -63.7, -67.8);
+      bezier(-100.5, -17.3, -126.2, -14.8, -141, -19.6, -151, -44.2);
+      bezier(-66.8, 8.3, -122.5, 11.3, -149, -1, -151, -44.2);
+      bezier(-63.7, -67.8, -81.5, -66.4, -91.7, -50.5, -89.2, -17.3);
+      bezier(-89.2, -17.3, -94.7, -24.8, -94.5, -25.6, -100.5, -17.3);
+      endShape();
+      
+      beginShape();
+      fill(255);
+      ellipse(-77, -49, 7.5, 7.5);
+      
+      fill(0);
+      ellipse(-78, -49, 3, 3);
+      endShape();
+      
+      beginShape();
+      vertex(-87, -46);
+      vertex(-78, -40);
+      vertex(-89, -38);
+      endShape();
+      
+      popMatrix();
+    }
   }
   
   void update()
@@ -61,6 +98,17 @@ class Bomber extends GameObject implements Enemy
         stop.x = 10;
       }
       body.setLinearVelocity(stop);
+    }
+    
+    Vec2 vel =  body.getLinearVelocity();
+    
+    if (vel.x > 0)
+    {
+      dir = 2;
+    }
+    else if (vel.x < 0)
+    {
+      dir = 1;
     }
   }
   

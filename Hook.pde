@@ -233,23 +233,23 @@ class Hook extends GameObject
       {
         if (pos.y >= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x/20;
-          v.y = v.y/20;
+          v.x = -v.x/15;
+          v.y = v.y/15;
         }
         else if (pos.y >= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x/20;
-          v.y = v.y/20;
+          v.x = v.x/15;
+          v.y = v.y/15;
         }
         else if (pos.y <= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x/20;
-          v.y = -v.y/20;
+          v.x = -v.x/15;
+          v.y = -v.y/15;
         }
         else if (pos.y <= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x/20;
-          v.y = -v.y/20;
+          v.x = v.x/15;
+          v.y = -v.y/15;
         }
         
         p.body.setLinearVelocity(v);

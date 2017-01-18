@@ -1,7 +1,11 @@
 class Spiker extends GameObject implements Enemy
 {
+  color c;
+  float timer = 0;
+  
   Spiker (float x, float y, float w_, float h_)
   {
+    this.c = color(100, 100, 100);
     this.w_ = w_;
     this.h_ = h_;
     makeBody(new Vec2(x, y), w_, h_);
@@ -10,14 +14,15 @@ class Spiker extends GameObject implements Enemy
   void render()
   {
     pos = box2d.getBodyPixelCoord(body);
-    
-    fill(0);
   
     pushMatrix();
     translate(pos.x, pos.y+22);
     
+    noStroke();
+    fill(c);
     arc(0, 0, 50, 50, PI, 2*PI, PIE);
     
+    fill(255, 0, 0);
     beginShape();
     vertex(-24, -6);
     vertex(-29, -18);
@@ -80,6 +85,16 @@ class Spiker extends GameObject implements Enemy
         stop.x = 10;
       }
       body.setLinearVelocity(stop);
+    }
+        
+    if (timer > 0.07)
+    {
+      c = color(random(0, 255), random(0, 255), random(0, 255));
+      timer = 0;
+    }
+    else
+    {
+      timer+=timeDelta;
     }
   }
   
