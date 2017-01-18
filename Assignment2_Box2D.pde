@@ -24,6 +24,7 @@ void setup()
   
   s1 = new Shooter (500, 500, 87, 54);
   b1 = new Bomber (650, 500, 87, 54);
+  sp1 = new Spiker (800, 500, 60, 45);
   
   player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
@@ -44,18 +45,18 @@ void draw()
   background(255);
   box2d.step();
   
-  println("x: "+mouseX);
-  println("y: "+mouseY);
-  
-  player.update();
-  player.render();
-  
   s1.update();
   s1.render();
   
   b1.update();
   b1.render();
   
+  sp1.update();
+  sp1.render();
+  
+  player.update();
+  player.render();  
+    
   ground.update();
   ground.render();
    
@@ -77,6 +78,7 @@ Player player;
 
 Shooter s1;
 Bomber b1;
+Spiker sp1;
 
 boolean[] keys = new boolean[1000];
 
