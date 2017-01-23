@@ -42,50 +42,61 @@ void setup()
 void draw()
 {
   background(255);
-  box2d.step();
   
-  s1.update();
-  s1.render();
-  
-  b1.update();
-  b1.render();
-  
-  sp1.update();
-  sp1.render();
-  
-  player.update();
-  player.render();  
+  if (gameState == 1)
+  {
+    box2d.step();
     
-  ground.update();
-  ground.render();
-   
-  p1.update();
-  p1.render();
-  
-  p2.update();
-  p2.render();
-  
-  platCheck(player);
-  
-  fill(0);
-  textFont(font);
-  textSize(30);
-  text("Health: "+player.health, 15, 30);
-  
-  if (player.h.hookCooling == true)
-  {
-    fill(255, 0, 0);
-    text("Hook Status: Cooling...", 200, 30);
+    s1.update();
+    s1.render();
+    
+    b1.update();
+    b1.render();
+    
+    sp1.update();
+    sp1.render();
+    
+    player.update();
+    player.render();  
+      
+    ground.update();
+    ground.render();
+     
+    p1.update();
+    p1.render();
+    
+    p2.update();
+    p2.render();
+    
+    platCheck(player);
+    
+    fill(0);
+    textFont(font);
+    textSize(30);
+    text("Health: "+player.health, 15, 30);
+    
+    if (player.h.hookCooling == true)
+    {
+      fill(255, 0, 0);
+      text("Hook Status: Cooling...", 200, 30);
+    }
+    else if (player.h.hooking == true)
+    {
+      fill(255, 128, 0);
+      text("Hook Status: Hooking...", 200, 30);
+    }
+    else
+    {
+      fill(0, 204, 0);
+      text("Hook Status: Ready", 200, 30);
+    }
   }
-  else if (player.h.hooking == true)
+  else if (gameState == 2)
   {
-    fill(255, 128, 0);
-    text("Hook Status: Hooking...", 200, 30);
-  }
-  else
-  {
-    fill(0, 204, 0);
-    text("Hook Status: Ready", 200, 30);
+    fill(0);
+    textFont(font);
+    textSize(100);
+    text("Game Over! Score: "+score, width/10, height/2);
   }
 }
 
@@ -117,6 +128,10 @@ boolean onPlat = false;
 boolean PTouchB = false;
 boolean PTouchSp = false;
 boolean PTouchSh = false;
+
+int gameState = 1;
+
+int score = 0;
 
 PFont font;
 
@@ -191,10 +206,24 @@ void beginContact(Contact cp)
   if (o1.getClass() == Player.class && o2.getClass() == Spiker.class) 
   {
     PTouchSp = true;
+    Player p1 = (Player) o1;
+    p1.health--;
+    
+    Vec2 vel = player.body.getLinearVelocity();
+    vel.x = -vel.x;
+    vel.y = -vel.y;
+    player.body.setLinearVelocity(vel);
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Spiker.class) 
   {
+    Player p1 = (Player) o2;
+    p1.health--;
     PTouchSp = true;
+    
+    Vec2 vel = player.body.getLinearVelocity();
+    vel.x = -vel.x*2;
+    vel.y = -vel.y*1.25;
+    player.body.setLinearVelocity(vel);
   }
 }
 
