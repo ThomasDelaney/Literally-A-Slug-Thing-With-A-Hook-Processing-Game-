@@ -71,6 +71,22 @@ void draw()
   textFont(font);
   textSize(30);
   text("Health: "+player.health, 15, 30);
+  
+  if (player.h.hookCooling == true)
+  {
+    fill(255, 0, 0);
+    text("Hook Status: Cooling...", 200, 30);
+  }
+  else if (player.h.hooking == true)
+  {
+    fill(255, 128, 0);
+    text("Hook Status: Hooking...", 200, 30);
+  }
+  else
+  {
+    fill(0, 204, 0);
+    text("Hook Status: Ready", 200, 30);
+  }
 }
 
 Platform tempPlat;
