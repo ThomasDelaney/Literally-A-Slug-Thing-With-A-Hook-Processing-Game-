@@ -35,9 +35,9 @@ void setup()
   platforms.add(p1);
   platforms.add(p2);
   gameObjects.add(player);
+  
+  font = createFont("3Dventure.ttf", 150); 
 }
-
-PImage h;
 
 void draw()
 {
@@ -66,6 +66,11 @@ void draw()
   p2.render();
   
   platCheck(player);
+  
+  fill(0);
+  textFont(font);
+  textSize(30);
+  text("Health: "+player.health, 15, 30);
 }
 
 Platform tempPlat;
@@ -96,6 +101,8 @@ boolean onPlat = false;
 boolean PTouchB = false;
 boolean PTouchSp = false;
 boolean PTouchSh = false;
+
+PFont font;
 
 void keyPressed()
 { 

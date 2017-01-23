@@ -12,6 +12,7 @@ class Player extends GameObject
   boolean reset = false;
   boolean returned = true;
   
+  
   Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size)
   {
     
