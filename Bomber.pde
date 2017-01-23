@@ -110,6 +110,11 @@ class Bomber extends GameObject implements Enemy
     {
       dir = 1;
     }
+    
+    if (PTouchB == true)
+    {
+      body.setLinearVelocity(new Vec2(0,0));
+    }
   }
   
   void attack()
@@ -137,7 +142,7 @@ class Bomber extends GameObject implements Enemy
     FixtureDef fd = new FixtureDef();
     fd.shape = sd;
 
-    fd.density = 1;
+    fd.density = 10;
     fd.friction = 5;
     fd.restitution = 0;
 

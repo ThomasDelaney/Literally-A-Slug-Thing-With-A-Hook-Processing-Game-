@@ -16,7 +16,7 @@ class Spiker extends GameObject implements Enemy
     pos = box2d.getBodyPixelCoord(body);
   
     pushMatrix();
-    translate(pos.x, pos.y+22);
+    translate(pos.x, pos.y+23);
     
     noStroke();
     fill(c);
@@ -96,6 +96,11 @@ class Spiker extends GameObject implements Enemy
     {
       timer+=timeDelta;
     }
+        
+    if (PTouchSp == true)
+    {
+      body.setLinearVelocity(new Vec2(0,0));
+    }
   }
   
   void attack()
@@ -123,7 +128,7 @@ class Spiker extends GameObject implements Enemy
     FixtureDef fd = new FixtureDef();
     fd.shape = sd;
 
-    fd.density = 1;
+    fd.density = 10;
     fd.friction = 5;
     fd.restitution = 0;
 

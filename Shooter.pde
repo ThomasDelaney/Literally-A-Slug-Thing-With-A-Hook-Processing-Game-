@@ -133,6 +133,11 @@ class Shooter extends GameObject implements Enemy
       lastAngle1-=theta1/50;
       dir = 1;
     }
+    
+    if (PTouchSh == true)
+    {
+      body.setLinearVelocity(new Vec2(0,0));
+    }
   }
   
   void attack()
@@ -160,7 +165,7 @@ class Shooter extends GameObject implements Enemy
     FixtureDef fd = new FixtureDef();
     fd.shape = sd;
 
-    fd.density = 1;
+    fd.density = 10;
     fd.friction = 5;
     fd.restitution = 0;
 

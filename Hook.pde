@@ -274,11 +274,4 @@ class Hook extends GameObject
       hookTime += timeDelta;
     }
   }
-  
-  float convertSize(float constant)
-  {
-    float num = 50/constant;
-    constant = ((p.w_/2+p.h_/2)/2)/num;
-    return constant;
-  }
 }

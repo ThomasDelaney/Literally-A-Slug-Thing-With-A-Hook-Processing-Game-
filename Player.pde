@@ -31,7 +31,7 @@ class Player extends GameObject
     
     makeBody(new Vec2(x, y), w_, h_);
     
-    h = new Hook(x, y, size-0.2);
+    h = new Hook(x, y, size-0.3);
     h.setPlayer(this);
   }
   
@@ -108,8 +108,7 @@ class Player extends GameObject
         stop.x = 10;
       }
       body.setLinearVelocity(stop);
-    }
-    
+    } 
   }  
   
   void render()
@@ -120,7 +119,7 @@ class Player extends GameObject
     {
       pushMatrix();
       
-      translate(pos.x-32, pos.y+23);
+      translate(pos.x-32, pos.y+22);
       scale(size);
       
       beginShape();
@@ -226,7 +225,7 @@ class Player extends GameObject
     {
       pushMatrix();
       
-      translate(pos.x+32, pos.y+23);
+      translate(pos.x+32, pos.y+22);
       scale(size);
       
       beginShape();
@@ -332,7 +331,6 @@ class Player extends GameObject
   
   void makeBody(Vec2 center, float wid, float hei)
   {
-
     PolygonShape sd = new PolygonShape();
     float box2dW = box2d.scalarPixelsToWorld(wid/2);
     float box2dH = box2d.scalarPixelsToWorld(hei/2);
@@ -360,9 +358,9 @@ class Player extends GameObject
   
   void applyForce()
   {
-    Vec2 pos2 = body.getWorldCenter();
-    force.x = 0;
-    force.y = -400;
-    body.applyForce(force, pos2);
+      Vec2 pos2 = body.getWorldCenter();
+      force.x = 0;
+      force.y = -400;
+      body.applyForce(force, pos2);
   }
 }

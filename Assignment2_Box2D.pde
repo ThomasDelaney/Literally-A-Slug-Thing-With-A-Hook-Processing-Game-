@@ -24,7 +24,7 @@ void setup()
   
   s1 = new Shooter (500, 500, 87, 54);
   b1 = new Bomber (650, 500, 87, 54);
-  sp1 = new Spiker (800, 500, 60, 45);
+  sp1 = new Spiker (1000, 500, 60, 45);
   
   player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
@@ -33,7 +33,6 @@ void setup()
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
   platforms.add(p1);
-  //platforms.add(ground);
   platforms.add(p2);
   gameObjects.add(player);
 }
@@ -92,6 +91,11 @@ float platPosX;
 float platPosY;
 
 boolean overPlat;
+boolean onPlat = false;
+
+boolean PTouchB = false;
+boolean PTouchSp = false;
+boolean PTouchSh = false;
 
 void keyPressed()
 { 
@@ -120,20 +124,103 @@ void beginContact(Contact cp)
   Body b1 = f1.getBody();
   Body b2 = f2.getBody();
 
-  
   Object o1 = b1.getUserData();
   Object o2 = b2.getUserData();
-
+  
+  String s1 = o1.getClass().getName();
+  s1 = s1.replace("Assignment2_Box2D$", "");
+  String s2 = o2.getClass().getName();
+  s2 = s2.replace("Assignment2_Box2D$", "");
+  
+  //println(s1+" "+s2);
+  
   if (o1.getClass() == Player.class && o2.getClass() == Platform.class) 
   {
+    onPlat = true;
     Player p1 = (Player) o1;
     p1.returned = true;
   }
-
+  else if (o2.getClass() == Player.class && o1.getClass() == Platform.class)
+  {
+    onPlat = true;
+    Player p1 = (Player) o2;
+    p1.returned = true;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Bomber.class) 
+  {
+    PTouchB = true;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Bomber.class) 
+  {
+    PTouchB = true;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Shooter.class) 
+  {
+    PTouchSh = true;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Shooter.class) 
+  {
+    PTouchSh = true;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Spiker.class) 
+  {
+    PTouchSp = true;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Spiker.class) 
+  {
+    PTouchSp = true;
+  }
 }
 
 void endContact(Contact cp) 
 {
+  Fixture f1 = cp.getFixtureA();
+  Fixture f2 = cp.getFixtureB();
+  
+  Body b1 = f1.getBody();
+  Body b2 = f2.getBody();
+
+  Object o1 = b1.getUserData();
+  Object o2 = b2.getUserData();
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Platform.class) 
+  {
+    onPlat = false;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Platform.class)
+  {
+    onPlat = false;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Bomber.class) 
+  {
+    PTouchB = false;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Bomber.class) 
+  {
+    PTouchB = false;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Shooter.class) 
+  {
+    PTouchSh = false;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Shooter.class) 
+  {
+    PTouchSh = false;
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Spiker.class) 
+  {
+    PTouchSp = false;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Spiker.class) 
+  {
+    PTouchSp = false;
+  }
 }
 
 void platCheck(Player curPlayer)
