@@ -1,7 +1,12 @@
 class Bullet extends GameObject
 {
-  Bullet (float x, float y, float w, float h)
+  Shooter s;
+  int dir;
+  
+  Bullet (float x, float y, float w, float h, Shooter s, int dir)
   {
+    this.dir = dir;
+    this.s = s;
     this.w_ = w;
     this.h_ = h;
     makeBody(new Vec2(x, y), w_, h_);
@@ -9,10 +14,41 @@ class Bullet extends GameObject
   
   void render()
   {
+    pos = box2d.getBodyPixelCoord(body);
+    
+    pushMatrix();
+    translate(pos.x, pos.y);
+    noStroke();
+    fill(255, 0, 0);
+    
+    rect(0, 0, w_, h_);
+    
+    popMatrix();
   }
   
   void update()
   {
+    pos = box2d.getBodyPixelCoord(body);
+    
+    if (pos.x < -w_ || pos.x > width+w_)
+    {
+      box2d.destroyBody(body);
+      s.bullets.remove(this);
+    }
+    
+    Vec2 vel = body.getLinearVelocity();
+    
+    if (dir == 1)
+    {
+      vel.x = -15;
+    }
+    else
+    {
+      vel.x = 15;
+    }
+    
+    vel.y = 0;
+    body.setLinearVelocity(vel);
   }
   
   void makeBody(Vec2 center, float wid, float hei)

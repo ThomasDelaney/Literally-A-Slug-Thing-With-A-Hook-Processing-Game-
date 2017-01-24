@@ -3,6 +3,7 @@ class Shooter extends GameObject implements Enemy
   float theta1 = PI;
   float lastAngle1 = 0;
   float theta2 = 2*PI;
+  float timer = 0;
   
   float sX;
   float sY;
@@ -138,18 +139,39 @@ class Shooter extends GameObject implements Enemy
     {
       body.setLinearVelocity(new Vec2(0,0));
     }
+    
+    attack();
   }
   
   void attack()
   {
+    for (int i = bullets.size()-1; i >= 0; i--)
+    {
+      Bullet b = (Bullet)bullets.get(i); 
+      b.update();
+      b.render();    
+    }
     
-  }
+    timer += timeDelta;
   
-  void die()
-  {
-    
+    if (timer > 2)
+    {
+      Bullet b;
+      
+      if (dir == 2)
+      {
+        b = new Bullet(pos.x+56, pos.y-6, 20, 5, this, dir);
+      }
+      else
+      {
+        b = new Bullet(pos.x-56, pos.y-6, 20, 5, this, dir);
+      }
+      
+      bullets.add(b);
+      timer = 0;
+    }
   }
-  
+
   void calDest()
   {
     

@@ -22,7 +22,7 @@ void setup()
   
   overPlat = false;
   
-  s1 = new Shooter (500, 500, 87, 54);
+  s1 = new Shooter (500, 680, 87, 54);
   b1 = new Bomber (650, 500, 87, 54);
   sp1 = new Spiker (1000, 500, 60, 45);
   
