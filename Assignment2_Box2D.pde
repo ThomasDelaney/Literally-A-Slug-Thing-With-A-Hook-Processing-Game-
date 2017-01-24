@@ -31,6 +31,8 @@ void setup()
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
+  
+  b = new Bomb (700, 100, 25, 25);
 
   platforms.add(p1);
   platforms.add(p2);
@@ -68,6 +70,9 @@ void draw()
     p2.update();
     p2.render();
     
+    b.update();
+    b.render();
+    
     platCheck(player);
     
     fill(0);
@@ -104,6 +109,8 @@ Platform tempPlat;
 Platform p1;
 Platform p2;
 Platform ground;
+
+Bomb b;
 
 Player player;
 

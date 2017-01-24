@@ -1,15 +1,10 @@
-class Bullet extends GameObject
+class Bomb extends GameObject
 {
-  Shooter s;
-  int dir;
-  
-  Bullet (float x, float y, float w_, float h_, Shooter s, int dir)
+  Bomb (float x, float y, float w_, float h_)
   {
-    this.dir = dir;
-    this.s = s;
     this.w_ = w_;
-    this.h_ = h_;
-    makeBody(new Vec2(x, y), w_, h_);
+    this.h_ = h_/2;
+    makeBody(new Vec2(x, y), this.w_, this.h_); 
   }
   
   void render()
@@ -17,47 +12,16 @@ class Bullet extends GameObject
     pos = box2d.getBodyPixelCoord(body);
     
     pushMatrix();
-    translate(pos.x, pos.y);
+    translate(pos.x, pos.y+6.25);
     noStroke();
     fill(255, 0, 0);
-    
-    rect(0, 0, w_, h_);
-    
+    arc(0, 0, w_, h_*2, PI, 2*PI, PIE);
     popMatrix();
   }
   
   void update()
   {
     pos = box2d.getBodyPixelCoord(body);
-    
-    if (pos.x < -w_ || pos.x > width+w_)
-    {
-      box2d.destroyBody(body);
-      s.bullets.remove(this);
-    }
-    
-    if (PTouchBul == true)
-    {
-      if (this == hit)
-      {
-        box2d.destroyBody(body);
-        s.bullets.remove(this);
-      }
-    }
-    
-    Vec2 vel = body.getLinearVelocity();
-    
-    if (dir == 1)
-    {
-      vel.x = -15;
-    }
-    else
-    {
-      vel.x = 15;
-    }
-    
-    vel.y = 0;
-    body.setLinearVelocity(vel);
   }
   
   void makeBody(Vec2 center, float wid, float hei)
