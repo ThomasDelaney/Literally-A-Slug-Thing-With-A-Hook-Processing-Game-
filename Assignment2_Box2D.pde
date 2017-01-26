@@ -220,8 +220,8 @@ void beginContact(Contact cp)
     p1.health--;
     
     Vec2 vel = player.body.getLinearVelocity();
-    vel.x = -vel.x;
-    vel.y = -vel.y;
+    vel.x = -vel.x*2;
+    vel.y = -vel.y*1.25;
     player.body.setLinearVelocity(vel);
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Spiker.class) 
@@ -235,8 +235,8 @@ void beginContact(Contact cp)
     vel.y = -vel.y*1.25;
     player.body.setLinearVelocity(vel);
   }
-  
-    if (o1.getClass() == Player.class && o2.getClass() == Bullet.class) 
+ 
+  if (o1.getClass() == Player.class && o2.getClass() == Bullet.class) 
   {
     PTouchBul = true;
     Player p1 = (Player) o1;
@@ -252,6 +252,40 @@ void beginContact(Contact cp)
     
     hit = (Bullet) o2;
   }
+  
+  /*if (o1.getClass() == Bomb.class && (o2.getClass() == Bullet.class || o2.getClass() == Bomber.class || o2.getClass() == Platform.class || o2.getClass() == Shooter.class || o2.getClass() == Spiker.class)) 
+  {
+    Bomb b = (Bomb) o1;
+    b.body.setLinearVelocity(new Vec2(0,0));
+  }
+  else if (o2.getClass() == Bomb.class && (o1.getClass() == Bullet.class || o1.getClass() == Bomber.class || o1.getClass() == Platform.class || o1.getClass() == Shooter.class || o1.getClass() == Spiker.class))
+  {
+    Bomb b = (Bomb) o2;
+    b.body.setLinearVelocity(new Vec2(0,0));
+  }*/
+  
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Bomb.class) 
+  {
+    Player p1 = (Player) o1;
+    p1.health--;
+    
+    Vec2 vel = player.body.getLinearVelocity();
+    vel.x = -vel.x*2;
+    vel.y = -vel.y*1.25;
+    player.body.setLinearVelocity(vel);
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Bomb.class) 
+  {
+    Player p1 = (Player) o2;
+    p1.health--;
+    
+    Vec2 vel = player.body.getLinearVelocity();
+    vel.x = -vel.x*2;
+    vel.y = -vel.y*1.25;
+    player.body.setLinearVelocity(vel);
+  }
+  
 }
 
 void endContact(Contact cp) 

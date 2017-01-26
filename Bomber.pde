@@ -1,5 +1,7 @@
 class Bomber extends GameObject implements Enemy
 {
+  //ArrayList bombs = new ArrayList<Bomb>();
+  
   Bomber (float x, float y, float w_, float h_)
   {
     this.w_ = w_;

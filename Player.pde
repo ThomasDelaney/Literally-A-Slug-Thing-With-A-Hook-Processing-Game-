@@ -111,7 +111,7 @@ class Player extends GameObject
       body.setLinearVelocity(stop);
     } 
     
-    if (health == 0)
+    if (health < 1)
     {
       gameState = 2;
     }
