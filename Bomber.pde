@@ -1,6 +1,7 @@
 class Bomber extends GameObject implements Enemy
 {
-  //ArrayList bombs = new ArrayList<Bomb>();
+  ArrayList bombs = new ArrayList<Bomb>();
+  float timer = 0;
   
   Bomber (float x, float y, float w_, float h_)
   {
@@ -117,16 +118,37 @@ class Bomber extends GameObject implements Enemy
     {
       body.setLinearVelocity(new Vec2(0,0));
     }
+    
+    attack();
   }
   
   void attack()
   {
+    for (int i = bombs.size()-1; i >= 0; i--)
+    {
+      Bomb b = (Bomb)bombs.get(i); 
+      b.update();
+      b.render();    
+    }
     
-  }
+    timer += timeDelta;
   
-  void die()
-  {
-    
+    if (timer > 5)
+    {
+      Bomb b;
+      
+      if (dir == 2)
+      {
+        b = new Bomb(pos.x-90, pos.y-10, 25, 25, this);
+      }
+      else
+      {
+        b = new Bomb(pos.x+90, pos.y-10, 25, 25, this);
+      }
+      
+      bombs.add(b);
+      timer = 0;
+    }
   }
   
   void calDest()

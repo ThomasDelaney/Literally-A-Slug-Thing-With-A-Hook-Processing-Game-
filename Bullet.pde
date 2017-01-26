@@ -36,13 +36,10 @@ class Bullet extends GameObject
       s.bullets.remove(this);
     }
     
-    if (PTouchBul == true)
+    if (this == hit)
     {
-      if (this == hit)
-      {
-        box2d.destroyBody(body);
-        s.bullets.remove(this);
-      }
+      box2d.destroyBody(body);
+      s.bullets.remove(this);
     }
     
     Vec2 vel = body.getLinearVelocity();

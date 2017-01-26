@@ -1,7 +1,13 @@
 class Bomb extends GameObject
 {
-  Bomb (float x, float y, float w_, float h_)
+  Bomber b;
+  float timeToLive = 10;
+  float timer = 0;
+  boolean touchingPlat = false;
+  
+  Bomb (float x, float y, float w_, float h_, Bomber b)
   {
+    this.b = b;
     this.w_ = w_;
     this.h_ = h_/2;
     makeBody(new Vec2(x, y), this.w_, this.h_); 
@@ -22,6 +28,35 @@ class Bomb extends GameObject
   void update()
   {
     pos = box2d.getBodyPixelCoord(body);
+    
+    if (this == hitB)
+    {
+      box2d.destroyBody(body);
+      b.bombs.remove(this);
+    }
+    
+    if (pos.x < -w_ || pos.x > width+w_)
+    {
+      box2d.destroyBody(body);
+      b.bombs.remove(this);
+    }
+    
+    if (timer > timeToLive)
+    {
+      box2d.destroyBody(body);
+      b.bombs.remove(this);
+    }
+    
+    if (touchingPlat)
+    {
+      body.setLinearVelocity(new Vec2(0,0));
+    }
+    else if (!touchingPlat)
+    {
+      body.setLinearVelocity(new Vec2(10,-5));
+    }
+    
+    timer += timeDelta;
   }
   
   void makeBody(Vec2 center, float wid, float hei)
