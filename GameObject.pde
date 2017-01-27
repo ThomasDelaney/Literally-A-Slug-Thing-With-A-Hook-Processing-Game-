@@ -9,17 +9,18 @@ abstract class GameObject
   Body body;
   
   GameObject()
-  {
-  }
+  {}
   
   void makeBody()
-  {
-  }
+  {}
   
   void update()
   {}
   
   void render()
+  {}
+  
+  void reset()
   {}
 }
   

@@ -5,6 +5,11 @@ class Shooter extends GameObject implements Enemy
   float theta2 = 2*PI;
   float timer = 0;
   
+  float destTime = 0;
+  float waitTime = 0;
+  
+  boolean moving = false;
+  
   float sX;
   float sY;
   
@@ -141,6 +146,8 @@ class Shooter extends GameObject implements Enemy
     }
     
     attack();
+    
+    calDest();
   }
   
   void attack()
@@ -174,7 +181,32 @@ class Shooter extends GameObject implements Enemy
 
   void calDest()
   {
+    if (!moving)
+    {
+      destTime = random(random(1, 3), random(6, 10));
+      dir = (int)random(1,3);
+      moving = true;
+    }
     
+    if (waitTime > destTime)
+    {
+      body.setLinearVelocity(new Vec2(0,0));
+      waitTime = 0;
+      moving = false;
+    }
+    else
+    {
+      if (dir == 2)
+      {
+        body.setLinearVelocity(new Vec2(random(1,4),0));
+      }
+      else
+      {
+        body.setLinearVelocity(new Vec2(random(-1,-4),0));
+      }
+    }
+    
+    waitTime += timeDelta;
   }
   
   void makeBody(Vec2 center, float wid, float hei)
