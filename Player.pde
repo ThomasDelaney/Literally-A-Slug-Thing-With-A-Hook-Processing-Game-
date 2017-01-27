@@ -348,7 +348,9 @@ class Player extends GameObject
     fd.density = 1;
     fd.friction = 5;
     fd.restitution = 0;
-
+    
+    fd.filter.groupIndex = -2;
+    
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
     bd.angle = 0;

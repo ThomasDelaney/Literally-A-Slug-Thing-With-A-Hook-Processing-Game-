@@ -153,7 +153,6 @@ class Bomber extends GameObject implements Enemy
   
   void calDest()
   {
-    
   }
   
   void makeBody(Vec2 center, float wid, float hei)
@@ -169,6 +168,8 @@ class Bomber extends GameObject implements Enemy
     fd.density = 10;
     fd.friction = 5;
     fd.restitution = 0;
+    
+    fd.filter.groupIndex = -3;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;

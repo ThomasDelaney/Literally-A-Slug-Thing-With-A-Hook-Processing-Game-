@@ -53,7 +53,14 @@ class Bomb extends GameObject
     }
     else if (!touchingPlat)
     {
-      body.setLinearVelocity(new Vec2(10,-5));
+      if (b.dir == 2)
+      {
+        body.setLinearVelocity(new Vec2(-10,-5));
+      }
+      else
+      {
+        body.setLinearVelocity(new Vec2(10,-5));
+      }
     }
     
     timer += timeDelta;
@@ -72,6 +79,8 @@ class Bomb extends GameObject
     fd.density = 1;
     fd.friction = 5;
     fd.restitution = 0;
+    
+    fd.filter.groupIndex = -3;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;

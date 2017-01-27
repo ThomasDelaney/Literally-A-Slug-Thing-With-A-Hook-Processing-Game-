@@ -26,6 +26,8 @@ void setup()
   b1 = new Bomber (650, 500, 87, 54);
   sp1 = new Spiker (1000, 500, 60, 45);
   
+  b5 = new Bomber (200, 500, 87, 54);
+  
   player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
   p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
@@ -52,6 +54,9 @@ void draw()
     
     b1.update();
     b1.render();
+    
+    b5.update();
+    b5.render();
     
     sp1.update();
     sp1.render();
@@ -111,6 +116,7 @@ Player player;
 
 Shooter s1;
 Bomber b1;
+Bomber b5;
 Spiker sp1;
 
 boolean[] keys = new boolean[1000];
@@ -193,10 +199,28 @@ void beginContact(Contact cp)
   if (o1.getClass() == Player.class && o2.getClass() == Bomber.class) 
   {
     PTouchB = true;
+    
+    Filter filter = f2.getFilterData();
+    filter.groupIndex = -2;
+    
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Bomber.class) 
   {
     PTouchB = true;
+    
+    Filter filter = f1.getFilterData();
+    filter.groupIndex = -2;
+  }
+  
+  if (o1.getClass() == Bomb.class && o2.getClass() == Bomber.class) 
+  {
+    Filter filter = f2.getFilterData();
+    filter.groupIndex = -3;
+  }
+  else if (o2.getClass() == Bomb.class && o1.getClass() == Bomber.class )
+  {
+    Filter filter = f1.getFilterData();
+    filter.groupIndex = -3;
   }
   
   if (o1.getClass() == Player.class && o2.getClass() == Shooter.class) 
@@ -243,7 +267,7 @@ void beginContact(Contact cp)
     Player p1 = (Player) o2;
     p1.health--;
     
-    hit = (Bullet) o2;
+    hit = (Bullet) o1;
   }
   
   if (o1.getClass() == Bomb.class && o2.getClass() == Platform.class) 
@@ -256,7 +280,6 @@ void beginContact(Contact cp)
     Bomb b = (Bomb) o2;
     b.touchingPlat = true;
   }
-  
   
   if (o1.getClass() == Player.class && o2.getClass() == Bomb.class) 
   {
@@ -282,6 +305,63 @@ void beginContact(Contact cp)
     vel.y = -vel.y*1.25;
     player.body.setLinearVelocity(vel);
   }
+  
+  //Bullets collide with any other object beside Player - Destroy bullet
+  if (o1.getClass() == Bullet.class && o2.getClass() == Bomb.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Bomb.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Bomber.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Bomber.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Bullet.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Bullet.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Platform.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Platform.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Shooter.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Shooter.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Spiker.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Spiker.class )
+  {
+    hit = (Bullet) o2;
+  }
+  //Okay we're done with Bullets
+  
   
 }
 

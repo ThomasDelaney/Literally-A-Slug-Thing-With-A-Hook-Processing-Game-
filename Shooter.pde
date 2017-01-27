@@ -195,6 +195,8 @@ class Shooter extends GameObject implements Enemy
     bd.type = BodyType.DYNAMIC;
     bd.angle = 0;
     
+    fd.filter.groupIndex = -2;
+    
     bd.position.set(box2d.coordPixelsToWorld(center));
 
     body = box2d.createBody(bd);
