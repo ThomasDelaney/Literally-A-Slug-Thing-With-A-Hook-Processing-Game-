@@ -104,12 +104,14 @@ void draw()
     
     if (powerUpTimer > powerUpSpawn)
     {
-      //Health h1 = new Health();
+      Health h1 = new Health(random(50, width-50), 0, 30, 30);
+      powerUps.add(h1);
+      powerUpTimer = 0;
     }
     
     for (int i = powerUps.size()-1; i >= 0; i--)
     {
-      PowerUp p = (PowerUp)powerUps.get(i);
+      GameObject p = (GameObject)powerUps.get(i);
       
       if (p instanceof Health)
       {
@@ -118,6 +120,8 @@ void draw()
         h.render();   
       }
     }
+    
+    powerUpTimer += timeDelta;
   }
   else if (gameState == 2)
   {
@@ -148,7 +152,7 @@ ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
 ArrayList<Platform> platforms = new ArrayList<Platform>();
 
-ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
+ArrayList<GameObject> powerUps = new ArrayList<GameObject>();
 
 float timeDelta = 1.0f / 60.0f;
 
@@ -334,6 +338,25 @@ void beginContact(Contact cp)
     vel.x = -vel.x*2;
     vel.y = -vel.y*1.25;
     player.body.setLinearVelocity(vel);
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Health.class) 
+  {
+    Player p1 = (Player) o1;
+    p1.health++;
+    
+    Health h = (Health) o2;
+    h.hit = true;
+    
+   
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Health.class) 
+  {
+    Player p1 = (Player) o2;
+    p1.health++;
+    
+    Health h = (Health) o1;
+    h.hit = true;
   }
   
   //Bullets collide with any other object beside Player - Destroy bullet

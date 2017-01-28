@@ -32,6 +32,7 @@ class Shooter extends GameObject implements Enemy
       scale(1);
       
       beginShape();
+      strokeWeight(1);
       stroke(255, 0, 0);
       fill(0);
       rectMode(CENTER);
@@ -72,6 +73,7 @@ class Shooter extends GameObject implements Enemy
       scale(1);
       
       beginShape();
+      strokeWeight(1);
       stroke(255, 0, 0);
       fill(0);
       rectMode(CENTER);

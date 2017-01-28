@@ -1,5 +1,7 @@
 class Health extends GameObject implements PowerUp
 {
+  boolean hit = false;
+  
   Health(float x, float y, float w_, float h_)
   {
     super(x, y, w_, h_);
@@ -17,13 +19,13 @@ class Health extends GameObject implements PowerUp
     strokeWeight(2);
     fill(255);
     
-    rect(0, 0, 30, 30);
+    rect(0, 0, w_, h_);
     
     strokeWeight(3);
     fill(0, 255, 89);
     
-    rect(5, 14, 20, 2.5);
-    rect(14, 5, 2.5, 20);
+    rect(0, 0, 20, 2.5);
+    rect(0, 0, 2.5, 20);
     endShape();
     
     popMatrix(); 
@@ -31,15 +33,17 @@ class Health extends GameObject implements PowerUp
   
   void update()
   {
-    pos = box2d.getBodyPixelCoord(body);
-  }
-  
-  void spawn()
-  {
+    if (hit)
+    {
+      die();
+    }
   }
   
   void die()
   {
+    body.setTransform(new Vec2(width+100, height-100), body.getAngle());
+    powerUps.remove(this);
+    box2d.destroyBody(body);
   }
   
   void makeBody(Vec2 center, float wid, float hei)
@@ -56,7 +60,7 @@ class Health extends GameObject implements PowerUp
     fd.friction = 5;
     fd.restitution = 0;
     
-    fd.filter.groupIndex = -2;
+    fd.filter.groupIndex = -4;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
