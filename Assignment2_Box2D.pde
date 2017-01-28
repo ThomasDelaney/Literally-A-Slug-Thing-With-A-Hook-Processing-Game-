@@ -104,8 +104,19 @@ void draw()
     
     if (powerUpTimer > powerUpSpawn)
     {
-      Health h1 = new Health(random(50, width-50), 0, 30, 30);
-      powerUps.add(h1);
+      int power = (int)random(1,3);
+      GameObject p;
+      
+      if (power == 1)
+      {
+        p = new Health(random(50, width-50), 0, 30, 30);
+      }
+      else //if (power == 2)
+      {
+        p = new Speed(random(50, width-50), 0, 30, 30);
+      }
+      
+      powerUps.add(p);
       powerUpTimer = 0;
     }
     
@@ -118,6 +129,12 @@ void draw()
         Health h = (Health) p;
         h.update();
         h.render();   
+      }
+      else if (p instanceof Speed)
+      {
+        Speed s = (Speed) p;
+        s.update();
+        s.render(); 
       }
     }
     
@@ -347,8 +364,6 @@ void beginContact(Contact cp)
     
     Health h = (Health) o2;
     h.hit = true;
-    
-   
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Health.class) 
   {
@@ -410,6 +425,15 @@ void beginContact(Contact cp)
     hit = (Bullet) o1;
   }
   else if (o2.getClass() == Bullet.class && o1.getClass() == Spiker.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Health.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Health.class )
   {
     hit = (Bullet) o2;
   }

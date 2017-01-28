@@ -1,8 +1,8 @@
-class Health extends GameObject implements PowerUp
+class Speed extends GameObject implements PowerUp
 {
   boolean hit = false;
   
-  Health(float x, float y, float w_, float h_)
+  Speed(float x, float y, float w_, float h_)
   {
     super(x, y, w_, h_);
   }
@@ -13,22 +13,24 @@ class Health extends GameObject implements PowerUp
     
     pushMatrix();
     translate(pos.x, pos.y);
-    
+      
     beginShape();
     rectMode(CENTER);
-    stroke(0, 255, 89);
+    stroke(0, 255, 255);
     strokeWeight(2);
     fill(255);
-    
+      
     rect(0, 0, w_, h_);
+      
+    strokeWeight(2);
     
-    strokeWeight(3);
-    fill(0, 255, 89);
+    scale(2);
+    bezier(-5, -4, 0.52, -7.28, -0.24, -1.08, 5, -4.1);
+    bezier(-5, 0, 0.52, -3.28, -0.24, 3.08, 5, 0.1);
+    bezier(-5, 4, 0.52, 1.28, -0.24, 7.08, 5, 4.1);
     
-    rect(0, 0, 20, 2.5);
-    rect(0, 0, 2.5, 20);
     endShape();
-    
+      
     popMatrix(); 
   }
   
