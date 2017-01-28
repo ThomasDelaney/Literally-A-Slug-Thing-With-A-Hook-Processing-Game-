@@ -22,11 +22,11 @@ void setup()
   
   overPlat = false;
   
-  s1 = new Shooter (500, 680, 87, 54);
-  b1 = new Bomber (650, 500, 87, 54);
+  s1 = new Shooter (500, height-40, 87, 54);
+  //b1 = new Bomber (650, 500, 87, 54);
   sp1 = new Spiker (1000, 500, 60, 45);
   
-  b5 = new Bomber (200, 500, 87, 54);
+  //b5 = new Bomber (200, 500, 87, 54);
   
   player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
   p1 = new Platform (width/2,height-300, 300, 10, color(0));
@@ -52,11 +52,11 @@ void draw()
     s1.update();
     s1.render();
     
-    b1.update();
-    b1.render();
+    //b1.update();
+   // b1.render();
     
-    b5.update();
-    b5.render();
+    //b5.update();
+    //b5.render();
     
     sp1.update();
     sp1.render();
@@ -95,6 +95,29 @@ void draw()
       fill(0, 204, 0);
       text("Hook Status: Ready", 200, 30);
     }
+    
+    if (!timeSet)
+    {
+      powerUpSpawn = random(5, 21);
+      timeSet = true;
+    }
+    
+    if (powerUpTimer > powerUpSpawn)
+    {
+      //Health h1 = new Health();
+    }
+    
+    for (int i = powerUps.size()-1; i >= 0; i--)
+    {
+      PowerUp p = (PowerUp)powerUps.get(i);
+      
+      if (p instanceof Health)
+      {
+        Health h = (Health) p;
+        h.update();
+        h.render();   
+      }
+    }
   }
   else if (gameState == 2)
   {
@@ -125,7 +148,14 @@ ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
 ArrayList<Platform> platforms = new ArrayList<Platform>();
 
+ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
+
 float timeDelta = 1.0f / 60.0f;
+
+float powerUpTimer = 0;
+float powerUpSpawn = 0;
+
+boolean timeSet = false;
 
 float platPosX;
 float platPosY;

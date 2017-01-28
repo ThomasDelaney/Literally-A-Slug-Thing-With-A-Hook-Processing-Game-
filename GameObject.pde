@@ -8,10 +8,17 @@ abstract class GameObject
   Vec2 forward;
   Body body;
   
+  GameObject(float x, float y, float w_, float h_)
+  {
+    this.w_ = w_;
+    this.h_ = h_;
+    makeBody(new Vec2(x, y), w_, h_);
+  }
+  
   GameObject()
   {}
   
-  void makeBody()
+  void makeBody(Vec2 center, float w_, float h_)
   {}
   
   void update()

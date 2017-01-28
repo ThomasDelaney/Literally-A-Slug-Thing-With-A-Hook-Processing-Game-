@@ -1,14 +1,11 @@
 class Spiker extends GameObject implements Enemy
 {
-  color c;
+  color c = color(100, 100, 100);;
   float timer = 0;
   
   Spiker (float x, float y, float w_, float h_)
   {
-    this.c = color(100, 100, 100);
-    this.w_ = w_;
-    this.h_ = h_;
-    makeBody(new Vec2(x, y), w_, h_);
+    super(x, y, w_, h_);
   }
   
   void render()

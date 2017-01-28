@@ -1,13 +1,8 @@
-class Bullet extends GameObject
+class Health extends GameObject implements PowerUp
 {
-  Shooter s;
-  int dir;
-  
-  Bullet (float x, float y, float w_, float h_, Shooter s, int dir)
+  Health(float x, float y, float w_, float h_)
   {
     super(x, y, w_, h_);
-    this.dir = dir;
-    this.s = s;
   }
   
   void render()
@@ -16,43 +11,35 @@ class Bullet extends GameObject
     
     pushMatrix();
     translate(pos.x, pos.y);
-    noStroke();
-    fill(255, 0, 0);
     
-    rect(0, 0, w_, h_);
+    beginShape();
+    stroke(0, 255, 89);
+    strokeWeight(2);
+    fill(255);
     
-    popMatrix();
+    rect(0, 0, 30, 30);
+    
+    strokeWeight(3);
+    fill(0, 255, 89);
+    
+    rect(5, 14, 20, 2.5);
+    rect(14, 5, 2.5, 20);
+    endShape();
+    
+    popMatrix(); 
   }
   
   void update()
   {
     pos = box2d.getBodyPixelCoord(body);
-    
-    if (pos.x < -w_ || pos.x > width+w_)
-    {
-      box2d.destroyBody(body);
-      s.bullets.remove(this);
-    }
-    
-    if (this == hit)
-    {
-      box2d.destroyBody(body);
-      s.bullets.remove(this);
-    }
-    
-    Vec2 vel = body.getLinearVelocity();
-    
-    if (dir == 1)
-    {
-      vel.x = -15;
-    }
-    else
-    {
-      vel.x = 15;
-    }
-    
-    vel.y = 0;
-    body.setLinearVelocity(vel);
+  }
+  
+  void spawn()
+  {
+  }
+  
+  void die()
+  {
   }
   
   void makeBody(Vec2 center, float wid, float hei)
@@ -69,7 +56,7 @@ class Bullet extends GameObject
     fd.friction = 5;
     fd.restitution = 0;
     
-    fd.filter.groupIndex = -4;
+    fd.filter.groupIndex = -2;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;

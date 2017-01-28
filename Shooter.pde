@@ -17,9 +17,7 @@ class Shooter extends GameObject implements Enemy
   
   Shooter (float x, float y, float w_, float h_)
   {
-    this.w_ = w_;
-    this.h_ = h_;
-    makeBody(new Vec2(x, y), w_, h_);
+    super(x, y, w_, h_);
   }
   
   void render()
@@ -198,11 +196,11 @@ class Shooter extends GameObject implements Enemy
     {
       if (dir == 2)
       {
-        body.setLinearVelocity(new Vec2(random(1,4),0));
+        body.setLinearVelocity(new Vec2(random(2,5),0));
       }
       else
       {
-        body.setLinearVelocity(new Vec2(random(-1,-4),0));
+        body.setLinearVelocity(new Vec2(random(-2,-5),0));
       }
     }
     
