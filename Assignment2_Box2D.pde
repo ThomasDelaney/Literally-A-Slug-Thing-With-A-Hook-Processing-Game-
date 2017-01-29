@@ -12,8 +12,8 @@ Box2DProcessing box2d;
 
 void setup()
 {
-  size(1280, 720);
-  //fullScreen();
+  //size(1280, 720);
+  fullScreen();
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   box2d.setGravity(0, -10);
@@ -23,20 +23,25 @@ void setup()
   overPlat = false;
   
   s1 = new Shooter (500, height-40, 87, 54);
-  //b1 = new Bomber (650, 500, 87, 54);
-  sp1 = new Spiker (1000, 500, 60, 45);
+  b1 = new Bomber (650, 500, 87, 54);
+  //sp1 = new Spiker (1000, 500, 60, 45);
   
   //b5 = new Bomber (200, 500, 87, 54);
   
-  player = new Player(500, 350, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
-  p1 = new Platform (width/2,height-300, 300, 10, color(0));
-  p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
+  enemies.add(s1);
+  enemies.add(b1);
+  
+  
+  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
+  /*p1 = new Platform (width/2,height-300, 300, 10, color(0));
+  p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));*/
   
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
-  platforms.add(p1);
-  platforms.add(p2);
-  gameObjects.add(player);
+  //platforms.add(p1);
+ // platforms.add(p2);
+ 
+ 
   
   font = createFont("3Dventure.ttf", 150); 
 }
@@ -45,35 +50,42 @@ void draw()
 {
   background(255);
   
+  
   if (gameState == 1)
   {
     box2d.step();
     
-    s1.update();
-    s1.render();
-    
-    //b1.update();
-   // b1.render();
-    
-    //b5.update();
-    //b5.render();
-    
-    sp1.update();
-    sp1.render();
-    
     player.update();
-    player.render();  
+    player.render();
       
     ground.update();
     ground.render();
      
-    p1.update();
-    p1.render();
+    for (int i = enemies.size()-1; i >= 0; i--)
+    {
+      GameObject c = enemies.get(i);
+      
+      if (c instanceof Bomber)
+      {
+        Bomber bm = (Bomber) c;
+        bm.update();
+        bm.render();
+      }
+      else if (c instanceof Shooter)
+      {
+        Shooter bm = (Shooter) c;
+        bm.update();
+        bm.render();
+      }
+      else if (c instanceof Spiker)
+      {
+        Spiker bm = (Spiker) c;
+        bm.update();
+        bm.render();
+      }
+    }
     
-    p2.update();
-    p2.render();
-    
-    platCheck(player);
+    //platCheck(player);
     
     fill(0);
     textFont(font);
@@ -98,8 +110,7 @@ void draw()
     
     if (!timeSet)
     {
-      //powerUpSpawn = random(5, 21);
-      powerUpSpawn = random(1, 3);
+      powerUpSpawn = random(5, 21);
       timeSet = true;
     }
     
@@ -149,7 +160,25 @@ void draw()
       }
     }
     
+    if (checkKey('b'))
+    {
+      levelComplete = true;
+    }
+    
     powerUpTimer += timeDelta;
+    
+    if (levelComplete == true)
+    {
+      platforms.clear();
+      powerUps.clear();
+      activePowers.clear();
+      enemies.clear();
+      player.body.setLinearVelocity(new Vec2(0,0));
+      player.dir = 1;
+      player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
+      generate();
+      levelComplete = false;
+    }
   }
   else if (gameState == 2)
   {
@@ -184,6 +213,8 @@ ArrayList<GameObject> powerUps = new ArrayList<GameObject>();
 
 ArrayList<GameObject> activePowers = new ArrayList<GameObject>();
 
+ArrayList<GameObject> enemies = new ArrayList<GameObject>();
+
 float timeDelta = 1.0f / 60.0f;
 
 float powerUpTimer = 0;
@@ -201,6 +232,8 @@ boolean PTouchB = false;
 boolean PTouchSp = false;
 boolean PTouchSh = false;
 
+boolean levelComplete = false;
+
 Bullet hit;
 Bomb hitB;
 
@@ -209,6 +242,11 @@ int gameState = 1;
 int score = 0;
 
 PFont font;
+
+void generate()
+{
+  
+}
 
 void keyPressed()
 { 
