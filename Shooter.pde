@@ -175,6 +175,7 @@ class Shooter extends GameObject implements Enemy
       }
       
       bullets.add(b);
+      other.add(b);
       timer = 0;
     }
   }

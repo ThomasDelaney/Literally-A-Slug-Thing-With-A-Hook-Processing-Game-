@@ -24,7 +24,7 @@ class Player extends GameObject
   boolean inv = false;
   
   
-  Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size)
+  Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size, int health)
   {
     
     forward = new Vec2(0, -1);
@@ -38,6 +38,7 @@ class Player extends GameObject
     this.right = right;
     this.hook = hook;
     this.c = c;
+    this.health = health;
     
     this.size = size;
     

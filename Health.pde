@@ -37,7 +37,7 @@ class Health extends GameObject implements PowerUp
   void update()
   {
     pos = box2d.getBodyPixelCoord(body);
-    
+
     if (hit || timer > timeToLive)
     {
       die();
@@ -81,8 +81,6 @@ class Health extends GameObject implements PowerUp
     fd.density = 1;
     fd.friction = 5;
     fd.restitution = 0;
-    
-    fd.filter.groupIndex = -5;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;

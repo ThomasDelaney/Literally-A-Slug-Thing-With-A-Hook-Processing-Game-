@@ -125,8 +125,6 @@ class Invincible extends GameObject implements PowerUp
     fd.density = 1;
     fd.friction = 5;
     fd.restitution = 0;
-    
-    fd.filter.groupIndex = -5;
 
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;

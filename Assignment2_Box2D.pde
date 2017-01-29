@@ -12,8 +12,8 @@ Box2DProcessing box2d;
 
 void setup()
 {
-  //size(1280, 720);
-  fullScreen();
+  size(1280, 720);
+  //fullScreen();
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   box2d.setGravity(0, -10);
@@ -32,14 +32,14 @@ void setup()
   enemies.add(b1);
   
   
-  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1);
-  /*p1 = new Platform (width/2,height-300, 300, 10, color(0));
-  p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));*/
+  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1, 5);
+  //p1 = new Platform (width/2,height-300, 300, 10, color(0));
+  //p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
   
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
   //platforms.add(p1);
- // platforms.add(p2);
+  //platforms.add(p2);
  
  
   
@@ -50,10 +50,91 @@ void draw()
 {
   background(255);
   
+  box2d.step();
   
   if (gameState == 1)
   {
-    box2d.step();
+    if (levelComplete == true)
+    {
+      player.stimer = player.speedTime+1;
+      player.itimer = player.invTime+1;
+      
+      /*for (int i = other.size()-1; i >= 0; i--)
+      {
+        GameObject p = (GameObject)other.get(i);
+        
+        if (p instanceof Bomb)
+        {
+          Bomb temp = (Bomb) p;
+          box2d.destroyBody(temp.body);
+           
+        }
+        else if (p instanceof Bullet)
+        {
+          Bullet temp = (Bullet) p;
+          box2d.destroyBody(temp.body);
+        }
+      }
+      
+      for (int i = platforms.size()-1; i >= 0; i--)
+      {
+        Platform cPlat = platforms.get(i);
+        
+        box2d.destroyBody(cPlat.body);
+      } 
+       
+      for (int i = powerUps.size()-1; i >= 0; i--)
+      {
+        GameObject p = (GameObject)powerUps.get(i);
+        
+        if (p instanceof Health)
+        {
+          Health h = (Health) p;
+          box2d.destroyBody(h.body);
+        }
+        else if (p instanceof Speed)
+        {
+          Speed s = (Speed) p;
+          box2d.destroyBody(s.body);
+        }
+        else if (p instanceof Invincible)
+        {
+          Invincible inv = (Invincible) p;
+          box2d.destroyBody(inv.body);
+        }
+      }
+      
+      for (int i = enemies.size()-1; i >= 0; i--)
+      {
+        GameObject c = enemies.get(i);
+        
+        if (c instanceof Bomber)
+        {
+          Bomber bm = (Bomber) c;
+          box2d.destroyBody(bm.body);
+        }
+        else if (c instanceof Shooter)
+        {
+          Shooter bm = (Shooter) c;
+          box2d.destroyBody(bm.body);
+        }
+        else if (c instanceof Spiker)
+        {
+          Spiker bm = (Spiker) c;
+          box2d.destroyBody(bm.body);
+        }
+      }*/
+      curHealth = player.health;
+      box2d = null;
+    
+      platforms.clear();
+      powerUps.clear();
+      activePowers.clear();
+      enemies.clear();
+      other.clear();
+      generate();
+      levelComplete = false;
+    }
     
     player.update();
     player.render();
@@ -85,7 +166,15 @@ void draw()
       }
     }
     
-    //platCheck(player);
+    for (int i = platforms.size()-1; i >= 0; i--)
+    {
+      Platform cPlat = platforms.get(i);
+      
+      cPlat.update();
+      cPlat.render();
+    }
+    
+    platCheck(player);
     
     fill(0);
     textFont(font);
@@ -110,6 +199,7 @@ void draw()
     
     if (!timeSet)
     {
+      //powerUpSpawn = random(1, 2);
       powerUpSpawn = random(5, 21);
       timeSet = true;
     }
@@ -166,19 +256,6 @@ void draw()
     }
     
     powerUpTimer += timeDelta;
-    
-    if (levelComplete == true)
-    {
-      platforms.clear();
-      powerUps.clear();
-      activePowers.clear();
-      enemies.clear();
-      player.body.setLinearVelocity(new Vec2(0,0));
-      player.dir = 1;
-      player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
-      generate();
-      levelComplete = false;
-    }
   }
   else if (gameState == 2)
   {
@@ -215,6 +292,8 @@ ArrayList<GameObject> activePowers = new ArrayList<GameObject>();
 
 ArrayList<GameObject> enemies = new ArrayList<GameObject>();
 
+ArrayList<GameObject> other = new ArrayList<GameObject>();
+
 float timeDelta = 1.0f / 60.0f;
 
 float powerUpTimer = 0;
@@ -234,6 +313,8 @@ boolean PTouchSh = false;
 
 boolean levelComplete = false;
 
+int curHealth = 0;
+
 Bullet hit;
 Bomb hitB;
 
@@ -245,7 +326,26 @@ PFont font;
 
 void generate()
 {
+  box2d = new Box2DProcessing(this);
+  box2d.createWorld();
+  box2d.setGravity(0, -10);
+
+  box2d.listenForCollisions();
   
+  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1, curHealth);
+  ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
+  
+  player.body.setLinearVelocity(new Vec2(0,0));
+  player.dir = 1;
+  player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
+  
+  int numOfPlats = 1;
+  
+  for (int k = 0; k < numOfPlats; k++)
+  {
+    Platform p = new Platform (random(100, width-100), random(50, height-100), (int)random(100, 500), 10, color(0));
+    platforms.add(p);
+  }
 }
 
 void keyPressed()
@@ -398,32 +498,32 @@ void beginContact(Contact cp)
   if (o1.getClass() == Player.class && o2.getClass() == Bomb.class) 
   {
     Player p1 = (Player) o1;
-    if (!p1.inv)
-    {
-      p1.health--;
-    }
     
     hitB = (Bomb) o2;
     
-    Vec2 vel = player.body.getLinearVelocity();
-    vel.x = -vel.x*2;
-    vel.y = -vel.y*1.25;
-    player.body.setLinearVelocity(vel);
+    if (!p1.inv)
+    {
+      p1.health--;
+      Vec2 vel = player.body.getLinearVelocity();
+      vel.x = -vel.x*2;
+      vel.y = -vel.y*1.25;
+      player.body.setLinearVelocity(vel);
+    }
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Bomb.class) 
   {
     Player p1 = (Player) o2;
-    if (!p1.inv)
-    {
-      p1.health--;
-    }
     
     hitB = (Bomb) o1;
     
-    Vec2 vel = player.body.getLinearVelocity();
-    vel.x = -vel.x*2;
-    vel.y = -vel.y*1.25;
-    player.body.setLinearVelocity(vel);
+    if (!p1.inv)
+    {
+      p1.health--;
+      Vec2 vel = player.body.getLinearVelocity();
+      vel.x = -vel.x*2;
+      vel.y = -vel.y*1.25;
+      player.body.setLinearVelocity(vel);
+    }
   }
   
   if (o1.getClass() == Player.class && o2.getClass() == Health.class) 
@@ -613,8 +713,6 @@ void beginContact(Contact cp)
     hit = (Bullet) o2;
   }
   //Okay we're done with Bullets
-  
-  
 }
 
 void endContact(Contact cp) 

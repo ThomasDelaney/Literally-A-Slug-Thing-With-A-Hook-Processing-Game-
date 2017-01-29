@@ -22,6 +22,7 @@ class Bomber extends GameObject implements Enemy
       beginShape();
       noFill();
       stroke(0);
+      strokeWeight(3);
       bezier(0, 0, 23.7, 33, 49.4, -9, 66.8, 8.3);
       bezier(0, 0, 75, 4, 37.7, -52.5, 63.7, -67.8);
       bezier(100.5, -17.3, 126.2, -14.8, 141, -19.6, 151, -44.2);
@@ -31,6 +32,7 @@ class Bomber extends GameObject implements Enemy
       endShape();
       
       beginShape();
+      strokeWeight(3);
       fill(255);
       ellipse(77, -49, 7.5, 7.5);
       
@@ -39,6 +41,7 @@ class Bomber extends GameObject implements Enemy
       endShape();
       
       beginShape();
+      strokeWeight(3);
       vertex(87, -46);
       vertex(78, -40);
       vertex(89, -38);
@@ -56,6 +59,7 @@ class Bomber extends GameObject implements Enemy
       beginShape();
       noFill();
       stroke(0);
+      strokeWeight(3);
       bezier(0, 0, -23.7, 33, -49.4, -9, -66.8, 8.3);
       bezier(0, 0, -75, 4, -37.7, -52.5, -63.7, -67.8);
       bezier(-100.5, -17.3, -126.2, -14.8, -141, -19.6, -151, -44.2);
@@ -65,6 +69,7 @@ class Bomber extends GameObject implements Enemy
       endShape();
       
       beginShape();
+      strokeWeight(3);
       fill(255);
       ellipse(-77, -49, 7.5, 7.5);
       
@@ -73,6 +78,7 @@ class Bomber extends GameObject implements Enemy
       endShape();
       
       beginShape();
+      strokeWeight(3);
       vertex(-87, -46);
       vertex(-78, -40);
       vertex(-89, -38);
@@ -145,6 +151,7 @@ class Bomber extends GameObject implements Enemy
       }
       
       bombs.add(b);
+      other.add(b);
       timer = 0;
     }
   }

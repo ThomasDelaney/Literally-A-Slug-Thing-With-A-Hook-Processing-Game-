@@ -1,6 +1,7 @@
 class Bomb extends GameObject
 {
   Bomber b;
+  Vec2 force;
   float timeToLive = 10;
   float timer = 0;
   boolean touchingPlat = false;
@@ -10,6 +11,7 @@ class Bomb extends GameObject
     this.b = b;
     this.w_ = w_;
     this.h_ = h_/2;
+    force = new Vec2(0, 0);
     makeBody(new Vec2(x, y), this.w_, this.h_); 
   }
   
@@ -64,6 +66,7 @@ class Bomb extends GameObject
     }
     
     timer += timeDelta;
+    applyForce();
   }
   
   void makeBody(Vec2 center, float wid, float hei)
@@ -93,5 +96,13 @@ class Bomb extends GameObject
     body.setUserData(this);
 
     body.setLinearVelocity(new Vec2(0,0));
+  }
+  
+  void applyForce()
+  {
+      Vec2 pos2 = body.getWorldCenter();
+      force.x = 0;
+      force.y = -400;
+      body.applyForce(force, pos2);
   }
 }
