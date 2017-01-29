@@ -171,6 +171,8 @@ ArrayList<Platform> platforms = new ArrayList<Platform>();
 
 ArrayList<GameObject> powerUps = new ArrayList<GameObject>();
 
+ArrayList<GameObject> activePowers = new ArrayList<GameObject>();
+
 float timeDelta = 1.0f / 60.0f;
 
 float powerUpTimer = 0;
@@ -187,8 +189,6 @@ boolean onPlat = false;
 boolean PTouchB = false;
 boolean PTouchSp = false;
 boolean PTouchSh = false;
-
-int inEffect = 0;
 
 Bullet hit;
 Bomb hitB;
@@ -385,14 +385,17 @@ void beginContact(Contact cp)
     Speed s = (Speed) o2;
     s.hit = true;
     
-    if (inEffect == 0)
+    for (int j = 0; j < activePowers.size(); j++)
     {
-      inEffect = 1;
+      GameObject p = activePowers.get(j);
+      
+      if (p instanceof Speed)
+      {
+        Speed s3 = (Speed) p;
+        activePowers.remove(s3);
+      }
     }
-    else if (inEffect == 1)
-    {
-      inEffect = 2;
-    }
+    activePowers.add(s);
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Speed.class) 
   {
@@ -402,15 +405,19 @@ void beginContact(Contact cp)
     
     Speed s = (Speed) o1;
     s.hit = true;
-    
-    if (inEffect == 0)
+   
+   
+    for (int j = 0; j < activePowers.size(); j++)
     {
-      inEffect = 1;
+      GameObject p = activePowers.get(j);
+      
+      if (p instanceof Speed)
+      {
+        Speed s3 = (Speed) p;
+        activePowers.remove(s3);
+      }
     }
-    else if (inEffect == 1)
-    {
-      inEffect = 2;
-    }
+    activePowers.add(s);
   }
   
   //Bullets collide with any other object beside Player - Destroy bullet

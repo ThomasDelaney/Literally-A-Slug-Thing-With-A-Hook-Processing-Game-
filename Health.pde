@@ -1,6 +1,8 @@
 class Health extends GameObject implements PowerUp
 {
   boolean hit = false;
+  float timer = 0;
+  float timeToLive = 10;
   
   Health(float x, float y, float w_, float h_)
   {
@@ -36,7 +38,7 @@ class Health extends GameObject implements PowerUp
   {
     pos = box2d.getBodyPixelCoord(body);
     
-    if (hit)
+    if (hit || timer > timeToLive)
     {
       die();
     }
@@ -55,6 +57,8 @@ class Health extends GameObject implements PowerUp
       }
       body.setLinearVelocity(stop);
     }
+    
+    timer += timeDelta;
   }
   
   void die()

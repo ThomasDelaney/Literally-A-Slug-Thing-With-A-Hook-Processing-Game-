@@ -53,7 +53,6 @@ class Player extends GameObject
     {
       speed = false;
       timer = 0;
-      inEffect--;
       displayTime = speedTime;
     }
     
@@ -61,13 +60,16 @@ class Player extends GameObject
     {
       displayTime = speedTime - (int)timer%60;
       
-      if (inEffect == 1)
+      if (activePowers.size() > 0)
       {
-        fill(0, 76, 255);
-        textFont(font);
-        textSize(30);
-            
-        text("Speed: "+displayTime, 625, 30);
+        if (activePowers.get(0) instanceof Speed)
+        {
+          fill(0, 76, 255);
+          textFont(font);
+          textSize(30);
+              
+          text("Speed: "+displayTime, 625, 30);
+        }
       }
       timer += timeDelta;
     }
