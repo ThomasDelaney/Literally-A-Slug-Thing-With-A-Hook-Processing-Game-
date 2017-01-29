@@ -3,8 +3,12 @@ class Player extends GameObject
   Vec2 force;
   Hook h;
   float theta;
-  float speedTime = 5;
+  
+  int speedTime = 5;
   float timer = 0;
+  
+  int displayTime = 5;
+  
   int health = 5;
   char left, right, hook;
   float radius;
@@ -45,6 +49,29 @@ class Player extends GameObject
     pos = box2d.getBodyPixelCoord(body);
     theta = body.getAngle();
     
+    if (timer > speedTime)
+    {
+      speed = false;
+      timer = 0;
+      inEffect--;
+      displayTime = speedTime;
+    }
+    
+    if (speed)
+    {
+      displayTime = speedTime - (int)timer%60;
+      
+      if (inEffect == 1)
+      {
+        fill(0, 76, 255);
+        textFont(font);
+        textSize(30);
+            
+        text("Speed: "+displayTime, 625, 30);
+      }
+      timer += timeDelta;
+    }
+    
     if (checkKey(left) && h.notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
@@ -54,12 +81,6 @@ class Player extends GameObject
         if (timer < speedTime)
         {
           vel.x = -30;
-          timer += timeDelta;
-        }
-        else if (timer > speedTime)
-        {
-          speed = false;
-          timer = 0;
         }
       }
       else
@@ -79,12 +100,6 @@ class Player extends GameObject
         if (timer < speedTime)
         {
           vel.x = 30;
-          timer += timeDelta;
-        }
-        else if (timer > speedTime)
-        {
-          speed = false;
-          timer = 0;
         }
       }
       else

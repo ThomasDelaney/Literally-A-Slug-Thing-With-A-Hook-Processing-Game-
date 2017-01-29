@@ -188,6 +188,8 @@ boolean PTouchB = false;
 boolean PTouchSp = false;
 boolean PTouchSh = false;
 
+int inEffect = 0;
+
 Bullet hit;
 Bomb hitB;
 
@@ -378,17 +380,37 @@ void beginContact(Contact cp)
   {
     Player p1 = (Player) o1;
     p1.speed = true;
+    p1.timer = 0;
     
     Speed s = (Speed) o2;
     s.hit = true;
+    
+    if (inEffect == 0)
+    {
+      inEffect = 1;
+    }
+    else if (inEffect == 1)
+    {
+      inEffect = 2;
+    }
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Speed.class) 
   {
     Player p1 = (Player) o2;
     p1.speed = true;
+    p1.timer = 0;
     
     Speed s = (Speed) o1;
     s.hit = true;
+    
+    if (inEffect == 0)
+    {
+      inEffect = 1;
+    }
+    else if (inEffect == 1)
+    {
+      inEffect = 2;
+    }
   }
   
   //Bullets collide with any other object beside Player - Destroy bullet
