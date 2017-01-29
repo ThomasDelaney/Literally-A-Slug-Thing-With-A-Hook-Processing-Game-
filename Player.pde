@@ -3,6 +3,8 @@ class Player extends GameObject
   Vec2 force;
   Hook h;
   float theta;
+  float speedTime = 5;
+  float timer = 0;
   int health = 5;
   char left, right, hook;
   float radius;
@@ -11,6 +13,7 @@ class Player extends GameObject
   color c;
   boolean reset = false;
   boolean returned = true;
+  boolean speed = false;
   
   
   Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size)
@@ -45,14 +48,50 @@ class Player extends GameObject
     if (checkKey(left) && h.notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
-      vel.x = -15;
+      
+      if (speed)
+      {
+        if (timer < speedTime)
+        {
+          vel.x = -30;
+          timer += timeDelta;
+        }
+        else if (timer > speedTime)
+        {
+          speed = false;
+          timer = 0;
+        }
+      }
+      else
+      {
+        vel.x = -15;
+      }
+      
       body.setLinearVelocity(vel);
       dir = 2;
     }
     else if (checkKey(right) && h.notMoving)
     {
       Vec2 vel = body.getLinearVelocity();
-      vel.x = 15;
+      
+      if (speed)
+      {
+        if (timer < speedTime)
+        {
+          vel.x = 30;
+          timer += timeDelta;
+        }
+        else if (timer > speedTime)
+        {
+          speed = false;
+          timer = 0;
+        }
+      }
+      else
+      {
+        vel.x = 15;
+      }
+      
       body.setLinearVelocity(vel);
       dir = 1;
     }

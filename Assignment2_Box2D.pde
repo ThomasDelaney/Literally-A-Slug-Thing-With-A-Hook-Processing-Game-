@@ -374,6 +374,23 @@ void beginContact(Contact cp)
     h.hit = true;
   }
   
+  if (o1.getClass() == Player.class && o2.getClass() == Speed.class) 
+  {
+    Player p1 = (Player) o1;
+    p1.speed = true;
+    
+    Speed s = (Speed) o2;
+    s.hit = true;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Speed.class) 
+  {
+    Player p1 = (Player) o2;
+    p1.speed = true;
+    
+    Speed s = (Speed) o1;
+    s.hit = true;
+  }
+  
   //Bullets collide with any other object beside Player - Destroy bullet
   if (o1.getClass() == Bullet.class && o2.getClass() == Bomb.class) 
   {
@@ -434,6 +451,15 @@ void beginContact(Contact cp)
     hit = (Bullet) o1;
   }
   else if (o2.getClass() == Bullet.class && o1.getClass() == Health.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Speed.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Speed.class )
   {
     hit = (Bullet) o2;
   }
