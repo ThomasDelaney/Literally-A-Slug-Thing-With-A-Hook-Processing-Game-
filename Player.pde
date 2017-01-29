@@ -5,9 +5,12 @@ class Player extends GameObject
   float theta;
   
   int speedTime = 5;
-  float timer = 0;
+  float stimer = 0;
+  int displayTimeS = 5;
   
-  int displayTime = 5;
+  int invTime = 5;
+  float itimer = 0;
+  int displayTimeI = 5;
   
   int health = 5;
   char left, right, hook;
@@ -18,6 +21,7 @@ class Player extends GameObject
   boolean reset = false;
   boolean returned = true;
   boolean speed = false;
+  boolean inv = false;
   
   
   Player(float x, float y, float theta, float w_, float h_, char left, char right, char hook, color c, float size)
@@ -49,18 +53,51 @@ class Player extends GameObject
     pos = box2d.getBodyPixelCoord(body);
     theta = body.getAngle();
     
-    if (timer > speedTime)
+    if (stimer > speedTime)
     {
       speed = false;
-      timer = 0;
-      displayTime = speedTime;
+      stimer = 0;
+      displayTimeS = speedTime;
+    }
+    
+    if (itimer > invTime)
+    {
+      inv = false;
+      itimer = 0;
+      displayTimeI = invTime;
+    }
+    
+    if (inv)
+    {
+      displayTimeI = invTime - (int)itimer%60;
+      
+      if (activePowers.size() != 0)
+      {
+        if (activePowers.get(0) instanceof Invincible)
+        {
+          fill(178, 110, 0);
+          textFont(font);
+          textSize(30);
+              
+          text("Invincible: "+displayTimeI, 625, 30);
+        }
+        else if (activePowers.get(1) instanceof Invincible)
+        {
+          fill(178, 110, 0);
+          textFont(font);
+          textSize(30);
+              
+          text("Invincible: "+displayTimeI, 825, 30);
+        }
+      }
+      itimer += timeDelta;
     }
     
     if (speed)
     {
-      displayTime = speedTime - (int)timer%60;
+      displayTimeS = speedTime - (int)stimer%60;
       
-      if (activePowers.size() > 0)
+      if (activePowers.size() != 0)
       {
         if (activePowers.get(0) instanceof Speed)
         {
@@ -68,10 +105,18 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Speed: "+displayTime, 625, 30);
+          text("Speed: "+displayTimeS, 625, 30);
+        }
+        else if (activePowers.get(1) instanceof Speed)
+        {
+          fill(0, 76, 255);
+          textFont(font);
+          textSize(30);
+              
+          text("Speed: "+displayTimeS, 900, 30);
         }
       }
-      timer += timeDelta;
+      stimer += timeDelta;
     }
     
     if (checkKey(left) && h.notMoving)
@@ -80,7 +125,7 @@ class Player extends GameObject
       
       if (speed)
       {
-        if (timer < speedTime)
+        if (stimer < speedTime)
         {
           vel.x = -30;
         }
@@ -99,7 +144,7 @@ class Player extends GameObject
       
       if (speed)
       {
-        if (timer < speedTime)
+        if (stimer < speedTime)
         {
           vel.x = 30;
         }

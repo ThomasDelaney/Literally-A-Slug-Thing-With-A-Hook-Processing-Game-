@@ -98,7 +98,8 @@ void draw()
     
     if (!timeSet)
     {
-      powerUpSpawn = random(5, 21);
+      //powerUpSpawn = random(5, 21);
+      powerUpSpawn = random(1, 3);
       timeSet = true;
     }
     
@@ -390,7 +391,7 @@ void beginContact(Contact cp)
   {
     Player p1 = (Player) o1;
     p1.speed = true;
-    p1.timer = 0;
+    p1.stimer = 0;
     
     Speed s = (Speed) o2;
     s.hit = true;
@@ -411,7 +412,7 @@ void beginContact(Contact cp)
   {
     Player p1 = (Player) o2;
     p1.speed = true;
-    p1.timer = 0;
+    p1.stimer = 0;
     
     Speed s = (Speed) o1;
     s.hit = true;
@@ -428,6 +429,50 @@ void beginContact(Contact cp)
       }
     }
     activePowers.add(s);
+  }
+  
+  if (o1.getClass() == Player.class && o2.getClass() == Invincible.class) 
+  {
+    Player p1 = (Player) o1;
+    p1.inv = true;
+    p1.itimer = 0;
+    
+    Invincible z = (Invincible) o2;
+    z.hit = true;
+    
+    for (int j = 0; j < activePowers.size(); j++)
+    {
+      GameObject p = activePowers.get(j);
+      
+      if (p instanceof Invincible)
+      {
+        Invincible in = (Invincible) p;
+        activePowers.remove(in);
+      }
+    }
+    activePowers.add(z);
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Invincible.class) 
+  {
+    Player p1 = (Player) o2;
+    p1.inv = true;
+    p1.itimer = 0;
+    
+    Invincible z = (Invincible) o1;
+    z.hit = true;
+   
+   
+    for (int j = 0; j < activePowers.size(); j++)
+    {
+      GameObject p = activePowers.get(j);
+      
+      if (p instanceof Invincible)
+      {
+        Invincible inv = (Invincible) p;
+        activePowers.remove(inv);
+      }
+    }
+    activePowers.add(z);
   }
   
   //Bullets collide with any other object beside Player - Destroy bullet
@@ -499,6 +544,15 @@ void beginContact(Contact cp)
     hit = (Bullet) o1;
   }
   else if (o2.getClass() == Bullet.class && o1.getClass() == Speed.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Invincible.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Invincible.class )
   {
     hit = (Bullet) o2;
   }
