@@ -1,10 +1,10 @@
-class Health extends GameObject implements PowerUp
+class Invincible extends GameObject implements PowerUp
 {
   boolean hit = false;
   float timer = 0;
   float timeToLive = 30;
   
-  Health(float x, float y, float w_, float h_)
+  Invincible(float x, float y, float w_, float h_)
   {
     super(x, y, w_, h_);
   }
@@ -12,26 +12,70 @@ class Health extends GameObject implements PowerUp
   void render()
   {
     pos = box2d.getBodyPixelCoord(body);
-    
+   
     pushMatrix();
+  
     translate(pos.x, pos.y);
-    
-    beginShape();
-    rectMode(CENTER);
-    stroke(0, 255, 89);
+    stroke(178, 110, 0);
+    noFill();
     strokeWeight(2);
-    fill(255);
-    
     rect(0, 0, w_, h_);
     
-    strokeWeight(3);
-    fill(0, 255, 89);
+    beginShape();
     
-    rect(0, 0, 20, 2.5);
-    rect(0, 0, 2.5, 20);
+    scale(0.13);
+    strokeWeight(7);
+    ellipse(0, 0, 50, 50);
+    
+    line(0, -100, 0, 100);
+    line(-15, -70, 15, -70);
+    line(-15, -60, 15, -60);
+    line(-15, -50, 15, -50);
+    
+    line(-15, 70, 15, 70);
+    line(-15, 60, 15, 60);
+    line(-15, 50, 15, 50);
+    bezier(15, -100, 15, -70, -15, -70, -15, -100);
+    bezier(15, 100, 15, 70, -15, 70, -15, 100);
+  
+    line(-100, 0, 100, 0);
+    line(-70, -15, -70, 15);
+    line(-60, -15, -60, 15);
+    line(-50, -15, -50, 15);
+    
+    line(70, -15, 70, 15);
+    line(60, -15, 60, 15);
+    line(50, -15, 50, 15);
+    bezier(-100, 15, -70, 15, -70, -15, -100, -15);
+    bezier(100, 15, 70, 15, 70, -15, 100, -15);
+    
+    rotate(QUARTER_PI);
+    line(0, -100, 0, 100);
+    line(-15, -70, 15, -70);
+    line(-15, -60, 15, -60);
+    line(-15, -50, 15, -50);
+    
+    line(-15, 70, 15, 70);
+    line(-15, 60, 15, 60);
+    line(-15, 50, 15, 50);
+    bezier(15, -100, 15, -70, -15, -70, -15, -100);
+    bezier(15, 100, 15, 70, -15, 70, -15, 100);
+    
+    
+    line(-100, 0, 100, 0);
+    line(-70, -15, -70, 15);
+    line(-60, -15, -60, 15);
+    line(-50, -15, -50, 15);
+    
+    line(70, -15, 70, 15);
+    line(60, -15, 60, 15);
+    line(50, -15, 50, 15);
+    bezier(-100, 15, -70, 15, -70, -15, -100, -15);
+    bezier(100, 15, 70, 15, 70, -15, 100, -15);
+    
     endShape();
     
-    popMatrix(); 
+    popMatrix();
   }
   
   void update()

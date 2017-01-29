@@ -104,16 +104,20 @@ void draw()
     
     if (powerUpTimer > powerUpSpawn)
     {
-      int power = (int)random(1,3);
+      int power = (int)random(1,4);
       GameObject p;
       
       if (power == 1)
       {
         p = new Health(random(50, width-50), 0, 30, 30);
       }
-      else //if (power == 2)
+      else if (power == 2)
       {
         p = new Speed(random(50, width-50), 0, 30, 30);
+      }
+      else
+      {
+        p = new Invincible(random(50, width-50), 0, 30, 30);
       }
       
       powerUps.add(p);
@@ -135,6 +139,12 @@ void draw()
         Speed s = (Speed) p;
         s.update();
         s.render(); 
+      }
+      else if (p instanceof Invincible)
+      {
+        Invincible inv = (Invincible) p;
+        inv.update();
+        inv.render(); 
       }
     }
     
