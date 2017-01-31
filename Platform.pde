@@ -24,10 +24,17 @@ class Platform extends GameObject
     body.createFixture(sd,1);
     
     body.setUserData(this);
+    pos = box2d.getBodyPixelCoord(body);
+  }
+  
+  void setPos()
+  {
+    pos = box2d.getBodyPixelCoord(body);
   }
   
   void update()
   {
+    pos = box2d.getBodyPixelCoord(body);
   }
   
   void render()

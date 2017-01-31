@@ -7,6 +7,7 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
+import java.awt.*;
 
 Box2DProcessing box2d;
 
@@ -58,72 +59,7 @@ void draw()
     {
       player.stimer = player.speedTime+1;
       player.itimer = player.invTime+1;
-      
-      /*for (int i = other.size()-1; i >= 0; i--)
-      {
-        GameObject p = (GameObject)other.get(i);
-        
-        if (p instanceof Bomb)
-        {
-          Bomb temp = (Bomb) p;
-          box2d.destroyBody(temp.body);
-           
-        }
-        else if (p instanceof Bullet)
-        {
-          Bullet temp = (Bullet) p;
-          box2d.destroyBody(temp.body);
-        }
-      }
-      
-      for (int i = platforms.size()-1; i >= 0; i--)
-      {
-        Platform cPlat = platforms.get(i);
-        
-        box2d.destroyBody(cPlat.body);
-      } 
-       
-      for (int i = powerUps.size()-1; i >= 0; i--)
-      {
-        GameObject p = (GameObject)powerUps.get(i);
-        
-        if (p instanceof Health)
-        {
-          Health h = (Health) p;
-          box2d.destroyBody(h.body);
-        }
-        else if (p instanceof Speed)
-        {
-          Speed s = (Speed) p;
-          box2d.destroyBody(s.body);
-        }
-        else if (p instanceof Invincible)
-        {
-          Invincible inv = (Invincible) p;
-          box2d.destroyBody(inv.body);
-        }
-      }
-      
-      for (int i = enemies.size()-1; i >= 0; i--)
-      {
-        GameObject c = enemies.get(i);
-        
-        if (c instanceof Bomber)
-        {
-          Bomber bm = (Bomber) c;
-          box2d.destroyBody(bm.body);
-        }
-        else if (c instanceof Shooter)
-        {
-          Shooter bm = (Shooter) c;
-          box2d.destroyBody(bm.body);
-        }
-        else if (c instanceof Spiker)
-        {
-          Spiker bm = (Spiker) c;
-          box2d.destroyBody(bm.body);
-        }
-      }*/
+
       curHealth = player.health;
       box2d = null;
     
@@ -250,11 +186,6 @@ void draw()
       }
     }
     
-    if (checkKey('b'))
-    {
-      levelComplete = true;
-    }
-    
     powerUpTimer += timeDelta;
   }
   else if (gameState == 2)
@@ -339,13 +270,55 @@ void generate()
   player.dir = 1;
   player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
   
-  int numOfPlats = 1;
+  int numOfPlats = (int)random(7,11);
+  int x = 0;
+  int size = 0;
+  float rX;
+  float rY;
+  float rW;
   
   for (int k = 0; k < numOfPlats; k++)
   {
-    Platform p = new Platform (random(100, width-100), random(50, height-100), (int)random(100, 500), 10, color(0));
+    rX = random(150, width-150);
+    rY = random(50, height-50);
+    rW = random(100, 300);
+    
+    size = platforms.size();
+    
+    while(x != size)
+    {
+      Platform m = platforms.get(x);
+      Rectangle r1 = new Rectangle((int)rX,(int)rY,(int)(rX+rW),(int)(rY+10));
+      Rectangle r2 = new Rectangle((int)m.pos.x,(int)m.pos.y,(int)(m.pos.x+m.w_),(int)(m.pos.y+m.h_));
+      
+      if (r1.intersects(r2))
+      {
+        rX = random(150, width-150);
+        rY = random(50, height-50);
+        rW = random(100, 300);
+        x = 0;
+      }
+      else
+      {
+        x++;
+      }
+      
+      size = platforms.size();
+    }
+
+    Platform p = new Platform (rX, rY, rW, 10, color(0));
     platforms.add(p);
   }
+}
+
+boolean rectsOverLapping(float b1TLx, float b2BRx, float b1BRx, float b2TLx, float b1TLy, float b2BRy, float b1BRy, float b2TLy)
+{
+  if (b1TLx > b2BRx || b1BRx < b2TLx || b1TLy < b2BRy || b1BRy > b2TLy) 
+  {  
+    return false; 
+  } 
+  
+  return true;
 }
 
 void keyPressed()

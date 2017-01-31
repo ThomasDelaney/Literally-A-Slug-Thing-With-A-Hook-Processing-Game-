@@ -233,30 +233,30 @@ class Hook extends GameObject
       {
         if (pos.y >= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x/15;
-          v.y = v.y/20;
+          v.x = -v.x;
+          v.y = v.y;
         }
         else if (pos.y >= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x/15;
-          v.y = v.y/20;
+          v.x = v.x;
+          v.y = v.y;
         }
         else if (pos.y <= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x/15;
-          v.y = -v.y/20;
+          v.x = -v.x;
+          v.y = -v.y;
         }
         else if (pos.y <= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x/15;
-          v.y = -v.y/20;
+          v.x = v.x;
+          v.y = -v.y;
         }
         
         p.body.setLinearVelocity(v);
           
         notMoving = false;
       }
-        
+      
       if (hookTime > 1)
       {
         hookCooling = true;
