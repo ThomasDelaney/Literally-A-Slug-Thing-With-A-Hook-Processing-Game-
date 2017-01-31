@@ -254,7 +254,7 @@ void generate()
   player.dir = 1;
   player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
   
-  int numOfPlats = (int)random(7,11);
+  int numOfPlats = (int)random(7,9);
   float rX = random(150, width-200);
   float rY = random(50, height-100);
   float rW = random(100, 300);
@@ -275,8 +275,7 @@ void generate()
     Platform p = new Platform ((float)r.getX(), (float)r.getY(), (float)r.getWidth(), (float)r.getHeight(), color(0));
     platforms.add(p);
   }
-  
-  int numOfEnemies = 5;
+
   int onGround = (int)random(1,3);
   
   for (int x = 0; x < onGround; x++)
@@ -298,6 +297,46 @@ void generate()
     }
     enemies.add(s);
   }
+  
+  int plats = platforms.size()-1;
+  int numOfEnemies = 5-onGround;
+  int lastInd[] = new int[plats];
+  
+  for (int x = 0; x < numOfEnemies-1; x++)
+  {
+    int ind = (int)random(plats);
+    int rand = (int)random(1, 4);
+    GameObject s;
+    
+    for (int y = 0; y < lastInd.length; y++)
+    {
+      if (lastInd[y] == ind)
+      {
+        x++;
+        
+        if (x > numOfEnemies-1)
+        {
+          x--;
+        }
+      }
+    }
+    
+    Platform p = platforms.get(x);
+    
+    if (rand == 1)
+    {
+      s = new Shooter(random(p.pos.x+60, (p.pos.x+p.w_)-60), (p.pos.y+p.h_)-32.1495, 87, 54);
+    }
+    else if (rand == 2)
+    {
+      s = new Bomber(random(p.pos.x+60, (p.pos.x+p.w_)-60), (p.pos.y+p.h_)-32.1495, 87, 54);
+    }
+    else
+    {
+      s = new Spiker (random(p.pos.x+60, (p.pos.x+p.w_)-60), (p.pos.y+p.h_)-32.1495, 60, 45);
+    }
+    enemies.add(s);
+  }
 }
 
 void genPlats(int numOfPlats, float rX, float rY, float rW)
@@ -309,7 +348,6 @@ void genPlats(int numOfPlats, float rX, float rY, float rW)
     rW = random(100, 300);
     
     Rectangle p = new Rectangle ((int)rX, (int)rY, (int)rW, 10);
-    //Platform p = new Platform (rX, rY, rW, 10, color(0));
     rects.add(p);
   }
 }

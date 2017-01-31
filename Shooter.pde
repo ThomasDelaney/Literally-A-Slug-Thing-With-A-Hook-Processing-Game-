@@ -182,6 +182,8 @@ class Shooter extends GameObject implements Enemy
 
   void calDest()
   {
+    Vec2 vel = body.getLinearVelocity();
+    
     if (!moving)
     {
       destTime = random(random(1, 3), random(6, 10));
@@ -191,7 +193,7 @@ class Shooter extends GameObject implements Enemy
     
     if (waitTime > destTime)
     {
-      body.setLinearVelocity(new Vec2(0,0));
+      body.setLinearVelocity(new Vec2(0,vel.y));
       waitTime = 0;
       moving = false;
     }
@@ -199,11 +201,11 @@ class Shooter extends GameObject implements Enemy
     {
       if (dir == 2)
       {
-        body.setLinearVelocity(new Vec2(random(2,5),0));
+        body.setLinearVelocity(new Vec2(random(2,5),vel.y));
       }
       else
       {
-        body.setLinearVelocity(new Vec2(random(-2,-5),0));
+        body.setLinearVelocity(new Vec2(random(-2,-5),vel.y));
       }
     }
     
