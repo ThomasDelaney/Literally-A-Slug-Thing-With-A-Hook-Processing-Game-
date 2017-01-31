@@ -27,11 +27,6 @@ class Platform extends GameObject
     pos = box2d.getBodyPixelCoord(body);
   }
   
-  void setPos()
-  {
-    pos = box2d.getBodyPixelCoord(body);
-  }
-  
   void update()
   {
     pos = box2d.getBodyPixelCoord(body);

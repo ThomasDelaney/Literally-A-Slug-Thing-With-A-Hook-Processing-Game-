@@ -15,36 +15,12 @@ void setup()
 {
   size(1280, 720);
   //fullScreen();
-  box2d = new Box2DProcessing(this);
-  box2d.createWorld();
-  box2d.setGravity(0, -10);
-
-  box2d.listenForCollisions();
   
   overPlat = false;
-  
-  s1 = new Shooter (500, height-40, 87, 54);
-  b1 = new Bomber (650, 500, 87, 54);
-  //sp1 = new Spiker (1000, 500, 60, 45);
-  
-  //b5 = new Bomber (200, 500, 87, 54);
-  
-  enemies.add(s1);
-  enemies.add(b1);
-  
-  
-  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1, 5);
-  //p1 = new Platform (width/2,height-300, 300, 10, color(0));
-  //p2 = new Platform (width/2+200, height-150, 500, 10, color(255, 144, 0));
-  
-  ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
 
-  //platforms.add(p1);
-  //platforms.add(p2);
- 
- 
-  
   font = createFont("3Dventure.ttf", 150); 
+  
+  generate();
 }
 
 void draw()
@@ -62,7 +38,7 @@ void draw()
 
       curHealth = player.health;
       box2d = null;
-    
+            
       platforms.clear();
       powerUps.clear();
       activePowers.clear();
@@ -71,12 +47,15 @@ void draw()
       generate();
       levelComplete = false;
     }
-    
+   
     player.update();
     player.render();
       
     ground.update();
     ground.render();
+    
+    goal.update();
+    goal.render();
      
     for (int i = enemies.size()-1; i >= 0; i--)
     {
@@ -202,6 +181,8 @@ Platform p1;
 Platform p2;
 Platform ground;
 
+Goal goal;
+
 Bomb b;
 
 Player player;
@@ -225,6 +206,8 @@ ArrayList<GameObject> enemies = new ArrayList<GameObject>();
 
 ArrayList<GameObject> other = new ArrayList<GameObject>();
 
+ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
+
 float timeDelta = 1.0f / 60.0f;
 
 float powerUpTimer = 0;
@@ -244,7 +227,7 @@ boolean PTouchSh = false;
 
 boolean levelComplete = false;
 
-int curHealth = 0;
+int curHealth = 5;
 
 Bullet hit;
 Bomb hitB;
@@ -264,6 +247,7 @@ void generate()
   box2d.listenForCollisions();
   
   player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1, curHealth);
+  goal = new Goal(width-65, random(54, height-54), 60, 44);
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
   
   player.body.setLinearVelocity(new Vec2(0,0));
@@ -271,54 +255,87 @@ void generate()
   player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
   
   int numOfPlats = (int)random(7,11);
-  int x = 0;
-  int size = 0;
-  float rX;
-  float rY;
-  float rW;
+  float rX = random(150, width-200);
+  float rY = random(50, height-100);
+  float rW = random(100, 300);
+ 
+  genPlats(numOfPlats, rX, rY, rW);
   
-  for (int k = 0; k < numOfPlats; k++)
+  do
   {
-    rX = random(150, width-150);
-    rY = random(50, height-50);
-    rW = random(100, 300);
+    rects.clear();
+    genPlats(numOfPlats, rX, rY, rW);
+  }
+  while (isInter());
+  
+  for (int i = 0; i < numOfPlats-1; i++)
+  {
+    Rectangle r = rects.get(i);
     
-    size = platforms.size();
-    
-    while(x != size)
-    {
-      Platform m = platforms.get(x);
-      Rectangle r1 = new Rectangle((int)rX,(int)rY,(int)(rX+rW),(int)(rY+10));
-      Rectangle r2 = new Rectangle((int)m.pos.x,(int)m.pos.y,(int)(m.pos.x+m.w_),(int)(m.pos.y+m.h_));
-      
-      if (r1.intersects(r2))
-      {
-        rX = random(150, width-150);
-        rY = random(50, height-50);
-        rW = random(100, 300);
-        x = 0;
-      }
-      else
-      {
-        x++;
-      }
-      
-      size = platforms.size();
-    }
-
-    Platform p = new Platform (rX, rY, rW, 10, color(0));
+    Platform p = new Platform ((float)r.getX(), (float)r.getY(), (float)r.getWidth(), (float)r.getHeight(), color(0));
     platforms.add(p);
+  }
+  
+  int numOfEnemies = 5;
+  int onGround = (int)random(1,3);
+  
+  for (int x = 0; x < onGround; x++)
+  {
+    int rand = (int)random(1, 4);
+    GameObject s;
+    
+    if (rand == 1)
+    {
+      s = new Shooter(random(200, width-200), height-32.1495, 87, 54);
+    }
+    else if (rand == 2)
+    {
+      s = new Bomber(random(200, width-200), height-32.1495, 87, 54);
+    }
+    else
+    {
+      s = new Spiker (random(200, width-200), height-32.1495, 60, 45);
+    }
+    enemies.add(s);
   }
 }
 
-boolean rectsOverLapping(float b1TLx, float b2BRx, float b1BRx, float b2TLx, float b1TLy, float b2BRy, float b1BRy, float b2TLy)
+void genPlats(int numOfPlats, float rX, float rY, float rW)
 {
-  if (b1TLx > b2BRx || b1BRx < b2TLx || b1TLy < b2BRy || b1BRy > b2TLy) 
-  {  
-    return false; 
-  } 
+  for (int k = 0; k < numOfPlats; k++)
+  {
+    rX = random(150, width-200);
+    rY = random(50, height-100);
+    rW = random(100, 300);
+    
+    Rectangle p = new Rectangle ((int)rX, (int)rY, (int)rW, 10);
+    //Platform p = new Platform (rX, rY, rW, 10, color(0));
+    rects.add(p);
+  }
+}
+
+boolean isInter()
+{
+  int k;
+  int z;
+  int num = 1;
   
-  return true;
+  for (k = 0; k < rects.size()-1; k++); 
+  {
+    Rectangle m = rects.get(k);
+      
+    for (z = num; z < rects.size()-1; z++)
+    {
+      Rectangle g = rects.get(z);
+      
+      if (m.intersects(g))
+      {
+        return true;
+      }
+    }
+    num++;
+  }
+  return false;
 }
 
 void keyPressed()
@@ -604,6 +621,16 @@ void beginContact(Contact cp)
     activePowers.add(z);
   }
   
+  if (o1.getClass() == Player.class && o2.getClass() == Goal.class) 
+  {
+    levelComplete = true;
+  }
+  else if (o2.getClass() == Player.class && o1.getClass() == Goal.class )
+  {
+    levelComplete = true;
+  }
+  
+  
   //Bullets collide with any other object beside Player - Destroy bullet
   if (o1.getClass() == Bullet.class && o2.getClass() == Bomb.class) 
   {
@@ -682,6 +709,15 @@ void beginContact(Contact cp)
     hit = (Bullet) o1;
   }
   else if (o2.getClass() == Bullet.class && o1.getClass() == Invincible.class )
+  {
+    hit = (Bullet) o2;
+  }
+  
+  if (o1.getClass() == Bullet.class && o2.getClass() == Goal.class) 
+  {
+    hit = (Bullet) o1;
+  }
+  else if (o2.getClass() == Bullet.class && o1.getClass() == Goal.class )
   {
     hit = (Bullet) o2;
   }
