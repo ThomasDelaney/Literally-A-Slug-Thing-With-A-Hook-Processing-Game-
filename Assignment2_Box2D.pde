@@ -33,6 +33,7 @@ void draw()
   {
     if (levelComplete == true)
     {
+      score++;
       player.stimer = player.speedTime+1;
       player.itimer = player.invTime+1;
 
@@ -95,6 +96,8 @@ void draw()
     textFont(font);
     textSize(30);
     text("Health: "+player.health, 15, 30);
+    
+    text("Score: "+score, width-180, 30);
     
     if (player.h.hookCooling == true)
     {
@@ -172,7 +175,7 @@ void draw()
     fill(0);
     textFont(font);
     textSize(100);
-    text("Game Over! Score: "+score, width/10, height/2);
+    text("Game Over! Score: "+score, width/5, height/2);
   }
 }
 

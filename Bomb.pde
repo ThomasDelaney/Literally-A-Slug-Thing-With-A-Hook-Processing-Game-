@@ -12,7 +12,7 @@ class Bomb extends GameObject
     this.w_ = w_;
     this.h_ = h_/2;
     force = new Vec2(0, 0);
-    dir = b.dir;
+    this.dir = b.dir;
     makeBody(new Vec2(x, y), this.w_, this.h_); 
   }
   
