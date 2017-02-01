@@ -2,6 +2,10 @@ class Bomber extends GameObject implements Enemy
 {
   ArrayList bombs = new ArrayList<Bomb>();
   float timer = 0;
+  boolean moving = false;
+ 
+  float destTime = 0;
+  float waitTime = 0;
   
   Bomber (float x, float y, float w_, float h_)
   {
@@ -12,7 +16,7 @@ class Bomber extends GameObject implements Enemy
   {
     pos = box2d.getBodyPixelCoord(body);
     
-    if (dir == 1)
+    if (dir == 2)
     {
       pushMatrix();
       translate(pos.x-50, pos.y+18);
@@ -49,7 +53,7 @@ class Bomber extends GameObject implements Enemy
       
       popMatrix();
     }
-    else if (dir == 2)
+    else if (dir == 1)
     {
       pushMatrix();
       translate(pos.x+50, pos.y+18);
@@ -124,6 +128,7 @@ class Bomber extends GameObject implements Enemy
     }
     
     attack();
+    calDest();
   }
   
   void attack()
@@ -141,7 +146,7 @@ class Bomber extends GameObject implements Enemy
     {
       Bomb b;
       
-      if (dir == 2)
+      if (dir == 1)
       {
         b = new Bomb(pos.x-90, pos.y-10, 25, 25, this);
       }
@@ -158,6 +163,34 @@ class Bomber extends GameObject implements Enemy
   
   void calDest()
   {
+    Vec2 vel = body.getLinearVelocity();
+    
+    if (!moving)
+    {
+      destTime = random(random(1, 3), random(6, 10));
+      dir = (int)random(1,3);
+      moving = true;
+    }
+    
+    if (waitTime > destTime)
+    {
+      body.setLinearVelocity(new Vec2(0,vel.y));
+      waitTime = 0;
+      moving = false;
+    }
+    else
+    {
+      if (dir == 2)
+      {
+        body.setLinearVelocity(new Vec2(random(2,5),vel.y));
+      }
+      else
+      {
+        body.setLinearVelocity(new Vec2(random(-2,-5),vel.y));
+      }
+    }
+    
+    waitTime += timeDelta;
   }
   
   void makeBody(Vec2 center, float wid, float hei)

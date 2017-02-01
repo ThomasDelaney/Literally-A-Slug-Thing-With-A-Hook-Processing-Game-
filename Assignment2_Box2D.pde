@@ -13,8 +13,8 @@ Box2DProcessing box2d;
 
 void setup()
 {
-  size(1280, 720);
-  //fullScreen();
+  //size(1280, 720);
+  fullScreen();
   
   overPlat = false;
 

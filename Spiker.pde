@@ -3,6 +3,11 @@ class Spiker extends GameObject implements Enemy
   color c = color(100, 100, 100);;
   float timer = 0;
   
+  float destTime = 0;
+  float waitTime = 0;
+  
+  boolean moving = false;
+  
   Spiker (float x, float y, float w_, float h_)
   {
     super(x, y, w_, h_);
@@ -98,6 +103,8 @@ class Spiker extends GameObject implements Enemy
     {
       body.setLinearVelocity(new Vec2(0,0));
     }
+    
+    calDest();
   }
   
   void attack()
@@ -105,14 +112,36 @@ class Spiker extends GameObject implements Enemy
     
   }
   
-  void die()
+   void calDest()
   {
+    Vec2 vel = body.getLinearVelocity();
     
-  }
-  
-  void calDest()
-  {
+    if (!moving)
+    {
+      destTime = random(random(1, 3), random(6, 10));
+      dir = (int)random(1,3);
+      moving = true;
+    }
     
+    if (waitTime > destTime)
+    {
+      body.setLinearVelocity(new Vec2(0,vel.y));
+      waitTime = 0;
+      moving = false;
+    }
+    else
+    {
+      if (dir == 2)
+      {
+        body.setLinearVelocity(new Vec2(random(2,5),vel.y));
+      }
+      else
+      {
+        body.setLinearVelocity(new Vec2(random(-2,-5),vel.y));
+      }
+    }
+    
+    waitTime += timeDelta;
   }
   
   void makeBody(Vec2 center, float wid, float hei)
