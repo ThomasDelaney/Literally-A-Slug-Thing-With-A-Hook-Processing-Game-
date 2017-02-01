@@ -19,18 +19,16 @@ void setup()
   overPlat = false;
 
   font = createFont("3Dventure.ttf", 150); 
-  
-  generate();
 }
 
 void draw()
 {
   background(255);
   
-  box2d.step();
-  
   if (gameState == 1)
   {
+    box2d.step();
+    
     if (levelComplete == true)
     {
       score++;
@@ -177,6 +175,189 @@ void draw()
     textSize(100);
     text("Game Over! Score: "+score, width/5, height/2);
   }
+  else if (gameState == 3)
+  {
+    mainMenu();
+  }
+}
+
+color f;
+
+void mainMenu()
+{
+  float sGx = width/2;
+  float sGy = height/3;
+  
+  float lGx = width/2;
+  float lGy = height/2.35;
+  
+  float credX = width/2;
+  float credY = height/1.95;
+  
+  float exitX = width/2;
+  float exitY = height/1.65;
+  
+  textAlign(CENTER);
+  
+  if (frameCount % 5 == 0)
+  {
+    f = color(random(0, 255), random(0, 255), random(0, 255));
+  }
+  
+  fill(f);
+  textFont(font);
+  textSize(75);
+  text("Literally a Slug Thing with a Hook!", width/2, height/6);
+  
+  fill(0);
+  
+  if ((mouseX < sGx+182.5 && mouseX > sGx-182.5) && (mouseY > sGy-35 && mouseY < sGy+7.5))
+  {
+    textSize(70);
+    text("Start Game", sGx, sGy);
+  }
+  else
+  {
+    textSize(60);
+    text("Start Game", sGx, sGy);
+  }
+  
+  if ((mouseX < lGx+175 && mouseX > lGx-175) && (mouseY > lGy-35 && mouseY < lGy+7.5))
+  {
+    textSize(70);
+    text("Load Game", lGx, lGy);
+  }
+  else
+  {
+    textSize(60);
+    text("Load Game", lGx, lGy);
+  }
+  
+  if ((mouseX < credX+135 && mouseX > credX-135) && (mouseY > credY-35 && mouseY < credY+7.5))
+  {
+    textSize(70);
+    text("Credits", credX, credY);
+  }
+  else
+  {
+    textSize(60);
+    text("Credits", credX, credY);
+  }
+  
+  if ((mouseX < exitX+75 && mouseX > exitX-75) && (mouseY > exitY-35 && mouseY < exitY+7.5))
+  {
+    textSize(70);
+    text("Exit", exitX, exitY);
+  }
+  else
+  {
+    textSize(60);
+    text("Exit", exitX, exitY);
+  }
+  
+  pushMatrix();
+      
+  translate(width-800, height);
+  scale(10);
+      
+  beginShape();
+  noStroke();
+  fill(101, 242, 139);
+  vertex(0,0);
+  vertex(44, -33);
+  vertex(50, 0);
+  endShape();
+     
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(101, 242, 139);
+  bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
+  bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
+  bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
+  bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
+  bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  vertex(0, 0);
+  vertex(50, 0);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(237, 71, 109);
+  vertex(29, -25);
+  vertex(19, -40);
+  vertex(34, -30);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(237, 71, 109);
+  vertex(34, -30);
+  vertex(33, -48);
+  vertex(40, -33);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(237, 71, 109);
+  vertex(40, -33);
+  vertex(45, -50);
+  vertex(49, -30);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(237, 71, 109);
+  vertex(49, -30);
+  vertex(58, -48);
+  vertex(54, -26);
+  endShape();
+  
+  beginShape();
+  fill(0);
+  ellipse(46, -23, 2.5, 2.5);
+  
+  noFill();
+  bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(255);
+  vertex(56, -18);
+  vertex(42, -17);
+  vertex(56, -12);
+  endShape();
+  
+  beginShape();
+  strokeWeight(1);
+  strokeCap(ROUND);
+  stroke(0);
+  fill(237, 71, 109);
+  vertex(47, -7);
+  vertex(59, -11);
+  vertex(60, -5);
+  vertex(48, -3);
+  endShape();
+  
+  popMatrix();
 }
 
 Platform tempPlat;
@@ -235,7 +416,7 @@ int curHealth = 5;
 Bullet hit;
 Bomb hitB;
 
-int gameState = 1;
+int gameState = 3;
 
 int score = 0;
 
