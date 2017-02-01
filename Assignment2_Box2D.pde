@@ -19,6 +19,7 @@ void setup()
   overPlat = false;
 
   font = createFont("3Dventure.ttf", 150); 
+  textAlign(CENTER);
 }
 
 void draw()
@@ -93,30 +94,30 @@ void draw()
     fill(0);
     textFont(font);
     textSize(30);
-    text("Health: "+player.health, 15, 30);
+    text("Health: "+player.health, 130, 30);
     
     text("Score: "+score, width-180, 30);
     
     if (player.h.hookCooling == true)
     {
       fill(255, 0, 0);
-      text("Hook Status: Cooling...", 200, 30);
+      text("Hook Status: Cooling...", 500, 30);
     }
     else if (player.h.hooking == true)
     {
       fill(255, 128, 0);
-      text("Hook Status: Hooking...", 200, 30);
+      text("Hook Status: Hooking...", 500, 30);
     }
     else
     {
       fill(0, 204, 0);
-      text("Hook Status: Ready", 200, 30);
+      text("Hook Status: Ready", 500, 30);
     }
     
     if (!timeSet)
     {
-      //powerUpSpawn = random(1, 2);
-      powerUpSpawn = random(5, 21);
+      powerUpSpawn = random(1, 2);
+      //powerUpSpawn = random(5, 21);
       timeSet = true;
     }
     
@@ -173,7 +174,7 @@ void draw()
     fill(0);
     textFont(font);
     textSize(100);
-    text("Game Over! Score: "+score, width/5, height/2);
+    text("Game Over! Score: "+score, width/2, height/2);
   }
   else if (gameState == 3)
   {
@@ -197,8 +198,6 @@ void mainMenu()
   float exitX = width/2;
   float exitY = height/1.65;
   
-  textAlign(CENTER);
-  
   if (frameCount % 5 == 0)
   {
     f = color(random(0, 255), random(0, 255), random(0, 255));
@@ -215,6 +214,12 @@ void mainMenu()
   {
     textSize(70);
     text("Start Game", sGx, sGy);
+    
+    if (mousePressed)
+    {
+      gameState = 1;
+      generate();
+    }
   }
   else
   {
@@ -248,6 +253,11 @@ void mainMenu()
   {
     textSize(70);
     text("Exit", exitX, exitY);
+    
+    if (mousePressed)
+    {
+      exit();
+    }
   }
   else
   {

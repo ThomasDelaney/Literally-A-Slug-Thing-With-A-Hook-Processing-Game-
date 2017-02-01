@@ -84,7 +84,7 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Invincible: "+displayTimeI, 625, 30);
+          text("Invincible: "+displayTimeI, 825, 30);
         }
         else if (activePowers.get(1) instanceof Invincible)
         {
@@ -92,7 +92,7 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Invincible: "+displayTimeI, 825, 30);
+          text("Invincible: "+displayTimeI, 1125, 30);
         }
       }
       itimer += timeDelta;
@@ -110,7 +110,7 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Speed: "+displayTimeS, 625, 30);
+          text("Speed: "+displayTimeS, 825, 30);
         }
         else if (activePowers.get(1) instanceof Speed)
         {
@@ -118,7 +118,7 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Speed: "+displayTimeS, 900, 30);
+          text("Speed: "+displayTimeS, 1100, 30);
         }
       }
       stimer += timeDelta;
