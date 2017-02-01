@@ -17,7 +17,10 @@ class Player extends GameObject
   float radius;
   float power = 10000;
   float mass = 1;
+  
   color c;
+  color prev;
+  
   boolean reset = false;
   boolean returned = true;
   boolean speed = false;
@@ -38,6 +41,7 @@ class Player extends GameObject
     this.right = right;
     this.hook = hook;
     this.c = c;
+    this.prev = c;
     this.health = health;
     
     this.size = size;
@@ -223,6 +227,23 @@ class Player extends GameObject
   { 
     pos = box2d.getBodyPixelCoord(body);
     
+    if (inv && speed)
+    {
+      c = color(255, 102, 102);
+    }
+    else if (speed)
+    {
+      c = color(0, 255, 255);
+    }
+    else if (inv)
+    {
+      c = color(220, 220, 220);
+    }
+    else
+    {
+      c = prev;
+    }
+    
     if (dir == 1)
     {
       pushMatrix();
@@ -232,7 +253,7 @@ class Player extends GameObject
       
       beginShape();
       noStroke();
-      fill(101, 242, 139);
+      fill(c);
       vertex(0,0);
       vertex(44, -32);
       vertex(50, 0);
@@ -242,7 +263,7 @@ class Player extends GameObject
       strokeWeight(1);
       strokeCap(ROUND);
       stroke(0);
-      fill(101, 242, 139);
+      fill(c);
       bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
       bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
       bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
@@ -338,7 +359,7 @@ class Player extends GameObject
       
       beginShape();
       noStroke();
-      fill(101, 242, 139);
+      fill(c);
       vertex(0,0);
       vertex(-44, -32);
       vertex(-50, 0);
@@ -348,7 +369,7 @@ class Player extends GameObject
       strokeWeight(1);
       strokeCap(ROUND);
       stroke(0);
-      fill(101, 242, 139);
+      fill(c);
       bezier(0, 0, -0.45, -6.83, -5.7, -9.58, -9.03, -6.76);
       bezier(-9.03, -6.76, -8.8, -12.9, -12.7, -14.86, -18.3, -13.03);
       bezier(-18.3, -13.03, -18.34, -18.53, -22.5, -21.63, -28.86, -18.9); 

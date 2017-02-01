@@ -249,7 +249,7 @@ void generate()
 
   box2d.listenForCollisions();
   
-  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(0, 255, 0), 1, curHealth);
+  player = new Player(50, height-32.1495, 0, 60, 44, 'a', 'd', 'f', color(101, 242, 139), 1, curHealth);
   goal = new Goal(width-65, random(54, height-54), 60, 44);
   ground = new Platform (width/2, height-5, width, 10, color(0, 0, 255));
   
