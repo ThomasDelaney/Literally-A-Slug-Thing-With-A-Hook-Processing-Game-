@@ -101,23 +101,23 @@ void draw()
     if (player.h.hookCooling == true)
     {
       fill(255, 0, 0);
-      text("Hook Status: Cooling...", 500, 30);
+      text("Hook Status: Cooling...", scaleFactor*60, 30);
     }
     else if (player.h.hooking == true)
     {
       fill(255, 128, 0);
-      text("Hook Status: Hooking...", 500, 30);
+      text("Hook Status: Hooking...", scaleFactor*60, 30);
     }
     else
     {
       fill(0, 204, 0);
-      text("Hook Status: Ready", 500, 30);
+      text("Hook Status: Ready", scaleFactor*60, 30);
     }
     
     if (!timeSet)
     {
-      powerUpSpawn = random(1, 2);
-      //powerUpSpawn = random(5, 21);
+      //powerUpSpawn = random(1, 2);
+      powerUpSpawn = random(5, 21);
       timeSet = true;
     }
     
@@ -205,7 +205,7 @@ void mainMenu()
   
   fill(f);
   textFont(font);
-  textSize(75);
+  textSize(scaleFactor*8);
   text("Literally a Slug Thing with a Hook!", width/2, height/6);
   
   fill(0);
@@ -213,7 +213,7 @@ void mainMenu()
   if ((mouseX < sGx+182.5 && mouseX > sGx-182.5) && (mouseY > sGy-35 && mouseY < sGy+7.5))
   {
     textSize(70);
-    text("Start Game", sGx, sGy);
+    text("New Game", sGx, sGy);
     
     if (mousePressed)
     {
@@ -224,7 +224,7 @@ void mainMenu()
   else
   {
     textSize(60);
-    text("Start Game", sGx, sGy);
+    text("New Game", sGx, sGy);
   }
   
   if ((mouseX < lGx+175 && mouseX > lGx-175) && (mouseY > lGy-35 && mouseY < lGy+7.5))
@@ -267,8 +267,8 @@ void mainMenu()
   
   pushMatrix();
       
-  translate(width-800, height);
-  scale(10);
+  translate(width-(width*0.45), height);
+  scale(scaleFactor);
       
   beginShape();
   noStroke();
@@ -385,6 +385,8 @@ Shooter s1;
 Bomber b1;
 Bomber b5;
 Spiker sp1;
+
+float scaleFactor = (width/height)*8;
 
 boolean[] keys = new boolean[1000];
 
