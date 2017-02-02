@@ -96,7 +96,7 @@ void draw()
     textSize(30);
     text("Health: "+player.health, 130, 30);
     
-    text("Score: "+score, width-180, 30);
+    text("Score: "+score, width-scaleFactor*15, 30);
     
     if (player.h.hookCooling == true)
     {
@@ -116,8 +116,8 @@ void draw()
     
     if (!timeSet)
     {
-      //powerUpSpawn = random(1, 2);
-      powerUpSpawn = random(5, 21);
+      powerUpSpawn = random(1, 2);
+      //powerUpSpawn = random(5, 21);
       timeSet = true;
     }
     
@@ -180,9 +180,41 @@ void draw()
   {
     mainMenu();
   }
+  else if (gameState == 4)
+  {
+    if (frameCount % 5 == 0)
+    {
+      g = color(random(0, 255), random(0, 255), random(0, 255));
+    }
+  
+    fill(g);
+    textSize(70);
+    text("Written and Designed by Thomas Delaney", width/2, height/6);
+    text("For Computer Science Year 2 Assignment", width/2, height/4);
+    
+    fill(0);
+    text("All Music Used Owned\nby the Artist: HOME", width/2, height/2);
+    
+    if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-60 && mouseY < height/1.25+7.5))
+    {
+      textSize(80);
+      text("Back to Main Menu", width/2, height/1.25);
+      
+      if (mousePressed)
+      {
+        gameState = 3;
+      }
+    }
+    else
+    {
+      textSize(70);
+      text("Back to Main Menu", width/2, height/1.25);
+    }
+  }
 }
 
 color f;
+color g;
 
 void mainMenu()
 {
@@ -242,6 +274,11 @@ void mainMenu()
   {
     textSize(70);
     text("Credits", credX, credY);
+    
+    if (mousePressed)
+    {
+      gameState = 4;
+    }
   }
   else
   {
