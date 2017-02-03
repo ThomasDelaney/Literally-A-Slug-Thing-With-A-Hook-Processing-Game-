@@ -175,9 +175,37 @@ void draw()
     textFont(font);
     textSize(100);
     text("Game Over! Score: "+score, width/2, height/2);
+    
+    if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-200 && mouseY < height/1.25-100))
+    {
+      textSize(80);
+      text("Back to Main Menu", width/2, height/1.5);
+      
+      if (mousePressed)
+      {
+        gameState = 3;
+        curHealth = 5;
+        score = 0;
+      }
+    }
+    else
+    {
+      textSize(70);
+      text("Back to Main Menu", width/2, height/1.5);
+    }
   }
   else if (gameState == 3)
   {
+    if (!loadTempWorld)
+    {
+      box2d = new Box2DProcessing(this);
+      box2d.createWorld();
+      box2d.setGravity(0, -10);
+    
+      box2d.listenForCollisions();
+      loadTempWorld = true;
+    }
+    
     mainMenu();
   }
   else if (gameState == 4)
@@ -188,7 +216,7 @@ void draw()
     }
   
     fill(g);
-    textSize(70);
+    textSize(scaleFactor*7);
     text("Written and Designed by Thomas Delaney", width/2, height/6);
     text("For Computer Science Year 2 Assignment", width/2, height/4);
     
@@ -215,6 +243,7 @@ void draw()
 
 color f;
 color g;
+boolean loadTempWorld = false;
 
 void mainMenu()
 {
@@ -229,6 +258,54 @@ void mainMenu()
   
   float exitX = width/2;
   float exitY = height/1.65;
+  
+  box2d.step();
+  
+  if(!hL)
+  {
+    hPlat = new Platform (width/2, height+5, width, 10, color(0, 0, 255));
+    hSh = new Shooter(100, height-32.1495, 87, 54);
+    hB = new Bomber(400,  height-32.1495, 87, 54);
+    hSp = new Spiker (700, height-32.1495, 60, 45);
+    
+    homeScreen.add(hPlat);
+    homeScreen.add(hSh);
+    homeScreen.add(hB);
+    homeScreen.add(hSp);  
+    hL = true;
+  }
+  else
+  {
+    for (int i = homeScreen.size()-1; i >= 0; i--)
+    {
+      GameObject p = (GameObject)homeScreen.get(i);
+      
+      if (p instanceof Platform)
+      {
+        Platform h = (Platform) p;
+        h.update();
+        h.render();   
+      }
+      else if (p instanceof Spiker)
+      {
+        Spiker s = (Spiker) p;
+        s.update();
+        s.render(); 
+      }
+      else if (p instanceof Shooter)
+      {
+        Shooter sh = (Shooter) p;
+        sh.update();
+        sh.render(); 
+      }
+      else if (p instanceof Bomber)
+      {
+        Bomber b = (Bomber) p;
+        b.update();
+        b.render(); 
+      }
+    }
+  }
   
   if (frameCount % 5 == 0)
   {
@@ -249,8 +326,19 @@ void mainMenu()
     
     if (mousePressed)
     {
-      gameState = 1;
+      box2d = null;
+            
+      platforms.clear();
+      powerUps.clear();
+      activePowers.clear();
+      enemies.clear();
+      other.clear();
+      homeScreen.clear();
+      hL = false;
+      loadTempWorld = false;
+      
       generate();
+      gameState = 1;
     }
   }
   else
@@ -262,12 +350,12 @@ void mainMenu()
   if ((mouseX < lGx+175 && mouseX > lGx-175) && (mouseY > lGy-35 && mouseY < lGy+7.5))
   {
     textSize(70);
-    text("Load Game", lGx, lGy);
+    text("Leaderboard", lGx, lGy);
   }
   else
   {
     textSize(60);
-    text("Load Game", lGx, lGy);
+    text("Leaderboard", lGx, lGy);
   }
   
   if ((mouseX < credX+135 && mouseX > credX-135) && (mouseY > credY-35 && mouseY < credY+7.5))
@@ -407,6 +495,11 @@ void mainMenu()
   popMatrix();
 }
 
+Platform hPlat;
+Shooter hSh;
+Spiker hSp;
+Bomber hB;
+
 Platform tempPlat;
 Platform p1;
 Platform p2;
@@ -441,6 +534,8 @@ ArrayList<GameObject> other = new ArrayList<GameObject>();
 
 ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
 
+ArrayList<GameObject> homeScreen = new ArrayList<GameObject>();
+
 float timeDelta = 1.0f / 60.0f;
 
 float powerUpTimer = 0;
@@ -459,6 +554,9 @@ boolean PTouchSp = false;
 boolean PTouchSh = false;
 
 boolean levelComplete = false;
+
+//to check if the homescreen sprites were loaded
+boolean hL = false;
 
 int curHealth = 5;
 
@@ -487,27 +585,23 @@ void generate()
   player.dir = 1;
   player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
   
-  int numOfPlats = (int)random(7,9);
+  int numOfPlats = (int)random(9,12);
   float rX = random(150, width-200);
   float rY = random(50, height-100);
   float rW = random(100, 300);
  
+  rects.clear();
   genPlats(numOfPlats, rX, rY, rW);
   
-  do
-  {
-    rects.clear();
-    genPlats(numOfPlats, rX, rY, rW);
-  }
-  while (isInter());
-  
-  for (int i = 0; i < numOfPlats-1; i++)
+  for (int i = 0; i < rects.size(); i++)
   {
     Rectangle r = rects.get(i);
     
     Platform p = new Platform ((float)r.getX(), (float)r.getY(), (float)r.getWidth(), (float)r.getHeight(), color(0));
     platforms.add(p);
   }
+  
+  delete.clear();
 
   int onGround = (int)random(1,3);
   
@@ -579,34 +673,26 @@ void genPlats(int numOfPlats, float rX, float rY, float rW)
     rX = random(150, width-200);
     rY = random(50, height-100);
     rW = random(100, 300);
+    boolean inter = false;
     
     Rectangle p = new Rectangle ((int)rX, (int)rY, (int)rW, 10);
-    rects.add(p);
-  }
-}
-
-boolean isInter()
-{
-  int k;
-  int z;
-  int num = 1;
-  
-  for (k = 0; k < rects.size()-1; k++); 
-  {
-    Rectangle m = rects.get(k);
-      
-    for (z = num; z < rects.size()-1; z++)
+    
+    for (int i = 0; i < rects.size(); i++)
     {
-      Rectangle g = rects.get(z);
+      Rectangle g = rects.get(i);
       
-      if (m.intersects(g))
+      if (p.intersects(g))
       {
-        return true;
+        inter = true;
+        break;
       }
     }
-    num++;
+    
+    if (!inter)
+    {
+      rects.add(p);
+    }
   }
-  return false;
 }
 
 void keyPressed()
