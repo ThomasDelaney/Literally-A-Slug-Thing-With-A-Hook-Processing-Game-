@@ -28,146 +28,194 @@ void draw()
   
   if (gameState == 1)
   {
-    box2d.step();
-    
-    if (levelComplete == true)
+    if (!paused)
     {
-      score++;
-      player.stimer = player.speedTime+1;
-      player.itimer = player.invTime+1;
-
-      curHealth = player.health;
-      box2d = null;
-            
-      platforms.clear();
-      powerUps.clear();
-      activePowers.clear();
-      enemies.clear();
-      other.clear();
-      generate();
-      levelComplete = false;
-    }
-   
-    player.update();
-    player.render();
+      box2d.step();
       
-    ground.update();
-    ground.render();
-    
-    goal.update();
-    goal.render();
+      if (levelComplete == true)
+      {
+        score++;
+        player.stimer = player.speedTime+1;
+        player.itimer = player.invTime+1;
+  
+        curHealth = player.health;
+        box2d = null;
+              
+        platforms.clear();
+        powerUps.clear();
+        activePowers.clear();
+        enemies.clear();
+        other.clear();
+        generate();
+        levelComplete = false;
+      }
+      
+      if (checkKey(ENTER))
+      {
+        paused = true;
+      }
      
-    for (int i = enemies.size()-1; i >= 0; i--)
-    {
-      GameObject c = enemies.get(i);
+      player.update();
+      player.render();
+        
+      ground.update();
+      ground.render();
       
-      if (c instanceof Bomber)
+      goal.update();
+      goal.render();
+       
+      for (int i = enemies.size()-1; i >= 0; i--)
       {
-        Bomber bm = (Bomber) c;
-        bm.update();
-        bm.render();
+        GameObject c = enemies.get(i);
+        
+        if (c instanceof Bomber)
+        {
+          Bomber bm = (Bomber) c;
+          bm.update();
+          bm.render();
+        }
+        else if (c instanceof Shooter)
+        {
+          Shooter bm = (Shooter) c;
+          bm.update();
+          bm.render();
+        }
+        else if (c instanceof Spiker)
+        {
+          Spiker bm = (Spiker) c;
+          bm.update();
+          bm.render();
+        }
       }
-      else if (c instanceof Shooter)
-      {
-        Shooter bm = (Shooter) c;
-        bm.update();
-        bm.render();
-      }
-      else if (c instanceof Spiker)
-      {
-        Spiker bm = (Spiker) c;
-        bm.update();
-        bm.render();
-      }
-    }
-    
-    for (int i = platforms.size()-1; i >= 0; i--)
-    {
-      Platform cPlat = platforms.get(i);
       
-      cPlat.update();
-      cPlat.render();
-    }
-    
-    platCheck(player);
-    
-    fill(0);
-    textFont(font);
-    textSize(30);
-    text("Health: "+player.health, 130, 30);
-    
-    text("Score: "+score, width-scaleFactor*15, 30);
-    
-    if (player.h.hookCooling == true)
-    {
-      fill(255, 0, 0);
-      text("Hook Status: Cooling...", scaleFactor*60, 30);
-    }
-    else if (player.h.hooking == true)
-    {
-      fill(255, 128, 0);
-      text("Hook Status: Hooking...", scaleFactor*60, 30);
-    }
-    else
-    {
-      fill(0, 204, 0);
-      text("Hook Status: Ready", scaleFactor*60, 30);
-    }
-    
-    if (!timeSet)
-    {
-      powerUpSpawn = random(1, 2);
-      //powerUpSpawn = random(5, 21);
-      timeSet = true;
-    }
-    
-    if (powerUpTimer > powerUpSpawn)
-    {
-      int power = (int)random(1,4);
-      GameObject p;
-      
-      if (power == 1)
+      for (int i = platforms.size()-1; i >= 0; i--)
       {
-        p = new Health(random(50, width-50), 0, 30, 30);
+        Platform cPlat = platforms.get(i);
+        
+        cPlat.update();
+        cPlat.render();
       }
-      else if (power == 2)
+      
+      platCheck(player);
+      
+      fill(0);
+      textFont(font);
+      textSize(30);
+      text("Health: "+player.health, 130, 30);
+      
+      text("Score: "+score, width-scaleFactor*15, 30);
+      
+      if (player.h.hookCooling == true)
       {
-        p = new Speed(random(50, width-50), 0, 30, 30);
+        fill(255, 0, 0);
+        text("Hook Status: Cooling...", scaleFactor*60, 30);
+      }
+      else if (player.h.hooking == true)
+      {
+        fill(255, 128, 0);
+        text("Hook Status: Hooking...", scaleFactor*60, 30);
       }
       else
       {
-        p = new Invincible(random(50, width-50), 0, 30, 30);
+        fill(0, 204, 0);
+        text("Hook Status: Ready", scaleFactor*60, 30);
       }
       
-      powerUps.add(p);
-      powerUpTimer = 0;
+      if (!timeSet)
+      {
+        powerUpSpawn = random(1, 2);
+        //powerUpSpawn = random(5, 21);
+        timeSet = true;
+      }
+      
+      if (powerUpTimer > powerUpSpawn)
+      {
+        int power = (int)random(1,4);
+        GameObject p;
+        
+        if (power == 1)
+        {
+          p = new Health(random(50, width-50), 0, 30, 30);
+        }
+        else if (power == 2)
+        {
+          p = new Speed(random(50, width-50), 0, 30, 30);
+        }
+        else
+        {
+          p = new Invincible(random(50, width-50), 0, 30, 30);
+        }
+        
+        powerUps.add(p);
+        powerUpTimer = 0;
+      }
+      
+      for (int i = powerUps.size()-1; i >= 0; i--)
+      {
+        GameObject p = (GameObject)powerUps.get(i);
+        
+        if (p instanceof Health)
+        {
+          Health h = (Health) p;
+          h.update();
+          h.render();   
+        }
+        else if (p instanceof Speed)
+        {
+          Speed s = (Speed) p;
+          s.update();
+          s.render(); 
+        }
+        else if (p instanceof Invincible)
+        {
+          Invincible inv = (Invincible) p;
+          inv.update();
+          inv.render(); 
+        }
+      }
+      
+      powerUpTimer += timeDelta;
     }
-    
-    for (int i = powerUps.size()-1; i >= 0; i--)
+    else
     {
-      GameObject p = (GameObject)powerUps.get(i);
+      fill(0);
       
-      if (p instanceof Health)
+      if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-60 && mouseY < height/1.25+7.5))
       {
-        Health h = (Health) p;
-        h.update();
-        h.render();   
+        textSize(80);
+        text("Back to Main Menu", width/2, height/1.25);
+        
+        if (mousePressed)
+        {
+          gameState = 3;
+          curHealth = 5;
+          score = 0;
+          paused = false;
+        }
       }
-      else if (p instanceof Speed)
+      else
       {
-        Speed s = (Speed) p;
-        s.update();
-        s.render(); 
+        textSize(70);
+        text("Back to Main Menu", width/2, height/1.25);
       }
-      else if (p instanceof Invincible)
+      
+      if ((mouseX < width/2+200 && mouseX > width/2-200) && (mouseY > height/1.25-400 && mouseY < height/1.25-300))
       {
-        Invincible inv = (Invincible) p;
-        inv.update();
-        inv.render(); 
+        textSize(80);
+        text("Continue", width/2, height/2);
+        
+        if (mousePressed)
+        {
+          paused = false;
+        }
       }
+      else
+      {
+        textSize(70);
+        text("Continue", width/2, height/2);
+      }
+      
     }
-    
-    powerUpTimer += timeDelta;
   }
   else if (gameState == 2)
   {
@@ -244,6 +292,7 @@ void draw()
 color f;
 color g;
 boolean loadTempWorld = false;
+boolean paused = false;
 
 void mainMenu()
 {
@@ -600,8 +649,6 @@ void generate()
     Platform p = new Platform ((float)r.getX(), (float)r.getY(), (float)r.getWidth(), (float)r.getHeight(), color(0));
     platforms.add(p);
   }
-  
-  delete.clear();
 
   int onGround = (int)random(1,3);
   
