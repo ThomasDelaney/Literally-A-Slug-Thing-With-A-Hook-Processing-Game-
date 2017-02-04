@@ -100,6 +100,9 @@ float nameY;
 final int CAPS_LOCK = 20;
 float curX;
 
+FileWriter newUser = null;
+char[] pName;
+
 void setup()
 {
   //size(1280, 720);
@@ -284,6 +287,7 @@ void draw()
           curHealth = 5;
           score = 0;
           paused = false;
+          delay(200);
         }
       }
       else
@@ -328,12 +332,66 @@ void draw()
         gameState = 3;
         curHealth = 5;
         score = 0;
+        name.clear();
       }
     }
     else
     {
       textSize(70);
       text("Back to Main Menu", width/2, height/4);
+    }
+
+    if ((mouseX < width/2+110 && mouseX > width/2-110) && (mouseY > height/1.15-50 && mouseY < height/1.15))
+    {
+      textSize(80);
+      text("Enter", width/2, height/1.15);
+      
+      if (mousePressed)
+      {
+        pName = new char[name.size()];
+        
+        for (int i = 0; i < name.size(); i++)
+        {
+          pName[i] = name.get(i);
+        }
+        
+        try
+        {
+          newUser = new FileWriter(sketchPath()+"\\"+"data"+"\\"+"board.txt", true);
+          newUser.write(String.valueOf(pName));
+          newUser.write("\t");
+          newUser.write(String.valueOf(score));
+          newUser.write("\r\n");
+        }
+        catch (IOException e) 
+        {
+          println("Error!");
+          e.printStackTrace();
+        }
+        finally
+        {
+          if (newUser != null) 
+          {
+            try 
+            {
+              newUser.close();
+            } 
+            catch (IOException e) 
+            {
+              println("Error while closing the file");
+            }
+          }
+        }
+        gameState = 3;
+        curHealth = 5;
+        score = 0;
+        name.clear();
+      }
+    }
+    else
+    {
+      textSize(70);
+      text("Enter", width/2, height/1.15);
     }
     
     textSize(70);
@@ -343,7 +401,6 @@ void draw()
     stroke(0);
     noFill();
     rect(nameX, nameY, 450, 60);
-    //rect(nameX-225, nameY, 25, 25);
     
     if (Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK) == true)
     {
@@ -397,6 +454,110 @@ void draw()
   }
   else if (gameState == 3)
   {
+    pushMatrix();
+        
+    translate(width-(width*0.45), height);
+    scale(scaleFactor);
+        
+    beginShape();
+    noStroke();
+    fill(101, 242, 139);
+    vertex(0,0);
+    vertex(44, -33);
+    vertex(50, 0);
+    endShape();
+       
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(101, 242, 139);
+    bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
+    bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
+    bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
+    bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
+    bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    vertex(0, 0);
+    vertex(50, 0);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(29, -25);
+    vertex(19, -40);
+    vertex(34, -30);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(34, -30);
+    vertex(33, -48);
+    vertex(40, -33);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(40, -33);
+    vertex(45, -50);
+    vertex(49, -30);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(49, -30);
+    vertex(58, -48);
+    vertex(54, -26);
+    endShape();
+    
+    beginShape();
+    fill(0);
+    ellipse(46, -23, 2.5, 2.5);
+    
+    noFill();
+    bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(255);
+    vertex(56, -18);
+    vertex(42, -17);
+    vertex(56, -12);
+    endShape();
+    
+    beginShape();
+    strokeWeight(1);
+    strokeCap(ROUND);
+    stroke(0);
+    fill(237, 71, 109);
+    vertex(47, -7);
+    vertex(59, -11);
+    vertex(60, -5);
+    vertex(48, -3);
+    endShape();
+    
+    popMatrix();
+    
     if (!loadTempWorld)
     {
       box2d = new Box2DProcessing(this);
@@ -439,6 +600,14 @@ void draw()
       textSize(70);
       text("Back to Main Menu", width/2, height/1.25);
     }
+  }
+  else if (gameState == 5)
+  {
+    Table leaders = loadTable("board.txt", "tsv");
+    
+    int rowCount = leaders.getRowCount();
+    
+    
   }
 }
 
@@ -548,6 +717,11 @@ void mainMenu()
   {
     textSize(70);
     text("Leaderboard", lGx, lGy);
+    
+    if (mousePressed)
+    {
+      gameState = 5;
+    }
   }
   else
   {
@@ -586,110 +760,6 @@ void mainMenu()
     textSize(60);
     text("Exit", exitX, exitY);
   }
-  
-  pushMatrix();
-      
-  translate(width-(width*0.45), height);
-  scale(scaleFactor);
-      
-  beginShape();
-  noStroke();
-  fill(101, 242, 139);
-  vertex(0,0);
-  vertex(44, -33);
-  vertex(50, 0);
-  endShape();
-     
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(101, 242, 139);
-  bezier(0, 0, -0.45, -6.83, 5.7, -9.58, 9.03, -6.76);
-  bezier(9.03, -6.76, 8.8, -12.9, 12.7, -14.86, 18.3, -13.03);
-  bezier(18.3, -13.03, 18.34, -18.53, 22.5, -21.63, 28.86, -18.9); 
-  bezier(28.86, -18.9, 28.84, -29.3, 36.9, -32.25, 43.32, -32.3); 
-  bezier(43.32, -32.3, 55.44, -29.13, 61.4, -15.2, 50, 0);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  vertex(0, 0);
-  vertex(50, 0);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(237, 71, 109);
-  vertex(29, -25);
-  vertex(19, -40);
-  vertex(34, -30);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(237, 71, 109);
-  vertex(34, -30);
-  vertex(33, -48);
-  vertex(40, -33);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(237, 71, 109);
-  vertex(40, -33);
-  vertex(45, -50);
-  vertex(49, -30);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(237, 71, 109);
-  vertex(49, -30);
-  vertex(58, -48);
-  vertex(54, -26);
-  endShape();
-  
-  beginShape();
-  fill(0);
-  ellipse(46, -23, 2.5, 2.5);
-  
-  noFill();
-  bezier(40, -25, 40.99, -27.73, 42.77, -29.33, 47.49, -28.58);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(255);
-  vertex(56, -18);
-  vertex(42, -17);
-  vertex(56, -12);
-  endShape();
-  
-  beginShape();
-  strokeWeight(1);
-  strokeCap(ROUND);
-  stroke(0);
-  fill(237, 71, 109);
-  vertex(47, -7);
-  vertex(59, -11);
-  vertex(60, -5);
-  vertex(48, -3);
-  endShape();
-  
-  popMatrix();
 }
 
 
