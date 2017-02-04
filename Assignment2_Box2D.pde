@@ -8,8 +8,97 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 Box2DProcessing box2d;
+color f;
+color g;
+boolean loadTempWorld = false;
+boolean paused = false;
+Platform hPlat;
+Shooter hSh;
+Spiker hSp;
+Bomber hB;
+
+Platform tempPlat;
+Platform p1;
+Platform p2;
+Platform ground;
+
+Goal goal;
+
+Bomb b;
+
+Player player;
+
+Shooter s1;
+Bomber b1;
+Bomber b5;
+Spiker sp1;
+
+float scaleFactor = (width/height)*8;
+
+boolean[] keys = new boolean[1000];
+
+ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+
+ArrayList<Platform> platforms = new ArrayList<Platform>();
+
+ArrayList<GameObject> powerUps = new ArrayList<GameObject>();
+
+ArrayList<GameObject> activePowers = new ArrayList<GameObject>();
+
+ArrayList<GameObject> enemies = new ArrayList<GameObject>();
+
+ArrayList<GameObject> other = new ArrayList<GameObject>();
+
+ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
+
+ArrayList<GameObject> homeScreen = new ArrayList<GameObject>();
+
+float credX;
+ArrayList<Character> name = new ArrayList<Character>();
+
+float timeDelta = 1.0f / 60.0f;
+
+float powerUpTimer = 0;
+float powerUpSpawn = 0;
+
+boolean timeSet = false;
+
+float platPosX;
+float platPosY;
+
+boolean overPlat;
+boolean onPlat = false;
+
+boolean PTouchB = false;
+boolean PTouchSp = false;
+boolean PTouchSh = false;
+
+boolean levelComplete = false;
+
+//to check if the homescreen sprites were loaded
+boolean hL = false;
+
+int curHealth = 5;
+
+Bullet hit;
+Bomb hitB;
+
+int gameState = 3;
+
+int score = 0;
+
+PFont font;
+
+int maxName = 10;
+float nameX;
+float nameY;
+final int CAPS_LOCK = 20;
+float curX;
 
 void setup()
 {
@@ -20,6 +109,10 @@ void setup()
 
   font = createFont("3Dventure.ttf", 150); 
   textAlign(CENTER);
+  
+   nameX = width/2;
+   nameY = height/1.3;
+   curX = nameX-165;
 }
 
 void draw()
@@ -180,10 +273,10 @@ void draw()
     {
       fill(0);
       
-      if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-60 && mouseY < height/1.25+7.5))
+      if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-300 && mouseY < height/1.25-200))
       {
         textSize(80);
-        text("Back to Main Menu", width/2, height/1.25);
+        text("Back to Main Menu", width/2, height/1.65);
         
         if (mousePressed)
         {
@@ -196,13 +289,13 @@ void draw()
       else
       {
         textSize(70);
-        text("Back to Main Menu", width/2, height/1.25);
+        text("Back to Main Menu", width/2, height/1.65);
       }
       
-      if ((mouseX < width/2+200 && mouseX > width/2-200) && (mouseY > height/1.25-400 && mouseY < height/1.25-300))
+      if ((mouseX < width/2+200 && mouseX > width/2-200) && (mouseY > height/1.25-550 && mouseY < height/1.25-450))
       {
         textSize(80);
-        text("Continue", width/2, height/2);
+        text("Continue", width/2, height/2.65);
         
         if (mousePressed)
         {
@@ -212,22 +305,23 @@ void draw()
       else
       {
         textSize(70);
-        text("Continue", width/2, height/2);
+        text("Continue", width/2, height/2.65);
       }
       
     }
   }
   else if (gameState == 2)
   {
+    
     fill(0);
     textFont(font);
     textSize(100);
     text("Game Over! Score: "+score, width/2, height/2);
-    
-    if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-200 && mouseY < height/1.25-100))
+
+    if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/4-50 && mouseY < height/4+20))
     {
       textSize(80);
-      text("Back to Main Menu", width/2, height/1.5);
+      text("Back to Main Menu", width/2, height/4);
       
       if (mousePressed)
       {
@@ -239,8 +333,67 @@ void draw()
     else
     {
       textSize(70);
-      text("Back to Main Menu", width/2, height/1.5);
+      text("Back to Main Menu", width/2, height/4);
     }
+    
+    textSize(70);
+    text("Enter Name for LeaderBoard", width/2, height/1.4);
+    
+    strokeWeight(5);
+    stroke(0);
+    noFill();
+    rect(nameX, nameY, 450, 60);
+    //rect(nameX-225, nameY, 25, 25);
+    
+    if (Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK) == true)
+    {
+      fill(255, 0, 0);
+      textSize(50);
+      text("Caps lock is on", width/1.3, height/1.275);
+    }
+      
+    if (keyPressed)
+    {
+      if (name.size() < maxName)
+      {
+        if ( !(checkKey(ENTER) || checkKey(' ') || checkKey(TAB) || checkKey(UP) || checkKey(LEFT) || checkKey(RIGHT) || checkKey(DOWN) || checkKey(CONTROL) || checkKey(CAPS_LOCK)) )
+        {
+          if ((checkKey(BACKSPACE) && (name.size() != 0)))
+          {
+            name.remove(name.size()-1);
+            delay(100);
+          }
+          
+          else if (key == BACKSPACE && (name.size() == 0));
+          
+          else
+          {
+            char c = key;
+            name.add(c);
+            delay(100);
+          }
+        }
+      }
+      
+      if (name.size() == maxName)
+      {
+        if (key == BACKSPACE && (name.size() != 0))
+        {
+          name.remove(name.size()-1);
+          delay(100);
+        }
+      }
+    }
+      
+    for(int i = 0; i < name.size(); i++)
+    {
+      fill(0, 255, 0);
+      char c = name.get(i);
+      textSize(50);
+      text(c, curX, nameY+15);
+      curX += 35;
+    }
+    curX = nameX-165;
   }
   else if (gameState == 3)
   {
@@ -288,11 +441,6 @@ void draw()
     }
   }
 }
-
-color f;
-color g;
-boolean loadTempWorld = false;
-boolean paused = false;
 
 void mainMenu()
 {
@@ -544,79 +692,6 @@ void mainMenu()
   popMatrix();
 }
 
-Platform hPlat;
-Shooter hSh;
-Spiker hSp;
-Bomber hB;
-
-Platform tempPlat;
-Platform p1;
-Platform p2;
-Platform ground;
-
-Goal goal;
-
-Bomb b;
-
-Player player;
-
-Shooter s1;
-Bomber b1;
-Bomber b5;
-Spiker sp1;
-
-float scaleFactor = (width/height)*8;
-
-boolean[] keys = new boolean[1000];
-
-ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
-
-ArrayList<Platform> platforms = new ArrayList<Platform>();
-
-ArrayList<GameObject> powerUps = new ArrayList<GameObject>();
-
-ArrayList<GameObject> activePowers = new ArrayList<GameObject>();
-
-ArrayList<GameObject> enemies = new ArrayList<GameObject>();
-
-ArrayList<GameObject> other = new ArrayList<GameObject>();
-
-ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
-
-ArrayList<GameObject> homeScreen = new ArrayList<GameObject>();
-
-float timeDelta = 1.0f / 60.0f;
-
-float powerUpTimer = 0;
-float powerUpSpawn = 0;
-
-boolean timeSet = false;
-
-float platPosX;
-float platPosY;
-
-boolean overPlat;
-boolean onPlat = false;
-
-boolean PTouchB = false;
-boolean PTouchSp = false;
-boolean PTouchSh = false;
-
-boolean levelComplete = false;
-
-//to check if the homescreen sprites were loaded
-boolean hL = false;
-
-int curHealth = 5;
-
-Bullet hit;
-Bomb hitB;
-
-int gameState = 3;
-
-int score = 0;
-
-PFont font;
 
 void generate()
 {
