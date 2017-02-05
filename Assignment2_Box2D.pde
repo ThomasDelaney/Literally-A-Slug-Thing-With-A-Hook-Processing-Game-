@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 
 Minim minim;
 AudioPlayer song;
+AudioPlayer lockOn;
+AudioPlayer woosh;
 
 Box2DProcessing box2d;
 color f;
@@ -128,6 +130,9 @@ void setup()
   
   minim = new Minim(this);
   loadSong();
+  
+  lockOn = minim.loadFile("lock.mp3");
+  woosh = minim.loadFile("woosh.mp3");
   
   font = createFont("3Dventure.ttf", 150); 
   textAlign(CENTER);

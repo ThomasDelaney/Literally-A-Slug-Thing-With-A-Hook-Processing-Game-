@@ -192,6 +192,8 @@ class Hook extends GameObject
         if (pos.x+1 >= platPosX && pos.y+1 >= platPosY)
         {
           hookConnect = true;
+          lockOn.play();
+          lockOn.rewind();
         }
       }
       else if (hookDir == 2)
@@ -201,6 +203,8 @@ class Hook extends GameObject
         if (pos.x+1 >= platPosX && pos.y <= platPosY+1)
         {
           hookConnect = true;
+          lockOn.play();
+          lockOn.rewind();
         }
       }
       else if (hookDir == 3)
@@ -210,6 +214,8 @@ class Hook extends GameObject
         if (pos.x <= platPosX+1 && pos.y <= platPosY+1)
         {
           hookConnect = true;
+          lockOn.play();
+          lockOn.rewind();
         }
       }
       else if (hookDir == 4)
@@ -219,6 +225,8 @@ class Hook extends GameObject
         if (pos.x <= platPosX+1 && pos.y+1 >= platPosY)
         {
           hookConnect = true;
+          lockOn.play();
+          lockOn.rewind();
         }
       }
     }
@@ -253,6 +261,9 @@ class Hook extends GameObject
         }
         
         p.body.setLinearVelocity(v);
+        
+        woosh.play();
+        woosh.rewind();
           
         notMoving = false;
       }
