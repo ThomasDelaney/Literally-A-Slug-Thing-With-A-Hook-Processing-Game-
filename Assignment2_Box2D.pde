@@ -1,3 +1,9 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
 import java.util.*;
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -11,6 +17,9 @@ import java.awt.*;
 import java.io.FileWriter;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+
+Minim minim;
+AudioPlayer song;
 
 Box2DProcessing box2d;
 color f;
@@ -108,13 +117,18 @@ char[] pName;
 
 boolean loadedBored = false;
 
+int songNum = 0;
+
 void setup()
 {
-  //size(1280, 720);
-  fullScreen();
+  size(1280, 720);
+  //fullScreen();
   
   overPlat = false;
-
+  
+  minim = new Minim(this);
+  loadSong();
+  
   font = createFont("3Dventure.ttf", 150); 
   textAlign(CENTER);
   
@@ -126,6 +140,16 @@ void setup()
 void draw()
 {
   background(255);
+  
+  if (song.position() >= song.length()-1000)
+  {
+    loadSong();
+  }
+  
+  if (!song.isPlaying())
+  {
+    song.play();
+  }
   
   if (gameState == 1)
   {
@@ -653,7 +677,7 @@ void draw()
       loadedBored = true;
     }
     
-    textSize(50);
+    textSize(scaleFactor*5);
     textAlign(LEFT);
     
     for (int i = 0; i < highScores.size(); i++)
@@ -669,12 +693,67 @@ void draw()
         }
         else
         {
-          genX += scaleFactor*70;
+          genX += scaleFactor*50;
           genY = scaleFactor*12;
         }
       }
     }
     textAlign(CENTER);
+  }
+}
+
+void loadSong()
+{
+  int num = (int)random(1, 11);
+    
+  while (num == songNum)
+  {
+    num = (int)random(1, 11);
+  }
+  
+  songNum = num;
+  
+  switch(songNum)
+  {
+    case 1: 
+    song = minim.loadFile("odyssey.mp3");
+    break;
+    
+    case 2:
+    song = minim.loadFile("newmachines.mp3");
+    break;
+    
+    case 3:
+    song = minim.loadFile("cloud.mp3");
+    break;
+    
+    case 4:
+    song = minim.loadFile("decay.mp3");
+    break;
+    
+    case 5:
+    song = minim.loadFile("native.mp3");
+    break;
+    
+    case 6:
+    song = minim.loadFile("nightswim.mp3");
+    break;
+    
+    case 7:
+    song = minim.loadFile("flashlight.mp3");
+    break;
+    
+    case 8:
+    song = minim.loadFile("warmth.mp3");
+    break;
+    
+    case 9:
+    song = minim.loadFile("headfirst.mp3");
+    break;
+    
+    case 10:
+    song = minim.loadFile("burning.mp3");
+    break;
   }
 }
 
