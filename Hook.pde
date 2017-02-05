@@ -125,7 +125,7 @@ class Hook extends GameObject
     endShape();
     
     if (!hookConnect)
-    {
+    { 
       if (pos.x <= platPosX && pos.y <= platPosY)
       {
         tempX = platPosX - pos.x;
@@ -261,10 +261,7 @@ class Hook extends GameObject
         }
         
         p.body.setLinearVelocity(v);
-        
-        woosh.play();
-        woosh.rewind();
-          
+           
         notMoving = false;
       }
       

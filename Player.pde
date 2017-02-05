@@ -167,6 +167,9 @@ class Player extends GameObject
     {    
       if (!h.hooking && overPlat && !h.hookCooling && !h.hookConnect)
       {
+        woosh.play();
+        woosh.rewind();
+      
         h.hooking = true;
     
         h.pos.x = pos.x;
@@ -219,6 +222,8 @@ class Player extends GameObject
     
     if (health < 1)
     {
+      gameOver.play();
+      gameOver.rewind();
       gameState = 2;
     }
   }  

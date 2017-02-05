@@ -22,6 +22,12 @@ Minim minim;
 AudioPlayer song;
 AudioPlayer lockOn;
 AudioPlayer woosh;
+AudioPlayer hurt;
+AudioPlayer inv;
+AudioPlayer speed;
+AudioPlayer heal;
+AudioPlayer gameOver;
+AudioPlayer complete;
 
 Box2DProcessing box2d;
 color f;
@@ -123,8 +129,8 @@ int songNum = 0;
 
 void setup()
 {
-  size(1280, 720);
-  //fullScreen();
+  //size(1280, 720);
+  fullScreen();
   
   overPlat = false;
   
@@ -133,6 +139,12 @@ void setup()
   
   lockOn = minim.loadFile("lock.mp3");
   woosh = minim.loadFile("woosh.mp3");
+  hurt = minim.loadFile("hurt.wav");
+  inv = minim.loadFile("inv.mp3");
+  speed = minim.loadFile("speed.mp3");
+  heal = minim.loadFile("heal.mp3");
+  gameOver = minim.loadFile("gameover.mp3");
+  complete = minim.loadFile("complete.mp3");
   
   font = createFont("3Dventure.ttf", 150); 
   textAlign(CENTER);
@@ -164,6 +176,9 @@ void draw()
       
       if (levelComplete == true)
       {
+        complete.play();
+        complete.rewind();
+        
         score++;
         player.stimer = player.speedTime+1;
         player.itimer = player.invTime+1;
@@ -350,7 +365,6 @@ void draw()
   }
   else if (gameState == 2)
   {
-    
     fill(0);
     textFont(font);
     textSize(100);
@@ -1135,6 +1149,8 @@ void beginContact(Contact cp)
       vel.x = -vel.x*2;
       vel.y = -vel.y*1.25;
       player.body.setLinearVelocity(vel);
+      hurt.play();
+      hurt.rewind();
     }
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Spiker.class) 
@@ -1150,6 +1166,8 @@ void beginContact(Contact cp)
       vel.x = -vel.x*2;
       vel.y = -vel.y*1.25;
       player.body.setLinearVelocity(vel);
+      hurt.play();
+      hurt.rewind();
     }
   }
  
@@ -1159,6 +1177,8 @@ void beginContact(Contact cp)
     if (!p1.inv)
     {
       p1.health--;
+      hurt.play();
+      hurt.rewind();
     }
     
     hit = (Bullet) o2;
@@ -1169,6 +1189,8 @@ void beginContact(Contact cp)
     if (!p1.inv)
     {
       p1.health--;
+      hurt.play();
+      hurt.rewind();
     }
     
     hit = (Bullet) o1;
@@ -1198,6 +1220,8 @@ void beginContact(Contact cp)
       vel.x = -vel.x*2;
       vel.y = -vel.y*1.25;
       player.body.setLinearVelocity(vel);
+      hurt.play();
+      hurt.rewind();
     }
   }
   else if (o2.getClass() == Player.class && o1.getClass() == Bomb.class) 
@@ -1213,6 +1237,8 @@ void beginContact(Contact cp)
       vel.x = -vel.x*2;
       vel.y = -vel.y*1.25;
       player.body.setLinearVelocity(vel);
+      hurt.play();
+      hurt.rewind();
     }
   }
   
@@ -1221,6 +1247,9 @@ void beginContact(Contact cp)
     Player p1 = (Player) o1;
     p1.health++;
     
+    heal.play();
+    heal.rewind();
+    
     Health h = (Health) o2;
     h.hit = true;
   }
@@ -1228,6 +1257,9 @@ void beginContact(Contact cp)
   {
     Player p1 = (Player) o2;
     p1.health++;
+    
+    heal.play();
+    heal.rewind();
     
     Health h = (Health) o1;
     h.hit = true;
@@ -1238,6 +1270,9 @@ void beginContact(Contact cp)
     Player p1 = (Player) o1;
     p1.speed = true;
     p1.stimer = 0;
+    
+    speed.play();
+    speed.rewind();
     
     Speed s = (Speed) o2;
     s.hit = true;
@@ -1259,6 +1294,9 @@ void beginContact(Contact cp)
     Player p1 = (Player) o2;
     p1.speed = true;
     p1.stimer = 0;
+    
+    speed.play();
+    speed.rewind();
     
     Speed s = (Speed) o1;
     s.hit = true;
@@ -1283,6 +1321,9 @@ void beginContact(Contact cp)
     p1.inv = true;
     p1.itimer = 0;
     
+    inv.play();
+    inv.rewind();
+    
     Invincible z = (Invincible) o2;
     z.hit = true;
     
@@ -1303,6 +1344,9 @@ void beginContact(Contact cp)
     Player p1 = (Player) o2;
     p1.inv = true;
     p1.itimer = 0;
+    
+    inv.play();
+    inv.rewind();
     
     Invincible z = (Invincible) o1;
     z.hit = true;
