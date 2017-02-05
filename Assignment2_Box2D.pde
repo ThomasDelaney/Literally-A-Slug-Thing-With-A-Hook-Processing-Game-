@@ -58,6 +58,9 @@ ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
 
 ArrayList<GameObject> homeScreen = new ArrayList<GameObject>();
 
+ArrayList<Details> players = new ArrayList<Details>();
+ArrayList<Details> highScores = new ArrayList<Details>();
+
 float credX;
 ArrayList<Character> name = new ArrayList<Character>();
 
@@ -102,6 +105,8 @@ float curX;
 
 FileWriter newUser = null;
 char[] pName;
+
+boolean loadedBored = false;
 
 void setup()
 {
@@ -386,6 +391,9 @@ void draw()
         curHealth = 5;
         score = 0;
         name.clear();
+        loadedBored = false;
+        highScores.clear();
+        players.clear();
       }
     }
     else
@@ -603,11 +611,70 @@ void draw()
   }
   else if (gameState == 5)
   {
-    Table leaders = loadTable("board.txt", "tsv");
+    float genX = scaleFactor*5;
+    float genY = scaleFactor*12;
     
-    int rowCount = leaders.getRowCount();
+    if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.025-60 && mouseY < height/1.025+7.5))
+    {
+      textSize(70);
+      text("Back to Main Menu", width/2, height/1.025);
+      
+      if (mousePressed)
+      {
+        gameState = 3;
+      }
+    }
+    else
+    {
+      textSize(60);
+      text("Back to Main Menu", width/2, height/1.025);
+    }
     
+    if (!loadedBored)
+    {
+      Table leaders = loadTable("board.txt", "tsv");
+      
+      int rowCount = leaders.getRowCount();
+      
+      for(int i = 0; i < rowCount; i++)
+      {
+        Details e = new Details(leaders.getString(i,0), leaders.getInt(i,1));
+        players.add(e);
+      }
+      
+      Collections.sort(players);
+      
+      for(int i = players.size()-1; i >= 0; i--)
+      {
+        Details e = players.get(i);
+        highScores.add(e);
+      }
+      
+      loadedBored = true;
+    }
     
+    textSize(50);
+    textAlign(LEFT);
+    
+    for (int i = 0; i < highScores.size(); i++)
+    {
+      Details e = highScores.get(i);
+      
+      if (genX < width-scaleFactor*5)
+      {
+        if (genY < height-scaleFactor*12)
+        {
+          text(i+1+": "+e.name+" - "+e.score, genX, genY);
+          genY += scaleFactor*12;
+        }
+        else
+        {
+          genX += scaleFactor*70;
+          genY = scaleFactor*12;
+        }
+      }
+    }
+    textAlign(CENTER);
   }
 }
 
