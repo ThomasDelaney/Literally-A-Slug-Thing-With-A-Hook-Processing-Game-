@@ -12,7 +12,7 @@ class Hook extends GameObject
   float scale = 1;
   int hookDir;
   float hookTime = 0;
-  
+
   float xS;
   float yS;
   
@@ -235,29 +235,29 @@ class Hook extends GameObject
     {
       Vec2 target = box2d.coordPixelsToWorld(platPosX, platPosY);
       
-      Vec2 v = target.addLocal(pos); 
+      Vec2 v = target.subLocal(p.pos); 
       
       if (notMoving)
       {
         if (pos.y >= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x;
-          v.y = v.y;
+          v.x = v.x-width;
+          v.y = height-v.y;
         }
         else if (pos.y >= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x;
-          v.y = v.y;
+          v.x = width-v.x;
+          v.y = height-v.y;
         }
         else if (pos.y <= platPosY && pos.x >= platPosX)
         {
-          v.x = -v.x;
-          v.y = -v.y;
+          v.x = v.x-width;
+          v.y = v.y-height;
         }
         else if (pos.y <= platPosY && pos.x <= platPosX)
         {
-          v.x = v.x;
-          v.y = -v.y;
+          v.x = width-v.x;
+          v.y = v.y-height;
         }
         
         p.body.setLinearVelocity(v);

@@ -16,3 +16,4 @@ bunty	4
 yupt	1
 nurt	2
 mynamecheg	1
+thomas	7

@@ -268,8 +268,7 @@ void draw()
       
       if (!timeSet)
       {
-        powerUpSpawn = random(1, 2);
-        //powerUpSpawn = random(5, 21);
+        powerUpSpawn = random(5, 9);
         timeSet = true;
       }
       
@@ -325,7 +324,7 @@ void draw()
     {
       fill(0);
       
-      if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.25-300 && mouseY < height/1.25-200))
+      if ((mouseX < width/2+350 && mouseX > width/2-350) && (mouseY > height/1.65-100 && mouseY < height/1.65))
       {
         textSize(80);
         text("Back to Main Menu", width/2, height/1.65);
@@ -345,7 +344,7 @@ void draw()
         text("Back to Main Menu", width/2, height/1.65);
       }
       
-      if ((mouseX < width/2+200 && mouseX > width/2-200) && (mouseY > height/1.25-550 && mouseY < height/1.25-450))
+      if ((mouseX < width/2+200 && mouseX > width/2-200) && (mouseY > height/2.65-50 && mouseY < height/2.65))
       {
         textSize(80);
         text("Continue", width/2, height/2.65);
