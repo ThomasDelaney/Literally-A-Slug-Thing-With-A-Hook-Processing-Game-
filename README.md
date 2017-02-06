@@ -3,7 +3,7 @@ Thomas Delaney C15300756 DT228/2 Winter Assignment
 
 #YouTube Video
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Za1BAYiGklE/0.jpg)](https://www.youtube.com/watch?v=Za1BAYiGklE)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1V9bT77H-N8/0.jpg)](https://www.youtube.com/watch?v=1V9bT77H-N8)
 
 # What is the Game About?
 When I started this project I knew I was going to develop some sort of platformer, but I didn't want to create the average jump to platform to platform and kill and dodge the enemies platformer. Although this platformer does follow some of that criteria; I added a few twists...
