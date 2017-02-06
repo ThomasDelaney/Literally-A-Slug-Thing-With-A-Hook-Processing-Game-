@@ -77,3 +77,5 @@ All Power ups implement the PowerUp interface
 
 * The sketch is mapped to all sizes
 
+* All images are produrally draw, no images used.
+
