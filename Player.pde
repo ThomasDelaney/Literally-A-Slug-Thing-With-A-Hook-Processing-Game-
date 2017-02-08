@@ -110,7 +110,7 @@ class Player extends GameObject
           textFont(font);
           textSize(30);
               
-          text("Speed: "+displayTimeS, scaleFactor*92.5, 30);
+          text("Speed: "+displayTimeS, scaleFactor*95, 30);
         }
         else if (activePowers.get(1) instanceof Speed)
         {

@@ -292,6 +292,7 @@ void draw()
         
         powerUps.add(p);
         powerUpTimer = 0;
+        timeSet = false;
       }
       
       for (int i = powerUps.size()-1; i >= 0; i--)
@@ -943,7 +944,7 @@ void generate()
   player.dir = 1;
   player.body.setTransform(new Vec2(box2d.coordPixelsToWorld(50, height-32.1495)), player.body.getAngle());
   
-  int numOfPlats = (int)random(9,12);
+  int numOfPlats = (int)random(8,12);
   float rX = random(150, width-200);
   float rY = random(50, height-100);
   float rW = random(100, 300);
